@@ -1,0 +1,9 @@
+=
+-
++
+float
+int
+pointer
+1 = 2
+fuckthisShit
+ImOut

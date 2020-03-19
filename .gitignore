@@ -2,3 +2,5 @@
 # Sublime project files
 *.sublime-project
 *.sublime-workspace
+stale_outputs_checked
+*.class
