@@ -1,0 +1,7 @@
+=
+-
++
+float yeet
+int yeet
+pointer
+1 = 2
