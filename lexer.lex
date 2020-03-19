@@ -19,6 +19,7 @@ Blank= [ \t\f ]
 Digits= [0-9]+
 VarName= [a-zA-Z][a-zA-Z0-9_']+
 
+
 %%
 
 <YYINITIAL> {
@@ -32,9 +33,6 @@ float       {   String str = yytext().substring(0,yytext().length());
             }
 int         {   String str = yytext().substring(0,yytext().length());
                 return (new Yytoken(4,str,yyline,yychar,yychar + str.length()));
-            }
-pointer     {   String str = yytext().substring(0,yytext().length());
-                return (new Yytoken(5,str,yyline,yychar,yychar + str.length()));
             }
 {VarName}   {   String str = yytext().substring(0,yytext().length());
                 return (new Yytoken(6,str,yyline,yychar,yychar + str.length()));
