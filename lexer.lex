@@ -12,19 +12,23 @@ import files.*;
 %state COMMENT
 %unicode
 
-eol=\r|\n|\r\n
-Blank=[ \t\f]
-Digits=[0-9]+
-Identifier=[a-zA-Z][a-zA-Z0-9_']+
+eol= \r | \n | \r\n
+Blank= [ \t\f ]
+Keywords = int | if | while | for | return | true | false
+Digits = [0-9]+
+integer = 0 | [1-9][0-9]*
+Indentifier = [a-zA-Z][a-zA-Z0-9_']*
 
 %%
 
 <YYINITIAL> {
 {Blank}+    { }
 {eol}       { }
-"="         {   return (new Yytoken(0,yytext(),yyline,yychar,yychar+1)); }
-"+"         {   return (new Yytoken(1,yytext(),yyline,yychar,yychar+1)); }
-"-"         {   return (new Yytoken(2,yytext(),yyline,yychar,yychar+1)); }
+
+"="         { return (new Yytoken(0,yytext(),yyline,yychar,yychar+1)); }
+"+"         { return (new Yytoken(1,yytext(),yyline,yychar,yychar+1)); }
+"-"         { return (new Yytoken(2,yytext(),yyline,yychar,yychar+1)); }
+
 float       {   String str = yytext().substring(0,yytext().length());
                 return (new Yytoken(3,str,yyline,yychar,yychar + str.length()));
             }
