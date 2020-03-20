@@ -1,5 +1,11 @@
 package com.shizu;
-import java.io.*;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -7,10 +13,14 @@ public class Main {
 	    try {
 	        BufferedReader reader = new BufferedReader(new FileReader("./input.txt"));
             search lexer = new search(reader);
-            Yytoken token = lexer.yylex();
-            Yytoken token2 = lexer.yylex(); /* We need to call this method multiple times */
-            System.out.println(token.m_text);
-            System.out.println(token2.m_text);
+			List<Yytoken> list = new ArrayList<Yytoken>();
+            while (!lexer.yyatEOF()){
+				list.add(lexer.yylex());
+			}
+            for(int i = 0; i < list.size() - 1; ++i){
+            	System.out.println(list.get(i).m_text);
+			}
+
 	    }
 	    catch (FileNotFoundException e) {
 	        e.printStackTrace();

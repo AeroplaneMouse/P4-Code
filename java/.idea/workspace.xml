@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a9a83d9d-cc89-4084-bfd8-0abdbbf2183b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/java/META-INF/java.kotlin_module" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/shizu/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/shizu/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/shizu/input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/shizu/input.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/shizu/search.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/shizu/search.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lexer.lex" beforeDir="false" afterPath="$PROJECT_DIR$/../lexer.lex" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -92,7 +88,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
