@@ -12,8 +12,6 @@ import files.*;
 %state COMMENT
 %unicode
 
-%debug
-
 eol=\r|\n|\r\n
 Blank=[ \t\f]
 Digits=[0-9]+
