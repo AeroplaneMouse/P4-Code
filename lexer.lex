@@ -1,4 +1,4 @@
-import files.*;
+package com.shizu;
 
 %%
 
