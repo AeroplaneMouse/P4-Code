@@ -19,6 +19,8 @@ public class Main {
 			}
             for(int i = 0; i < list.size() - 1; ++i){
             	System.out.println(list.get(i).m_text);
+				System.out.println(list.get(i).m_index);
+				System.out.println("---");
 			}
 
 	    }
