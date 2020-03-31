@@ -17,7 +17,7 @@ Blank= [ \t\f ]
 Keywords = int | if | while | for | return | true | false
 Digits = [0-9]+
 integer = 0 | [1-9][0-9]*
-Indentifier = [a-zA-Z][a-zA-Z0-9_']*
+Identifier = [a-zA-Z][a-zA-Z0-9_']*
 
 %%
 
