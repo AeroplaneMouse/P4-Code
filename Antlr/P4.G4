@@ -107,10 +107,8 @@ operand
     ;
 
 functiondefinition
-    :   type function Identifier LParen typeparameterlist RParen LCurly statlist RCurly
-    |   type function Identifier LParen RParen LCurly statlist RCurly
-    |   Void function Identifier LParen typeparameterlist RParen LCurly statlist RCurly
-    |   Void function Identifier LParen RParen LCurly statlist RCurly
+    :   type function Identifier LParen typeparameterlist? RParen LCurly statlist RCurly
+    |   Void function Identifier LParen typeparameterlist? RParen LCurly statlist RCurly
     ;
 
 typeparameterlist
