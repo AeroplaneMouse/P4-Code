@@ -9,6 +9,9 @@ operator : '+' ;
 
 INT : DIGIT+ ;
 
-fragment DIGIT : [1-9];
+fragment DIGIT : [1-9] ;
 
-
+Whitespace : [ \t\f] -> skip;
+CR : '\r' -> skip;
+NL : '\n' -> skip;
+CRNL : '\r\n' -> skip;
