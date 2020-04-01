@@ -1,30 +1,80 @@
-@echo off
+@ECHO off
 
+@REM Default grammar name and start method.
 set NAME=Calculator
 set START_METHOD=main
+set PROGRAM_NAME=%0
+
+@REM ***********************************************
+@REM Check commandline arguments
+:Loop
+IF "%1"=="" GOTO Continue
+	IF "%1"=="-n" GOTO Name
+	IF "%1"=="-s" GOTO StartMethod
+	ECHO ERROR! Invalid argument: %1
+	GOTO InvalidUsage
+
+:Name
+IF "%2"=="" GOTO NameElse
+	SET NAME=%2
+	GOTO Next
+:NameElse
+ECHO ERROR! Grammar name cannot be empty
+GOTO InvalidUsage
+
+:StartMethod
+IF "%2"=="" GOTO StartElse
+	SET START_METHOD=%2
+	GOTO Next
+:StartElse
+ECHO Start method name cannot be empty
+GOTO InvalidUsage
+
+:Next
+SHIFT
+SHIFT
+GOTO Loop
+
+:InvalidUsage
+ECHO %PROGRAM_NAME% [options]
+ECHO.
+ECHO Options:
+ECHO -n [NAME]    - Name of the grammar file without extension. Default is: %NAME%
+ECHO -s [NAME]    - Name of the starting method. Default is: %START_METHOD%
+ECHO.
+GOTO EOF
 
 
-@rem if not %*==nil set NAME=%*
+@REM ***********************************************
+:Continue
+ECHO Using these as parameters
+ECHO Name:          %NAME%
+ECHO Start method:  %START_METHOD%
+ECHO.
+@REM if not %*==nil set NAME=%*
 
-@rem Remove old target folder, quietly
-@rem rmdir /S /Q target
+@REM Remove old target folder, quietly
+@REM rmdir /S /Q target
 
-@rem Generate lexer and parser
-echo | set /p=.
+@REM Generate lexer and parser
+ECHO | set /p=.
 java -cp antlr-4.7.2-complete.jar org.antlr.v4.Tool -o dist-grammar/ -listener -visitor src-grammar/%NAME%.g4
-echo | set /p=.
+ECHO | set /p=.
 
-@rem Compile lexer and parser
-echo | set /p=.
-@rem echo  set /p=Compiling...   
+@REM Compile lexer and parser
+ECHO | set /p=.
+@REM ECHO  set /p=Compiling...   
 javac -cp antlr-4.7.2-complete.jar dist-grammar/*.java
-echo | set /p=.
+ECHO | set /p=.
 
-@rem Compile source code
-echo .
-@rem echo  set /p=Compiling the actual program...  
+@REM Compile source code
+ECHO .
+@REM ECHO  set /p=Compiling the actual program...  
 java -cp dist-grammar/.;antlr-4.7.2-complete.jar org.antlr.v4.gui.TestRig %NAME% %START_METHOD% -gui -tokens src-input/%NAME%-input*
-echo Done
+ECHO Done
 
-@rem Pause at the end. This stoppes the CMD from dissapering, if not run in an existing open CMD.
+
+@REM ***********************************************
+:EOF
+@REM Pause at the end. This stoppes the CMD from dissapering, if not run in an existing open CMD.
 pause
