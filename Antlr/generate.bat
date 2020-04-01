@@ -27,4 +27,5 @@ echo .
 java -cp target/.;antlr-4.7.2-complete.jar org.antlr.v4.gui.TestRig %NAME% %START_METHOD% -gui -tokens %CODE_FILE%.txt
 echo Done
 
+@rem Pause at the end. This stoppes the CMD from dissapering, if not run in an existing open CMD.
 pause
