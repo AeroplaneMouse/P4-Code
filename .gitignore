@@ -6,4 +6,4 @@ stale_outputs_checked
 *.class
 
 # Compiled from antlr files
-Antlr/target
+Antlr/dist-grammar
