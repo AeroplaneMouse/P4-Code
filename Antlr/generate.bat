@@ -1,6 +1,8 @@
 @echo off
 
-set NAME=P4
+set NAME=Calculator
+set START_METHOD=main
+set CODE_FILE=calSource
 
 
 @rem if not %*==nil set NAME=%*
@@ -22,5 +24,5 @@ echo | set /p=.
 @rem Compile source code
 echo | set /p=.
 @rem echo  set /p=Compiling the actual program...  
-java -cp target/.;antlr-4.7.2-complete.jar org.antlr.v4.gui.TestRig %NAME% program -gui -tokens gol.txt
+java -cp target/.;antlr-4.7.2-complete.jar org.antlr.v4.gui.TestRig %NAME% %START_METHOD% -gui -tokens %CODE_FILE%.txt
 echo Done
