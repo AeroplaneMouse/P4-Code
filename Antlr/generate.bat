@@ -22,5 +22,5 @@ echo | set /p=.
 @rem Compile source code
 echo | set /p=.
 @rem echo  set /p=Compiling the actual program...  
-java -cp target/.;antlr-4.7.2-complete.jar org.antlr.v4.gui.TestRig %NAME% program -tokens gol.txt
+java -cp target/.;antlr-4.7.2-complete.jar org.antlr.v4.gui.TestRig %NAME% program -gui -tokens gol.txt
 echo Done
