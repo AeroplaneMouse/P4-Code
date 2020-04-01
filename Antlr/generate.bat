@@ -1,9 +1,17 @@
 @ECHO off
 
 @REM Default grammar name and start method.
-set NAME=Calculator
-set START_METHOD=main
-set PROGRAM_NAME=%0
+SET NAME=Calculator
+SET START_METHOD=main
+
+@REM Setting default parameters
+SET PROGRAM_NAME=%0
+SET SOURCE_GRAMMAR_DIR=src-grammar
+SET SOURCE_INPUT_DIR=src-input
+SET DIST_GRAMMAR_DIR=dist-grammar
+SET ANTLR_ARGS=-listener -visitor
+SET GRUN_ARGS=-gui
+SET DELETE_DIST_GRAMMAR_DIR=false
 
 @REM ***********************************************
 @REM Check commandline arguments
@@ -11,6 +19,7 @@ set PROGRAM_NAME=%0
 IF "%1"=="" GOTO Continue
 	IF "%1"=="-n" GOTO Name
 	IF "%1"=="-s" GOTO StartMethod
+	IF "%1"=="--remove-dist-folder" GOTO RemoveDist
 	ECHO ERROR! Invalid argument: %1
 	GOTO InvalidUsage
 
@@ -22,6 +31,7 @@ IF "%2"=="" GOTO NameElse
 ECHO ERROR! Grammar name cannot be empty
 GOTO InvalidUsage
 
+
 :StartMethod
 IF "%2"=="" GOTO StartElse
 	SET START_METHOD=%2
@@ -29,6 +39,13 @@ IF "%2"=="" GOTO StartElse
 :StartElse
 ECHO Start method name cannot be empty
 GOTO InvalidUsage
+
+
+:RemoveDist
+SET DELETE_DIST_GRAMMAR_DIR=true
+SHIFT
+GOTO Loop
+
 
 :Next
 SHIFT
@@ -39,8 +56,9 @@ GOTO Loop
 ECHO %PROGRAM_NAME% [options]
 ECHO.
 ECHO Options:
-ECHO -n [NAME]    - Name of the grammar file without extension. Default is: %NAME%
-ECHO -s [NAME]    - Name of the starting method. Default is: %START_METHOD%
+ECHO -n [NAME]             - Name of the grammar file without extension. Default is: %NAME%
+ECHO -s [NAME]             - Name of the starting method. Default is: %START_METHOD%
+ECHO --remove-dist-folder  - Deletes the "%DIST_GRAMMAR_DIR%" folder before generating lexer and parser.
 ECHO.
 GOTO EOF
 
@@ -48,29 +66,33 @@ GOTO EOF
 @REM ***********************************************
 :Continue
 ECHO Using these as parameters
-ECHO Name:          %NAME%
-ECHO Start method:  %START_METHOD%
+ECHO Grammer name: %NAME%
+ECHO Start method: %START_METHOD%
+ECHO Delete dist:  %DELETE_DIST_GRAMMAR_DIR%
 ECHO.
-@REM if not %*==nil set NAME=%*
 
-@REM Remove old target folder, quietly
-@REM rmdir /S /Q target
+SET GRUN_ARGS=%NAME% %START_METHOD% %GRUN_ARGS%
+
+IF %DELETE_DIST_GRAMMAR_DIR%==false GOTO SkipDelete
+	@REM Remove old target folder, quietly
+	rmdir /S /Q %DIST_GRAMMAR_DIR%
+:SkipDelete
 
 @REM Generate lexer and parser
 ECHO | set /p=.
-java -cp antlr-4.7.2-complete.jar org.antlr.v4.Tool -o dist-grammar/ -listener -visitor src-grammar/%NAME%.g4
+java -cp antlr-4.7.2-complete.jar org.antlr.v4.Tool -o %DIST_GRAMMAR_DIR%/ %ANTLR_ARGS% %SOURCE_GRAMMAR_DIR%/%NAME%.g4
 ECHO | set /p=.
 
 @REM Compile lexer and parser
 ECHO | set /p=.
 @REM ECHO  set /p=Compiling...   
-javac -cp antlr-4.7.2-complete.jar dist-grammar/*.java
+javac -cp antlr-4.7.2-complete.jar %DIST_GRAMMAR_DIR%/*.java
 ECHO | set /p=.
 
 @REM Compile source code
 ECHO .
 @REM ECHO  set /p=Compiling the actual program...  
-java -cp dist-grammar/.;antlr-4.7.2-complete.jar org.antlr.v4.gui.TestRig %NAME% %START_METHOD% -gui -tokens src-input/%NAME%-input*
+java -cp %DIST_GRAMMAR_DIR%/.;antlr-4.7.2-complete.jar org.antlr.v4.gui.TestRig %GRUN_ARGS% %SOURCE_INPUT_DIR%/%NAME%-input*
 ECHO Done
 
 
