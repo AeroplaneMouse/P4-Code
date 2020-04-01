@@ -12,7 +12,7 @@ set CODE_FILE=calSource
 
 @rem Generate lexer and parser
 echo | set /p=.
-java org.antlr.v4.Tool -o target/ -listener -visitor %NAME%.g4
+java -cp antlr-4.7.2-complete.jar org.antlr.v4.Tool -o target/ -listener -visitor %NAME%.g4
 echo | set /p=.
 
 @rem Compile lexer and parser
