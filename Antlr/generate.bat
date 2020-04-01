@@ -22,7 +22,7 @@ javac -cp antlr-4.7.2-complete.jar target/*.java
 echo | set /p=.
 
 @rem Compile source code
-echo | set /p=.
+echo .
 @rem echo  set /p=Compiling the actual program...  
 java -cp target/.;antlr-4.7.2-complete.jar org.antlr.v4.gui.TestRig %NAME% %START_METHOD% -gui -tokens %CODE_FILE%.txt
 echo Done
