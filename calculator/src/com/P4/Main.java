@@ -21,4 +21,17 @@ public class Main {
 	        System.out.println("Can't find file!");
         }
     }
+
+}
+
+class AdditionNode
+{
+	public AdditionNode Left { get; set; }
+    public AdditionNode Right { get; set; }
+}
+
+class NumberNode
+{
+	public NumberNode Left { get; set; }
+    public NumberNode Right { get; set; }
 }
