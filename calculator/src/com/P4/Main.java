@@ -35,3 +35,19 @@ class NumberNode
 	public NumberNode Left { get; set; }
     public NumberNode Right { get; set; }
 }
+
+public class BuildAstVisitor : CalculatorVisitor<ExpressionNode>
+{
+    public override ExpressionNode VisitCompileUnit(MathParser.CompileUnitContext context)
+    {
+        return Visit(context.expr());
+    }
+
+    public override ExpressionNode VisitNumberExpr(MathParser.NumberExprContext context)
+    {
+        return new NumberNode
+        {
+            Value=double.Parse(context.value.Text,NumberStyles.AllowDecimalPoint|NumberStyles.AllowExponent)
+        };
+    }
+}
