@@ -2,26 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d9ca309c-46ab-4480-8f44-f91ef9eaa816" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/description.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/project-template.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/java/META-INF/java.kotlin_module" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/P4/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/P4/P4.interp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/P4/P4.tokens" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/P4/P4Lexer.interp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/P4/P4Lexer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/P4/P4Lexer.tokens" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/P4/P4Parser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/java.iml" beforeDir="false" afterPath="$PROJECT_DIR$/java.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/java/com/shizu/input.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/java/input.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/shizu/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/shizu/Yytoken.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/shizu/input.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/shizu/search.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/input.txt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
