@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Math", "Math\Math.csproj", "{1D116C18-A7D6-4EEA-BDB2-A2D71F144173}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellularCompiler", "CellularCompiler\CellularCompiler.csproj", "{1D116C18-A7D6-4EEA-BDB2-A2D71F144173}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
