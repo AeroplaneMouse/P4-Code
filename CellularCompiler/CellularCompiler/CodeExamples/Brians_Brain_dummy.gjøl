@@ -1,0 +1,23 @@
+#Brian's Brain#
+states = on, dying, off
+
+#Initial state#
+.....
+
+RULE on
+{
+	set(x,y,dying) //måske have en simplere måde at ændre state på den specifikke celle, f.eks. set(STATE)
+}
+
+RULE dying
+{
+	set(x,y,off)
+}
+
+RULE off
+{
+	if(neighbors(on) == 2)
+	{
+		set(x,y,on)
+	}
+}
