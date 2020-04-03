@@ -8,21 +8,16 @@ expr
     ;
 
 operator 
-    : ADD
-    | SUB
-    | MUL
-    | DIV
+    : '+'
+    | '-'
+    | '*'
+    | '/'
     ;
 
 
-INT : Value=DIGIT+ ;
+INT : Value= '0' | [1-9] [0-9]* ;
 
-fragment DIGIT : [1-9] ;
-
-ADD: '+';
-SUB: '-';
-MUL: '*';
-DIV: '/';
+// fragment DIGIT : [1-9] [0-9]* ; 
 
 Whitespace : [ \t\f] -> skip;
 CR : '\r' -> skip;

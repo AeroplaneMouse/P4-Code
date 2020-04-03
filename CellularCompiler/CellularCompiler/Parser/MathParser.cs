@@ -36,7 +36,7 @@ public partial class MathParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		INT=1, ADD=2, SUB=3, MUL=4, DIV=5, Whitespace=6, CR=7, NL=8, CRNL=9;
+		T__0=1, T__1=2, T__2=3, T__3=4, INT=5, Whitespace=6, CR=7, NL=8, CRNL=9;
 	public const int
 		RULE_main = 0, RULE_expr = 1, RULE_operator = 2;
 	public static readonly string[] ruleNames = {
@@ -44,10 +44,10 @@ public partial class MathParser : Parser {
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, null, "'+'", "'-'", "'*'", "'/'", null, "'\r'", "'\n'", "'\r\n'"
+		null, "'+'", "'-'", "'*'", "'/'", null, null, "'\r'", "'\n'", "'\r\n'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, "INT", "ADD", "SUB", "MUL", "DIV", "Whitespace", "CR", "NL", "CRNL"
+		null, null, null, null, null, "INT", "Whitespace", "CR", "NL", "CRNL"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -263,10 +263,6 @@ public partial class MathParser : Parser {
 	}
 
 	public partial class OperatorContext : ParserRuleContext {
-		public ITerminalNode ADD() { return GetToken(MathParser.ADD, 0); }
-		public ITerminalNode SUB() { return GetToken(MathParser.SUB, 0); }
-		public ITerminalNode MUL() { return GetToken(MathParser.MUL, 0); }
-		public ITerminalNode DIV() { return GetToken(MathParser.DIV, 0); }
 		public OperatorContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -297,7 +293,7 @@ public partial class MathParser : Parser {
 			{
 			State = 24;
 			_la = TokenStream.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ADD) | (1L << SUB) | (1L << MUL) | (1L << DIV))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2) | (1L << T__3))) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -338,14 +334,14 @@ public partial class MathParser : Parser {
 		'\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', 
 		'\x3', '\a', '\x3', '\x16', '\n', '\x3', '\f', '\x3', '\xE', '\x3', '\x19', 
 		'\v', '\x3', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x2', '\x3', '\x4', 
-		'\x5', '\x2', '\x4', '\x6', '\x2', '\x3', '\x3', '\x2', '\x4', '\a', '\x2', 
-		'\x1B', '\x2', '\f', '\x3', '\x2', '\x2', '\x2', '\x4', '\xE', '\x3', 
-		'\x2', '\x2', '\x2', '\x6', '\x1A', '\x3', '\x2', '\x2', '\x2', '\b', 
-		'\t', '\x5', '\x4', '\x3', '\x2', '\t', '\n', '\a', '\x2', '\x2', '\x3', 
-		'\n', '\r', '\x3', '\x2', '\x2', '\x2', '\v', '\r', '\a', '\x2', '\x2', 
-		'\x3', '\f', '\b', '\x3', '\x2', '\x2', '\x2', '\f', '\v', '\x3', '\x2', 
-		'\x2', '\x2', '\r', '\x3', '\x3', '\x2', '\x2', '\x2', '\xE', '\xF', '\b', 
-		'\x3', '\x1', '\x2', '\xF', '\x10', '\a', '\x3', '\x2', '\x2', '\x10', 
+		'\x5', '\x2', '\x4', '\x6', '\x2', '\x3', '\x3', '\x2', '\x3', '\x6', 
+		'\x2', '\x1B', '\x2', '\f', '\x3', '\x2', '\x2', '\x2', '\x4', '\xE', 
+		'\x3', '\x2', '\x2', '\x2', '\x6', '\x1A', '\x3', '\x2', '\x2', '\x2', 
+		'\b', '\t', '\x5', '\x4', '\x3', '\x2', '\t', '\n', '\a', '\x2', '\x2', 
+		'\x3', '\n', '\r', '\x3', '\x2', '\x2', '\x2', '\v', '\r', '\a', '\x2', 
+		'\x2', '\x3', '\f', '\b', '\x3', '\x2', '\x2', '\x2', '\f', '\v', '\x3', 
+		'\x2', '\x2', '\x2', '\r', '\x3', '\x3', '\x2', '\x2', '\x2', '\xE', '\xF', 
+		'\b', '\x3', '\x1', '\x2', '\xF', '\x10', '\a', '\a', '\x2', '\x2', '\x10', 
 		'\x17', '\x3', '\x2', '\x2', '\x2', '\x11', '\x12', '\f', '\x4', '\x2', 
 		'\x2', '\x12', '\x13', '\x5', '\x6', '\x4', '\x2', '\x13', '\x14', '\x5', 
 		'\x4', '\x3', '\x5', '\x14', '\x16', '\x3', '\x2', '\x2', '\x2', '\x15', 
