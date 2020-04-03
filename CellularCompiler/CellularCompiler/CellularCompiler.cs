@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
 using Antlr4.Runtime;
-using CellularCompiler.Nodes;
+using CellularCompiler.Visitor;
 
 namespace CellularCompiler
 {
-    internal class Program
+    internal class CellularCompiler
     {
         private static void Main()
         {
@@ -24,8 +24,11 @@ namespace CellularCompiler
 
                 try
                 {
+                    // Extract CTS from antlr's shitty files
                     var cst = parser.main();
+                    // Build AST from CTS
                     var ast = new BuildAstVisitor().VisitMain(cst);
+                    // Evaluate our newly compilled shitty code
                     var value = new EvaluateExpressionVisitor().Visit(ast);
 
                     Console.WriteLine($"= { value }");
@@ -37,38 +40,6 @@ namespace CellularCompiler
 
                 Console.WriteLine();
             }
-        }
-    }
-
-
-
-    internal abstract class AstVisitor<T>
-    {
-        public abstract T Visit(AdditionNode node);
-        public abstract T Visit(SubstractionNode node);
-        public abstract T Visit(NumberNode node);
-
-        public T Visit(ExpressionNode node)
-        {
-            return Visit((dynamic)node);
-        }
-    }
-
-    internal class EvaluateExpressionVisitor : AstVisitor<double>
-    {
-        public override double Visit(AdditionNode node)
-        {
-            return Visit(node.Left) + Visit(node.Right);
-        }
-
-        public override double Visit(SubstractionNode node)
-        {
-            return Visit(node.Left) - Visit(node.Right);
-        }
-
-        public override double Visit(NumberNode node)
-        {
-            return node.Value;
         }
     }
 }

@@ -16,6 +16,10 @@ namespace CellularCompiler.Nodes
 
     internal class SubstractionNode : InfixExpressionNode { }
 
+    internal class MultiplicationNode : InfixExpressionNode { }
+
+    internal class DivisionNode : InfixExpressionNode { }
+
     internal class NumberNode : ExpressionNode
     {
         public double Value { get; set; }

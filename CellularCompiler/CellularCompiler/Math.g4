@@ -10,6 +10,8 @@ expr
 operator 
     : ADD
     | SUB
+    | MUL
+    | DIV
     ;
 
 
@@ -19,6 +21,8 @@ fragment DIGIT : [1-9] ;
 
 ADD: '+';
 SUB: '-';
+MUL: '*';
+DIV: '/';
 
 Whitespace : [ \t\f] -> skip;
 CR : '\r' -> skip;
