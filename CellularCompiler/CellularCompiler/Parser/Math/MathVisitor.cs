@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from Math.g4 by ANTLR 4.7.2
+// Generated from Grammar/Math.g4 by ANTLR 4.7.2
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -22,57 +22,39 @@
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using IToken = Antlr4.Runtime.IToken;
-using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 
 /// <summary>
-/// This class provides an empty implementation of <see cref="IMathVisitor{Result}"/>,
-/// which can be extended to create a visitor which only needs to handle a subset
-/// of the available methods.
+/// This interface defines a complete generic visitor for a parse tree produced
+/// by <see cref="MathParser"/>.
 /// </summary>
 /// <typeparam name="Result">The return type of the visit operation.</typeparam>
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.7.2")]
 [System.CLSCompliant(false)]
-public partial class MathBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IMathVisitor<Result> {
+public interface IMathVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MathParser.main"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitMain([NotNull] MathParser.MainContext context) { return VisitChildren(context); }
+	Result VisitMain([NotNull] MathParser.MainContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>NumberExpr</c>
 	/// labeled alternative in <see cref="MathParser.expr"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitNumberExpr([NotNull] MathParser.NumberExprContext context) { return VisitChildren(context); }
+	Result VisitNumberExpr([NotNull] MathParser.NumberExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>InfixExpr</c>
 	/// labeled alternative in <see cref="MathParser.expr"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitInfixExpr([NotNull] MathParser.InfixExprContext context) { return VisitChildren(context); }
+	Result VisitInfixExpr([NotNull] MathParser.InfixExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MathParser.operator"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitOperator([NotNull] MathParser.OperatorContext context) { return VisitChildren(context); }
+	Result VisitOperator([NotNull] MathParser.OperatorContext context);
 }

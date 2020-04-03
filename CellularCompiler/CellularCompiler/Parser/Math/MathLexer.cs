@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from Math.g4 by ANTLR 4.7.2
+// Generated from Grammar/math.g4 by ANTLR 4.7.2
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -73,7 +73,7 @@ public partial class MathLexer : Lexer {
 		}
 	}
 
-	public override string GrammarFileName { get { return "Math.g4"; } }
+	public override string GrammarFileName { get { return "math.g4"; } }
 
 	public override string[] RuleNames { get { return ruleNames; } }
 
