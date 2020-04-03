@@ -8,3 +8,8 @@ stale_outputs_checked
 # Compiled from antlr files
 Antlr/dist-grammar
 Antlr/target
+
+# Visual Studio Stuff
+CellularCompiler/.vs
+CellularCompiler/CellularCompiler/bin
+CellularCompiler/CellularCompiler/obj
