@@ -1,7 +1,8 @@
-﻿using Antlr4.Runtime;
-using System;
-using System.Globalization;
+﻿using System;
+using Antlr4.Runtime;
 using System.Reflection;
+using System.Globalization;
+using CellularCompiler.Nodes;
 
 internal class BuildAstVisitor : MathBaseVisitor<ExpressionNode>
 {
@@ -12,32 +13,19 @@ internal class BuildAstVisitor : MathBaseVisitor<ExpressionNode>
 
     public override ExpressionNode VisitInfixExpr(MathParser.InfixExprContext context)
     {
-
-        InfixExpressionNode node = new InfixExpressionNode();
-
-        MathLexer.ADD
-        string test = context.op.ToString();
-
-
-        switch (context.op.GetType)
+        // Get infix expression node type
+        InfixExpressionNode node = context.op.GetText() switch
         {
-            case MathLexer.ADD:
-                node = new AdditionNode();
-                break;
-        }
+            "+" => new AdditionNode(),
+            "-" => new SubstractionNode(),
+            _ => throw new ArgumentOutOfRangeException("context", "Unknown operator in switch statement - VisitInfixExpr")
+        };
 
-        //switch (context.op)
-        //{
-        //    case
-        //}
+        // Visit the left and  of the node
+        node.Left = Visit(context.Left);
+        node.Right = Visit(context.Right);
 
         return node;
-
-        //AdditionNode thing = new AdditionNode();
-        //node.Left = Visit(context.Left);
-        //node.Right = Visit(context.Right);
-
-        //return node;
     }
 
 

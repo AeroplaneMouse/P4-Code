@@ -1,8 +1,9 @@
-﻿using Antlr4.Runtime;
-using System;
+﻿using System;
 using System.IO;
+using Antlr4.Runtime;
+using CellularCompiler.Nodes;
 
-namespace Math
+namespace CellularCompiler
 {
     internal class Program
     {
@@ -27,7 +28,7 @@ namespace Math
                     var ast = new BuildAstVisitor().VisitMain(cst);
                     var value = new EvaluateExpressionVisitor().Visit(ast);
 
-                    Console.WriteLine("= {0}", value);
+                    Console.WriteLine($"= { value }");
                 }
                 catch (Exception ex)
                 {
@@ -44,6 +45,7 @@ namespace Math
     internal abstract class AstVisitor<T>
     {
         public abstract T Visit(AdditionNode node);
+        public abstract T Visit(SubstractionNode node);
         public abstract T Visit(NumberNode node);
 
         public T Visit(ExpressionNode node)
@@ -57,6 +59,11 @@ namespace Math
         public override double Visit(AdditionNode node)
         {
             return Visit(node.Left) + Visit(node.Right);
+        }
+
+        public override double Visit(SubstractionNode node)
+        {
+            return Visit(node.Left) - Visit(node.Right);
         }
 
         public override double Visit(NumberNode node)
