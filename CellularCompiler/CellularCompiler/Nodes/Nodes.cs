@@ -1,10 +1,7 @@
-﻿using System;
-
+﻿
 namespace CellularCompiler.Nodes
 {
-    internal abstract class ExpressionNode
-    {
-    }
+    internal abstract class ExpressionNode { }
 
     internal class InfixExpressionNode : ExpressionNode
     {
@@ -23,6 +20,14 @@ namespace CellularCompiler.Nodes
     internal class NumberNode : ExpressionNode
     {
         public double Value { get; set; }
+
+        public NumberNode()
+            : this(0) { }
+
+        public NumberNode(double value)
+        {
+            Value = value;
+        }
     }
 }
 

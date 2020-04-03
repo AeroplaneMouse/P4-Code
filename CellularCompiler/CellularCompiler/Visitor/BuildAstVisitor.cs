@@ -1,6 +1,4 @@
 ﻿using System;
-using Antlr4.Runtime;
-using System.Reflection;
 using System.Globalization;
 using CellularCompiler.Nodes;
 
@@ -35,10 +33,9 @@ namespace CellularCompiler.Visitor
 
         public override ExpressionNode VisitNumberExpr(MathParser.NumberExprContext context)
         {
-            return new NumberNode
-            {
-                Value = double.Parse(context.value.Text, NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent)
-            };
+            return new NumberNode(
+                double.Parse(context.value.Text, NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent)
+            );
         }
     }
 }
