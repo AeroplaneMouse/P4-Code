@@ -16,13 +16,8 @@ initial
 	: 'INITIAL' someState? '{' stuff '}'
 	;
 
-
 rules
 	: 'RULES{'  '}'
-	;
-
-comment
-	: '#' some text '#'
 	;
 
 ifStatement
@@ -30,8 +25,6 @@ ifStatement
 		('else if(' expr '){' statements '}')* 
 		('else{' statement '}')
 	;
-
-
 
 
 
@@ -44,7 +37,9 @@ STRING
 	: [a-z] [A-Z] [0-9] 'Any permutation of this'
 	;
 
-
+COMMENT
+	: '#' .*? '#' -> skip
+	;
 
 WS : [ \t\f] -> skip;
 CR : '\r' -> skip;
