@@ -2,6 +2,8 @@
 
 REM Check for arguments
 SET GRAMMAR_NAME=%1
+SET ENTRY=%2
+SET CODE=%3
 GOTO CheckGrammarName
 
 
@@ -20,7 +22,7 @@ cd ..
 
 
 :CheckGrammarName
-IF EXIST Grammar/%GRAMMAR_NAME:~0,-3%.g4 GOTO EnterEntryName
+IF EXIST Grammar/%GRAMMAR_NAME:~0,-3%.g4 GOTO CheckEntryName
 ECHO Error! Unknown grammar name: %GRAMMAR_NAME%
 GOTO EnterGrammarName
 
@@ -31,7 +33,12 @@ ECHO.
 SET ENTRY=
 SET /p ENTRY=Enter the program entry: 
 
+:CheckEntryName
+IF "%ENTRY%"=="" GOTO EnterEntryName
+GOTO CheckCodeExample
+
 REM Get code-example
+:EnterCodeExample
 ECHO.
 ECHO Available code examples
 ECHO ******************************
@@ -42,10 +49,14 @@ ECHO Enter code example name
 SET CODE=
 SET /p CODE=Name: 
 cd ..
+
+:CheckCodeExample
+IF "%CODE%"=="" GOTO EnterCodeExample
 GOTO Create
 
 REM Create java lexer and parser files for testing
 :Create
+SET LASTARGS=%GRAMMAR_NAME% %ENTRY% %CODE%
 ECHO.
 ECHO Creating files from grammar "%GRAMMAR_NAME%"
 ECHO | set /p=.
@@ -65,4 +76,8 @@ REM Cleanup
 ECHO Cleanup
 rmdir /S /Q Testing
 
+SET message1="Variable %%LASTARGS%% has been set with the last arguments."
+SET message2="To use it, type: %0 %%LASTARGS%%"
+ECHO %message1:~1,-1%
+ECHO %message2:~1,-1%
 :EOF
