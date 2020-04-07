@@ -1,30 +1,81 @@
 grammar Corona;
 
 main
-	: setting states+ initial rules
+	: grid (states)+ initial rules
 	;
 
-setting
-	: 'GRID' INT'x'INT';'
+grid
+	: 'GRID' INT 'x' INT';'
 	;
 
 states
-	:
+	: 'STATES' ID (',' ID)* '{' (declaration)+ '}'
 	;
 
 initial
-	: 'INITIAL' someState? '{' stuff '}'
+	: 'INITIAL' someState? stuff
 	;
 
 rules
-	: 'RULES{'  '}'
+	: 'RULES' 
 	;
 
-ifStatement
-	: 'if(' expr '){' statements '}' 
-		('else if(' expr '){' statements '}')* 
-		('else{' statement '}')
+declaration
+	: memberDeclaration
 	;
+
+memberDeclaration
+	: id=ID ':' value=(STRING (',' (STRING)*)) ';'
+	;
+
+statements
+	: statements* statement ';' 
+	;
+
+statement
+	: selectionStatement
+	| iterationStatement
+	| assignmentStatement
+	;
+
+selectionStatement
+	: 'if' '(' expr ')' statement ('else' statement)?
+	;
+
+iterationStatement
+	: 'for' '(' expr ';' expr ';' expr ')' statement
+	;
+
+assignmentStatement
+	: ID '=' expr
+	;
+
+compoundStatement
+	: '{' blockItemList? '}'
+	;
+
+blockItemList
+	: blockItem
+	| blockItemList blockItem
+	;
+
+blockItem
+	: statement
+	| declaration
+	;
+
+expr
+	: 
+	;
+
+
+
+
+
+
+
+
+
 
 
 
