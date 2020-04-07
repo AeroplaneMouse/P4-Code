@@ -1,6 +1,6 @@
 #Langton's Ant#
 
-GRID 64 x 64;
+GRID 64 @ 64;
 
 #Define states, white and black in this case#
 STATES white, black
@@ -22,4 +22,14 @@ INITIAL white
 	#Makes a rectangle of black cells from x = 2 to 5 and y = 2 to 4#
 	grid[2 -> 5, 2 -> 4] = black;
 
+}
+
+#Define rules#
+RULES
+{
+	[black]
+	{
+		
+		
+	}
 }
