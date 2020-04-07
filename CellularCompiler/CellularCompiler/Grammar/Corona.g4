@@ -13,11 +13,11 @@ states
 	;
 
 initial
-	: 'INITIAL' //someState? stuff
+	: 'INITIAL' ID '{'  statements  '}'
 	;
 
 rules
-	: 'RULES' 
+	: 'RULES' '{'  '}' 
 	;
 
 declaration
@@ -25,17 +25,19 @@ declaration
 	;
 
 memberDeclaration
-	: id=ID ':' value=.*? ';'
+	: id=ID ':' STRING (',' STRING)* ';'
 	;
 
 statements
-	: statement ';' statements* 
+	: statement statements* 
 	;
 
 statement
 	: selectionStatement
 	| iterationStatement
 	| assignmentStatement
+	| ruleStatement
+	| compoundStatement
 	;
 
 selectionStatement
@@ -47,8 +49,11 @@ iterationStatement
 	;
 
 assignmentStatement
-	: ID '=' expr
+	: ID ('[' expr ',' expr']')? ('.' ID)? '=' (expr | ID | STRING) ';'
 	;
+
+ruleStatement
+	: '[' ID ']' '{' statements '}'
 
 compoundStatement
 	: '{' blockItemList? '}'
@@ -65,7 +70,12 @@ blockItem
 	;
 
 expr
-	: 
+	: INT
+	| expr operator expr
+	;
+
+operator
+	: '+' | '-' | '*' | '/' | '->'
 	;
 
 
@@ -76,9 +86,8 @@ expr
 
 
 
-
 ID
-	: Nondigit STRING
+	: Nondigit (Nondigit | DIGIT)*
    ;
 
 
