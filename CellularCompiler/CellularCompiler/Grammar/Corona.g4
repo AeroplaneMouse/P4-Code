@@ -54,6 +54,7 @@ assignmentStatement
 
 ruleStatement
 	: '[' ID ']' '{' statements '}'
+	;
 
 compoundStatement
 	: '{' blockItemList? '}'
