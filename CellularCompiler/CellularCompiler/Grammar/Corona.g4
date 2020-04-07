@@ -13,7 +13,7 @@ states
 	;
 
 initial
-	: 'INITIAL' someState? stuff
+	: 'INITIAL' //someState? stuff
 	;
 
 rules
@@ -25,11 +25,11 @@ declaration
 	;
 
 memberDeclaration
-	: id=ID ':' value=(STRING (',' (STRING)*)) ';'
+	: id=ID ':' value=.*? ';'
 	;
 
 statements
-	: statements* statement ';' 
+	: statement ';' statements* 
 	;
 
 statement
@@ -77,15 +77,21 @@ expr
 
 
 
+ID
+	: Nondigit STRING
+   ;
 
+
+fragment DIGIT :   [0-9];
+fragment Nondigit :   [a-zA-Z_];
 
 INT
-	: 0
-	| [1-9] [0-9]*
+	: '0'
+	| [1-9] DIGIT*
 	;
 
 STRING
-	: [a-z] [A-Z] [0-9] 'Any permutation of this'
+	: '"' .*? '"' 
 	;
 
 COMMENT
