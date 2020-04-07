@@ -5,7 +5,7 @@ main
 	;
 
 grid
-	: 'GRID' INT 'x' INT';'
+	: 'GRID' INT '@' INT';'
 	;
 
 states
@@ -16,8 +16,9 @@ initial
 	: 'INITIAL' ID '{'  statements  '}'
 	;
 
+// Hvis der bruges statement, vil det være muligt at have if statements og sådan, udenfor [ID]{}
 rules
-	: 'RULES' '{'  '}' 
+	: 'RULES' '{' ruleStatement* '}' 
 	;
 
 declaration
@@ -29,7 +30,7 @@ memberDeclaration
 	;
 
 statements
-	: statement statements* 
+	: statement*
 	;
 
 statement
@@ -38,6 +39,7 @@ statement
 	| assignmentStatement
 	| ruleStatement
 	| compoundStatement
+	| returnStatement
 	;
 
 selectionStatement
@@ -60,6 +62,10 @@ compoundStatement
 	: '{' blockItemList? '}'
 	;
 
+returnStatement
+	: 'return' expr ';'
+	;
+
 blockItemList
 	: blockItem
 	| blockItemList blockItem
@@ -72,11 +78,13 @@ blockItem
 
 expr
 	: INT
+	| ID
+	| STRING
 	| expr operator expr
 	;
 
 operator
-	: '+' | '-' | '*' | '/' | '->'
+	: '+' | '-' | '*' | '/' | '->' | '==' | '!=' | '<' | '>' | '<=' | '>='
 	;
 
 

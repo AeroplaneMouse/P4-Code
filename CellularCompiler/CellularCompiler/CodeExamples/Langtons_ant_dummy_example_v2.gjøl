@@ -1,12 +1,12 @@
 #Langton's Ant#
 
-GRID 64x64;
+GRID 64 @ 64;
 
 #Define states, white and black in this case#
 STATES white, black
 {	
 	#Define members of the state(s)#
-	Direction: null, "n", "s", "e", "w";
+	Direction: "null", "n", "s", "e", "w";
 }
 
 
