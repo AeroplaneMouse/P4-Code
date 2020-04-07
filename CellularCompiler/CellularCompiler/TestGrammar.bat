@@ -13,14 +13,14 @@ ECHO ******************************
 cd Grammar/
 dir /a /b
 ECHO.
-ECHO Enter grammar name without .g4
+ECHO Enter grammar name
 SET GRAMMAR_NAME=
 SET /p GRAMMAR_NAME=Grammar name: 
 cd ..
 
 
 :CheckGrammarName
-IF EXIST Grammar/%GRAMMAR_NAME%.g4 GOTO EnterEntryName
+IF EXIST Grammar/%GRAMMAR_NAME:~0,-3%.g4 GOTO EnterEntryName
 ECHO Error! Unknown grammar name: %GRAMMAR_NAME%
 GOTO EnterGrammarName
 
@@ -49,14 +49,15 @@ REM Create java lexer and parser files for testing
 ECHO.
 ECHO Creating files from grammar "%GRAMMAR_NAME%"
 ECHO | set /p=.
-java org.antlr.v4.Tool -o Testing/ Grammar/%GRAMMAR_NAME%.g4
+java org.antlr.v4.Tool -o Testing/ Grammar/%GRAMMAR_NAME%
 ECHO | set /p=.
-javac Testing/%GRAMMAR_NAME%*.java
+javac Testing/%GRAMMAR_NAME:~0,-3%*.java
 ECHO | set /p=.
+
 
 REM Run test
 cd Testing/
-java org.antlr.v4.gui.TestRig %GRAMMAR_NAME% %ENTRY% -gui ../CodeExampels/%CODE%*
+java -cp .;%CLASSPATH% org.antlr.v4.gui.TestRig %GRAMMAR_NAME:~0,-3% %ENTRY% -gui ../CodeExamples/%CODE%
 ECHO .
 cd ..
 
