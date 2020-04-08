@@ -1,19 +1,19 @@
 grammar Corona;
 
 main
-	: grid (states)+ initial rules
+	: grid (states)+ initial 
 	;
 
 grid
-	: 'GRID' INT '@' INT';'
+	: 'GRID' memberBlock
 	;
 
 states
-	: 'STATES' ID (',' ID)* '{' (declaration)+ '}'
+	: 'STATES' ID (',' ID)* memberBlock
 	;
 
 initial
-	: 'INITIAL' ID '{'  statements  '}'
+	: 'INITIAL' compoundStatement
 	;
 
 // Hvis der bruges statement, vil det være muligt at have if statements og sådan, udenfor [ID]{}
@@ -21,16 +21,12 @@ rules
 	: 'RULES' '{' ruleStatement* '}' 
 	;
 
-declaration
-	: memberDeclaration
+memberBlock
+	: '{' memberDeclaration+ '}'
 	;
 
 memberDeclaration
-	: id=ID ':' STRING (',' STRING)* ';'
-	;
-
-statements
-	: statement*
+	: id=ID ':' memberValue (',' memberValue)*  ';'
 	;
 
 statement
@@ -51,11 +47,11 @@ iterationStatement
 	;
 
 assignmentStatement
-	: ID ('[' expr ',' expr']')? ('.' ID)? '=' (expr | ID | STRING) ';'
-	;
+	: (gridPoint member? | ID) '=' (expr | ID | STRING) ';'
+	; 
 
 ruleStatement
-	: '[' ID ']' '{' statements '}'
+	: '[' ID ']' '{' statement* '}'
 	;
 
 compoundStatement
@@ -73,35 +69,48 @@ blockItemList
 
 blockItem
 	: statement
-	| declaration
 	;
 
 expr
-	: INT
-	| ID
-	| STRING
-	| expr operator expr
+	: value=INT 									# NumberExpr
+	| value=ID 										# StringExpr 
+	| value=STRING									# StringExpr
+	| member
+	| left=expr op=operator right=expr 		# InfixExpr
 	;
 
 operator
 	: '+' | '-' | '*' | '/' | '->' | '==' | '!=' | '<' | '>' | '<=' | '>='
 	;
 
+memberValue
+	: arrowValue
+	| INT
+	| STRING
+	;
+
+arrowValue
+	: INT '->' INT
+	;
+
+member
+	: '.'ID
+	;
+
+gridPoint
+	: 'grid[' expr(',' expr)* ']'
+	;
 
 
 
 
-
-
-
+fragment DIGIT :   [0-9];
+fragment Nondigit :   [a-zA-Z_];
 
 ID
 	: Nondigit (Nondigit | DIGIT)*
    ;
 
-
-fragment DIGIT :   [0-9];
-fragment Nondigit :   [a-zA-Z_];
 
 INT
 	: '0'
