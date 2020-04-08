@@ -3,8 +3,7 @@
 GRID
 {
 	x: 1 -> 64;
-	y: 1 -> 5;
-	z: 1 -> 64;
+	y: 1 -> 64;
 	floor: "Stue", "Første", "Anden";
 }
 
@@ -36,23 +35,28 @@ INITIAL
 }
 
 #Define rules#
+# Rules ved shit om cell
+# state
+# .x
+# .y
+# .floor
 RULES
 {
-	[.state == black]
+	[state == black && .Direction != "n"]
 	{
 		[.Direction != 0]
 		{
 			grid[.x-1, .y].Direction = "w";
 		}
 
-		match(.state, .Direction){
+		match(state, .Direction){
 			[black, s]
 			{
 
 			}
 			[black, _]
 			{
-			
+
 			}
 		}
 
