@@ -1,35 +1,36 @@
 #Langton's Ant#
 
-GRID 64 @ 64;
+GRID
+{
+	x: 1 -> 64;
+	y: 1 -> 5;
+	z: 1 -> 64;
+	floor: "Stue", "Første", "Anden";
+}
 
 #Define states, white and black in this case#
 STATES white, black
 {	
 	#Define members of the state(s)#
-	Direction: "null", "n", "s", "e", "w";
+	Color: "white", "black";
+	Count: 1 -> 10;
+	Direction: 1 -> 2, "n", "s", "e", "w";
 }
 
 STATES blue
 {
-	Bacon: "YES", "no";
+	Height: "up", "down";
 }
 
+
+
+
 #Set initial state, all cells are white#
-INITIAL white
+INITIAL
 {
 	grid[27, 52].Direction = "n";
 
 	#Makes a rectangle of black cells from x = 2 to 5 and y = 2 to 4#
 	grid[2 -> 5, 2 -> 4] = black;
 
-}
-
-#Define rules#
-RULES
-{
-	[black]
-	{
-		
-		
-	}
 }
