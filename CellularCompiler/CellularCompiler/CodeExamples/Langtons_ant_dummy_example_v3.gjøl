@@ -1,0 +1,109 @@
+#Langton's Ant#
+
+GRID
+{
+	x: 1 -> 64;
+	y: 1 -> 5;
+	z: 1 -> 64;
+	floor: "Stue", "Første", "Anden";
+}
+
+#Define states, white and black in this case#
+STATES white, black
+{	
+	#Define members of the state(s)#
+	Color: "white", "black";
+	Count: 1 -> 10;
+	Direction: 1 -> 2, "n", "s", "e", "w";
+}
+
+STATES blue
+{
+	Height: "up", "down";
+}
+
+
+
+
+#Set initial state, all cells are white#
+INITIAL
+{
+	grid[27, 52].Direction = "n";
+
+	#Makes a rectangle of black cells from x = 2 to 5 and y = 2 to 4#
+	grid[2 -> 5, 2 -> 4] = black;
+
+}
+
+#Define rules#
+RULES
+{
+	[.state == black]
+	{
+		[.Direction != 0]
+		{
+			grid[.x-1, .y].Direction = "w";
+		}
+
+		match(.state, .Direction){
+			[black, s]
+			{
+
+			}
+			[black, _]
+			{
+			
+			}
+		}
+
+		if(Direction != 0)
+		{
+			if(Direction == "n")
+			{
+				grid[.x-1, .y].Direction = "w";
+			}
+			else if(Direction == "s")
+			{
+				grid[x+1, y].Direction = "e";
+			} 
+			else if(Direction == "e")
+			{
+				grid[x, y+1].Direction = "n";
+			}
+			else
+			{
+				grid[x, y-1].Direction = "s";
+			}
+
+			Direction = "s";
+			return white{Direction: "s"}
+			#return blue;#
+		}
+	}
+
+	[white]
+	{
+		if(Direction != 0)
+		{
+			if(Direction == "n")
+			{
+				grid[x+1, y].Direction = "e";
+			}
+			else if(Direction == "s")
+			{
+				grid[x-1, y].Direction = "w";
+			} 
+			else if(Direction == "e")
+			{
+				grid[x, y-1].Direction = "s";
+			}
+			else
+			{
+				grid[x, y+1].Direction = "n";
+			}
+
+			Direction = null;
+			return black;
+		}
+	}
+}
