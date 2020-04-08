@@ -1,5 +1,5 @@
 ﻿
-namespace CellularCompiler.Nodes
+namespace CellularCompiler.Nodes.Math
 {
     internal abstract class ExpressionNode { }
 
@@ -7,6 +7,12 @@ namespace CellularCompiler.Nodes
     {
         public ExpressionNode Left { get; set; }
         public ExpressionNode Right { get; set; }
+
+        public InfixExpressionNode(ExpressionNode left=null, ExpressionNode right=null)
+        {
+            Left = left;
+            Right = right;
+        }
     }
 
     internal class AdditionNode : InfixExpressionNode { }
