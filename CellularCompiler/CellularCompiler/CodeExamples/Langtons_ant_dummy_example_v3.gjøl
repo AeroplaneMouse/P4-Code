@@ -4,7 +4,7 @@ GRID
 {
 	x: 1 -> 64;
 	y: 1 -> 64;
-	floor: "Stue", "Første", "Anden";
+	floor: "Stue", "Foerste", "Anden";
 }
 
 #Define states, white and black in this case#
@@ -35,78 +35,49 @@ INITIAL
 }
 
 #Define rules#
-# Rules ved shit om cell
+# Rules ved dette shit om cell
 # state
 # .x
 # .y
 # .floor
 RULES
 {
-	[state == black && .Direction != "n"]
+	match(state)
 	{
-		[.Direction != 0]
+		[black]
 		{
-			grid[.x-1, .y].Direction = "w";
-		}
-
-		match(state, .Direction){
-			[black, s]
-			{
-
+			match(.Direction){
+				["n"]
+					grid[.x-1, .y].Direction = "w";
+				["s"]
+					grid[.x+1, .y].Direction = "e";
+				["e"]
+				{
+					grid[.x, .y+1].Direction = "n";
+				}
+				["w"]
+				{
+					grid[.x, .y-1].Direction = "s";
+				}
 			}
-			[black, _]
-			{
-
-			}
+			return white;
 		}
-
-		if(Direction != 0)
+		[white]
 		{
-			if(Direction == "n")
-			{
-				grid[.x-1, .y].Direction = "w";
+			match(.Direction){
+				["n"]
+					grid[x+1, y].Direction = "e";
+				["s"]
+					grid[x-1, y].Direction = "w";
+				["e"]
+					grid[x, y-1].Direction = "s";
+				["w"]
+					grid[x, y+1].Direction = "n";
+				[_]
+				{
+				
+				}
 			}
-			else if(Direction == "s")
-			{
-				grid[x+1, y].Direction = "e";
-			} 
-			else if(Direction == "e")
-			{
-				grid[x, y+1].Direction = "n";
-			}
-			else
-			{
-				grid[x, y-1].Direction = "s";
-			}
-
-			Direction = "s";
-			return white{Direction: "s"}
-			#return blue;#
-		}
-	}
-
-	[white]
-	{
-		if(Direction != 0)
-		{
-			if(Direction == "n")
-			{
-				grid[x+1, y].Direction = "e";
-			}
-			else if(Direction == "s")
-			{
-				grid[x-1, y].Direction = "w";
-			} 
-			else if(Direction == "e")
-			{
-				grid[x, y-1].Direction = "s";
-			}
-			else
-			{
-				grid[x, y+1].Direction = "n";
-			}
-
-			Direction = null;
 			return black;
 		}
 	}

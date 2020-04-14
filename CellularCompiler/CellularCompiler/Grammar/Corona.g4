@@ -1,7 +1,7 @@
 grammar Corona;
 
 main
-	: grid (states)+ initial 
+	: grid (states)+ initial rules
 	;
 
 grid
@@ -17,8 +17,9 @@ initial
 	;
 
 // Hvis der bruges statement, vil det være muligt at have if statements og sådan, udenfor [ID]{}
+
 rules
-	: 'RULES' '{' ruleStatement* '}' 
+	: 'RULES' '{' selectionStatement* '}'
 	;
 
 memberBlock
@@ -33,13 +34,12 @@ statement
 	: selectionStatement
 	| iterationStatement
 	| assignmentStatement
-	| ruleStatement
 	| compoundStatement
 	| returnStatement
 	;
 
 selectionStatement
-	: 'if' '(' expr ')' statement ('else' statement)?
+	: 'match' '(' ('state' | member) (',' ('state' | member))*  ')' '{' caseStatement+ '}'
 	;
 
 iterationStatement
@@ -50,32 +50,23 @@ assignmentStatement
 	: (gridPoint member? | ID) '=' (expr | ID | STRING) ';'
 	; 
 
-ruleStatement
-	: '[' ID ']' '{' statement* '}'
-	;
-
 compoundStatement
-	: '{' blockItemList? '}'
+	: '{' statement* '}'
 	;
 
 returnStatement
 	: 'return' expr ';'
 	;
 
-blockItemList
-	: blockItem
-	| blockItemList blockItem
-	;
-
-blockItem
-	: statement
+caseStatement
+	: '[' memberValue (',' memberValue)* ']' statement
 	;
 
 expr
 	: value=INT 									# NumberExpr
 	| value=ID 										# StringExpr 
 	| value=STRING									# StringExpr
-	| member
+	| member 										# StringExpr
 	| left=expr op=operator right=expr 		# InfixExpr
 	;
 
@@ -87,6 +78,8 @@ memberValue
 	: arrowValue
 	| INT
 	| STRING
+	| ID
+	| '_'
 	;
 
 arrowValue
@@ -122,7 +115,7 @@ STRING
 	;
 
 COMMENT
-	: '#' .*? '#' -> skip
+	: '#' .*? ('#' | NL | CR | CRNL) -> skip
 	;
 
 WS : [ \t\f] -> skip;
