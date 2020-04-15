@@ -16,8 +16,6 @@ initial
 	: 'INITIAL' compoundStatement
 	;
 
-// Hvis der bruges statement, vil det være muligt at have if statements og sådan, udenfor [ID]{}
-
 rules
 	: 'RULES' '{' selectionStatement* '}'
 	;
@@ -115,10 +113,11 @@ STRING
 	;
 
 COMMENT
-	: '#' .*? ('#' | NL | CR | CRNL) -> skip
+	: '#' .*? '#' -> skip
 	;
 
 WS : [ \t\f] -> skip;
 CR : '\r' -> skip;
 NL : '\n' -> skip;
 CRNL : '\r\n' -> skip;
+TAB : '\t' -> skip;
