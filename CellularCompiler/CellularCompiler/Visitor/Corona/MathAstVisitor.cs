@@ -1,6 +1,6 @@
 ﻿using CellularCompiler.Nodes;
 
-namespace CellularCompiler.Visitor.Math
+namespace CellularCompiler.Visitor.Corona
 {
     internal abstract class MathAstVisitor<T>
     {

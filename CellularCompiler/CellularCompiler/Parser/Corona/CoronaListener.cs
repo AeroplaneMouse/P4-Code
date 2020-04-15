@@ -81,15 +81,15 @@ public interface ICoronaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitRules([NotNull] CoronaParser.RulesContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.declaration"/>.
+	/// Enter a parse tree produced by <see cref="CoronaParser.memberBlock"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterDeclaration([NotNull] CoronaParser.DeclarationContext context);
+	void EnterMemberBlock([NotNull] CoronaParser.MemberBlockContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.declaration"/>.
+	/// Exit a parse tree produced by <see cref="CoronaParser.memberBlock"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitDeclaration([NotNull] CoronaParser.DeclarationContext context);
+	void ExitMemberBlock([NotNull] CoronaParser.MemberBlockContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.memberDeclaration"/>.
 	/// </summary>
@@ -100,16 +100,6 @@ public interface ICoronaListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitMemberDeclaration([NotNull] CoronaParser.MemberDeclarationContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.statements"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterStatements([NotNull] CoronaParser.StatementsContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.statements"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitStatements([NotNull] CoronaParser.StatementsContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.statement"/>.
 	/// </summary>
@@ -151,16 +141,6 @@ public interface ICoronaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.ruleStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterRuleStatement([NotNull] CoronaParser.RuleStatementContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.ruleStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitRuleStatement([NotNull] CoronaParser.RuleStatementContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.compoundStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -181,25 +161,15 @@ public interface ICoronaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitReturnStatement([NotNull] CoronaParser.ReturnStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.blockItemList"/>.
+	/// Enter a parse tree produced by <see cref="CoronaParser.caseStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterBlockItemList([NotNull] CoronaParser.BlockItemListContext context);
+	void EnterCaseStatement([NotNull] CoronaParser.CaseStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.blockItemList"/>.
+	/// Exit a parse tree produced by <see cref="CoronaParser.caseStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitBlockItemList([NotNull] CoronaParser.BlockItemListContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.blockItem"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterBlockItem([NotNull] CoronaParser.BlockItemContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.blockItem"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitBlockItem([NotNull] CoronaParser.BlockItemContext context);
+	void ExitCaseStatement([NotNull] CoronaParser.CaseStatementContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>StringExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
@@ -246,4 +216,44 @@ public interface ICoronaListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitOperator([NotNull] CoronaParser.OperatorContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.memberValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMemberValue([NotNull] CoronaParser.MemberValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.memberValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMemberValue([NotNull] CoronaParser.MemberValueContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.arrowValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterArrowValue([NotNull] CoronaParser.ArrowValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.arrowValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitArrowValue([NotNull] CoronaParser.ArrowValueContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.member"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMember([NotNull] CoronaParser.MemberContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.member"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMember([NotNull] CoronaParser.MemberContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.gridPoint"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterGridPoint([NotNull] CoronaParser.GridPointContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.gridPoint"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitGridPoint([NotNull] CoronaParser.GridPointContext context);
 }

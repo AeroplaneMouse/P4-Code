@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using CellularCompiler.Nodes.Math;
+using CellularCompiler.Nodes;
 
 namespace CellularCompiler.Visitor.Math
 {

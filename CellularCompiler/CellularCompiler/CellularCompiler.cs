@@ -3,6 +3,8 @@ using System.Linq;
 using System.IO;
 using Antlr4.Runtime;
 using System.Collections.Generic;
+using CellularCompiler.Nodes;
+using CellularCompiler.Visitor.Corona;
 
 namespace CellularCompiler
 {
@@ -10,7 +12,8 @@ namespace CellularCompiler
     {
         private static void Main()
         {
-            CompileMath();
+            CompileCorona();
+
         }
 
         private static void CompileMath()
@@ -47,34 +50,46 @@ namespace CellularCompiler
 
         private static void CompileCorona()
         {
-            //string input = String.Empty;
-            //File.ReadAllLines("../../../CodeExamples/CoronaTest.gjøl").ToList<string>().ForEach(s => input += s);
+            // Load code example
+            string input = String.Empty;
+            File.ReadAllLines("../../../CodeExamples/CoronaTest.gjøl").ToList<string>().ForEach(s => input += s);
 
-            //if (string.IsNullOrWhiteSpace(input))
-            //    throw new ArgumentNullException();
+            if (string.IsNullOrWhiteSpace(input))
+                throw new ArgumentNullException("input", "Argument was null or whitespace!");
 
-            //var inputStream = new AntlrInputStream(new StringReader(input));
-            //var lexer = new CoronaLexer(inputStream);
-            //var tokenStream = new CommonTokenStream(lexer);
-            //var parser = new CoronaParser(tokenStream);
+            var inputStream = new AntlrInputStream(new StringReader(input));
+            var lexer = new CoronaLexer(inputStream);
+            var tokenStream = new CommonTokenStream(lexer);
+            var parser = new CoronaParser(tokenStream);
 
             //try
             //{
-            //    // Extract CTS from antlr's shitty files
-            //    var cst = parser.main();
-            //    // Build AST from CTS
-            //    var ast = new BuildAstVisitor().VisitMain(cst);
-            //    // Evaluate our newly compilled shitty code
-            //    var value = new EvaluateExpressionVisitor().Visit(ast);
+                // Extract CTS from antlr's shitty files
+                var cst = parser.main();
+                // Build AST from CTS
+                List<ExpressionNode> ast = new Visitor.Corona.BuildAstVisitor().VisitMain(cst);
 
-            //    Console.WriteLine($"= { value }");
+                // Evaluate grid
+                GridNode gridNode = (GridNode)ast.First();
+
+                Grid grid = new Visitor.Corona.EvaluateGridVisitor().Visit(gridNode);
+
+                Console.WriteLine(grid);
+
+
+
+
+                // Evaluate our newly compilled shitty code
+                //var value = new Visitor.Corona.EvaluateMathExpressionVisitor().Visit(ast);
+
+                //Console.WriteLine($"= { value }");
             //}
             //catch (Exception ex)
             //{
             //    Console.WriteLine(ex.Message);
             //}
 
-            //Console.WriteLine();
+            Console.WriteLine();
         }
     }
 }

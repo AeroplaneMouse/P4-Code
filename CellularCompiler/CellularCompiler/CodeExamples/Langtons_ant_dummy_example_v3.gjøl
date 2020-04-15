@@ -35,11 +35,11 @@ INITIAL
 }
 
 #Define rules#
-# Rules ved dette shit om cell
-# state
-# .x
-# .y
-# .floor
+# Rules ved dette shit om cell#
+# state 		#
+# .x  		#
+# .y 			#
+# .floor		#
 RULES
 {
 	match(state)
@@ -75,7 +75,7 @@ RULES
 					grid[x, y+1].Direction = "n";
 				[_]
 				{
-				
+
 				}
 			}
 			return black;

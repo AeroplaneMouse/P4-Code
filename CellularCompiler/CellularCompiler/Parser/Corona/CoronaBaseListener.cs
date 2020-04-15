@@ -95,17 +95,17 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitRules([NotNull] CoronaParser.RulesContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.declaration"/>.
+	/// Enter a parse tree produced by <see cref="CoronaParser.memberBlock"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDeclaration([NotNull] CoronaParser.DeclarationContext context) { }
+	public virtual void EnterMemberBlock([NotNull] CoronaParser.MemberBlockContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.declaration"/>.
+	/// Exit a parse tree produced by <see cref="CoronaParser.memberBlock"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDeclaration([NotNull] CoronaParser.DeclarationContext context) { }
+	public virtual void ExitMemberBlock([NotNull] CoronaParser.MemberBlockContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.memberDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -118,18 +118,6 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitMemberDeclaration([NotNull] CoronaParser.MemberDeclarationContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.statements"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterStatements([NotNull] CoronaParser.StatementsContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.statements"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitStatements([NotNull] CoronaParser.StatementsContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -179,18 +167,6 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.ruleStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterRuleStatement([NotNull] CoronaParser.RuleStatementContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.ruleStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitRuleStatement([NotNull] CoronaParser.RuleStatementContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.compoundStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -215,29 +191,17 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitReturnStatement([NotNull] CoronaParser.ReturnStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.blockItemList"/>.
+	/// Enter a parse tree produced by <see cref="CoronaParser.caseStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBlockItemList([NotNull] CoronaParser.BlockItemListContext context) { }
+	public virtual void EnterCaseStatement([NotNull] CoronaParser.CaseStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.blockItemList"/>.
+	/// Exit a parse tree produced by <see cref="CoronaParser.caseStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBlockItemList([NotNull] CoronaParser.BlockItemListContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.blockItem"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBlockItem([NotNull] CoronaParser.BlockItemContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.blockItem"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBlockItem([NotNull] CoronaParser.BlockItemContext context) { }
+	public virtual void ExitCaseStatement([NotNull] CoronaParser.CaseStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>StringExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
@@ -292,6 +256,54 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitOperator([NotNull] CoronaParser.OperatorContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.memberValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMemberValue([NotNull] CoronaParser.MemberValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.memberValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMemberValue([NotNull] CoronaParser.MemberValueContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.arrowValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterArrowValue([NotNull] CoronaParser.ArrowValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.arrowValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitArrowValue([NotNull] CoronaParser.ArrowValueContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.member"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMember([NotNull] CoronaParser.MemberContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.member"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMember([NotNull] CoronaParser.MemberContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.gridPoint"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGridPoint([NotNull] CoronaParser.GridPointContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.gridPoint"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGridPoint([NotNull] CoronaParser.GridPointContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>
