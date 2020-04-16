@@ -1,0 +1,84 @@
+#Langton's Ant#
+
+GRID
+{
+	x: 1 -> 64;
+	y: 1 -> 64;
+	floor: "Stue", "Foerste", "Anden";
+}
+
+#Define states, white and black in this case#
+STATES white, black
+{	
+	#Define members of the state(s)#
+	Color: "white", "black";
+	Count: 1 -> 10;
+	Direction: 1 -> 2, "n", "s", "e", "w";
+}
+
+STATES blue
+{
+	Height: "up", "down";
+}
+
+
+
+
+#Set initial state, all cells are white#
+INITIAL
+{
+	grid[27, 52].Direction = "n";
+
+	#Makes a rectangle of black cells from x = 2 to 5 and y = 2 to 4#
+	grid[2 -> 5, 2 -> 4] = black;
+
+}
+
+#Define rules#
+# Rules ved dette shit om cell#
+# state 		#
+# .x  		#
+# .y 			#
+# .floor		#
+RULES
+{
+	match(state)
+	{
+		[black]
+		{
+			match(.Direction){
+				["n"]
+					grid[.x-1, .y].Direction = "w";
+				["s"]
+					grid[.x+1, .y].Direction = "e";
+				["e"]
+				{
+					grid[.x, .y+1].Direction = "n";
+				}
+				["w"]
+				{
+					grid[.x, .y-1].Direction = "s";
+				}
+			}
+			return white;
+		}
+		[white]
+		{
+			match(.Direction){
+				["n"]
+					grid[x+1, y].Direction = "e";
+				["s"]
+					grid[x-1, y].Direction = "w";
+				["e"]
+					grid[x, y-1].Direction = "s";
+				["w"]
+					grid[x, y+1].Direction = "n";
+				[_]
+				{
+
+				}
+			}
+			return black;
+		}
+	}
+}

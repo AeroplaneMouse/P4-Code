@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
-using CellularCompiler.Nodes;
+using CellularCompiler.Nodes.Math;
 
-namespace CellularCompiler.Visitor
+namespace CellularCompiler.Visitor.Math
 {
-    internal class BuildAstVisitor : MathBaseVisitor<ExpressionNode>
+    internal class BuildMathAstVisitor : MathBaseVisitor<ExpressionNode>
     {
         public override ExpressionNode VisitMain(MathParser.MainContext context)
         {
@@ -29,7 +29,6 @@ namespace CellularCompiler.Visitor
 
             return node;
         }
-
 
         public override ExpressionNode VisitNumberExpr(MathParser.NumberExprContext context)
         {
