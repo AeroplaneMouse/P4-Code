@@ -8,8 +8,14 @@ namespace CellularCompiler.Builders
     {
         public override List<BaseNode> VisitMain(CoronaParser.MainContext context)
         {
+            BuildAstVisitor visitor = new BuildAstVisitor();
+
+            // Visit grid
             List<BaseNode> baseNodes = new List<BaseNode>();
-            baseNodes.Add((GridNode)Visit(context.grid()).First());
+            baseNodes.Add(visitor.Visit(context.grid()));
+
+            // Visit all states
+            // ...
 
 
             //List<CoronaParser.StatesContext> states = new List<CoronaParser.StatesContext>(context.states());

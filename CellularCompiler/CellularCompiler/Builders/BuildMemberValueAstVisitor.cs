@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CellularCompiler.Builders
 {
-    class MemberValue : CoronaBaseVisitor<MemberValueNode>
+    class BuildMemberValueAstVisitor : CoronaBaseVisitor<MemberValueNode>
     {
         public override MemberValueNode VisitMemberValue(CoronaParser.MemberValueContext context)
         {
@@ -20,6 +20,5 @@ namespace CellularCompiler.Builders
 
             return new ArrowValueNode(left, right); ;
         }
-
     }
 }

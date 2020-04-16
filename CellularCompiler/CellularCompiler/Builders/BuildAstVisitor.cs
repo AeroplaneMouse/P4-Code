@@ -14,17 +14,14 @@ namespace CellularCompiler.Builders
             GridNode node = new GridNode(new List<MemberNode>());
 
             // Extract and visit gridnode children
+            BuildMemberAstVisitor memberVisitor = new BuildMemberAstVisitor();
             List<IParseTree> memberDeclarations = context.memberBlock().children.ToList();
-
             foreach (IParseTree t in memberDeclarations.Skip(1).SkipLast(1))
             {
-                MemberNode n = (MemberNode)Visit(t);
+                MemberNode n = memberVisitor.Visit(t);
                 node.Members.Add(n);
             }
 
-            // Return gridNode
-            //List<ExpressionNode> result = new List<ExpressionNode>();
-            //result.Add(node);
             return node;
         }
     }
