@@ -1,0 +1,10 @@
+C:\Users\Trung Nhan Tran\source\repos\CAVisualForms\CAVisualForms\bin\Debug\CAVisualForms.exe.config
+C:\Users\Trung Nhan Tran\source\repos\CAVisualForms\CAVisualForms\bin\Debug\CAVisualForms.exe
+C:\Users\Trung Nhan Tran\source\repos\CAVisualForms\CAVisualForms\bin\Debug\CAVisualForms.pdb
+C:\Users\Trung Nhan Tran\source\repos\CAVisualForms\CAVisualForms\obj\Debug\CAVisualForms.csprojAssemblyReference.cache
+C:\Users\Trung Nhan Tran\source\repos\CAVisualForms\CAVisualForms\obj\Debug\CAVisualForms.Properties.Resources.resources
+C:\Users\Trung Nhan Tran\source\repos\CAVisualForms\CAVisualForms\obj\Debug\CAVisualForms.csproj.GenerateResource.cache
+C:\Users\Trung Nhan Tran\source\repos\CAVisualForms\CAVisualForms\obj\Debug\CAVisualForms.csproj.CoreCompileInputs.cache
+C:\Users\Trung Nhan Tran\source\repos\CAVisualForms\CAVisualForms\obj\Debug\CAVisualForms.exe
+C:\Users\Trung Nhan Tran\source\repos\CAVisualForms\CAVisualForms\obj\Debug\CAVisualForms.pdb
+C:\Users\Trung Nhan Tran\source\repos\CAVisualForms\CAVisualForms\obj\Debug\CAVisualForms.Form1.resources
