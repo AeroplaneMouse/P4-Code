@@ -5,6 +5,10 @@ using Antlr4.Runtime;
 using System.Collections.Generic;
 using CellularCompiler.Nodes;
 using CellularCompiler.Visitor.Corona;
+using CellularCompiler.Evaluators;
+using CellularCompiler.Builders;
+using CellularCompiler.Nodes.Base;
+using CellularCompiler.Models;
 
 namespace CellularCompiler
 {
@@ -57,24 +61,23 @@ namespace CellularCompiler
             if (string.IsNullOrWhiteSpace(input))
                 throw new ArgumentNullException("input", "Argument was null or whitespace!");
 
+            // Create token stream from input
             var inputStream = new AntlrInputStream(new StringReader(input));
             var lexer = new CoronaLexer(inputStream);
             var tokenStream = new CommonTokenStream(lexer);
+
+            // Run parser to convert token stream to CST
             var parser = new CoronaParser(tokenStream);
+            var cst = parser.main();
+                
+            // Build AST from CST
+            List<BaseNode> ast = new BuildBaseAstVisitor().VisitMain(cst);
 
-            //try
-            //{
-                // Extract CTS from antlr's shitty files
-                var cst = parser.main();
-                // Build AST from CTS
-                List<ExpressionNode> ast = new Visitor.Corona.BuildAstVisitor().VisitMain(cst);
-
-                // Evaluate grid
-                GridNode gridNode = (GridNode)ast.First();
-
-                Grid grid = new Visitor.Corona.EvaluateGridVisitor().Visit(gridNode);
-
-                Console.WriteLine(grid);
+            // Evaluate grid
+            GridNode gridNode = (GridNode)ast.First();
+            Grid grid = new EvaluateGridVisitor().Visit(gridNode);
+                
+            Console.WriteLine(grid);
 
 
 

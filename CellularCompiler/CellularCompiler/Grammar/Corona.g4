@@ -25,7 +25,7 @@ memberBlock
 	;
 
 memberDeclaration
-	: id=ID ':' memberValue (',' memberValue)*  ';'
+	: ID ':' memberValue (',' memberValue)*  ';'
 	;
 
 statement

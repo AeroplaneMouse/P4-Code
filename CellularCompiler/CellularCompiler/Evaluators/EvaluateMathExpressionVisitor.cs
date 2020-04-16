@@ -1,6 +1,7 @@
 ﻿using CellularCompiler.Nodes;
+using CellularCompiler.Visitor.Corona;
 
-namespace CellularCompiler.Visitor.Corona
+namespace CellularCompiler.Evaluators
 {
     internal class EvaluateMathExpressionVisitor : MathAstVisitor<double>
     {
@@ -18,6 +19,5 @@ namespace CellularCompiler.Visitor.Corona
 
         public override double Visit(NumberNode node) 
             => node.Value;
-
     }
 }
