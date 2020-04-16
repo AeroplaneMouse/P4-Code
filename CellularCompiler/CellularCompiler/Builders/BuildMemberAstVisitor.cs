@@ -1,7 +1,6 @@
-﻿using System;
-using CellularCompiler.Nodes;
-using System.Collections.Generic;
+﻿using CellularCompiler.Nodes.Members;
 using CellularCompiler.Builders;
+using System.Collections.Generic;
 
 namespace CellularCompiler
 {
@@ -23,7 +22,5 @@ namespace CellularCompiler
 
             return new MemberNode(label, valueNodes);
         }
-
-        
     }
 }

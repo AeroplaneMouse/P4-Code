@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Nodes.Base
 {

@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using Antlr4.Runtime;
-using System.Collections.Generic;
-using CellularCompiler.Nodes;
-using CellularCompiler.Visitor.Corona;
-using CellularCompiler.Evaluators;
-using CellularCompiler.Builders;
-using CellularCompiler.Nodes.Base;
 using CellularCompiler.Models;
+using CellularCompiler.Builders;
+using System.Collections.Generic;
+using CellularCompiler.Evaluators;
+using CellularCompiler.Nodes.Base;
 
 namespace CellularCompiler
 {
@@ -16,43 +14,17 @@ namespace CellularCompiler
     {
         private static void Main()
         {
-            CompileCorona();
+            CellularCompiler compiler = new CellularCompiler();
+            Grid grid = compiler.CompileCorona();
 
+            Console.WriteLine(grid);
         }
 
-        private static void CompileMath()
-        {
-            Console.WriteLine("> ");
-            string input = Console.ReadLine();
-
-            if (string.IsNullOrWhiteSpace(input))
-                throw new ArgumentNullException("input", "Argument was null or whitespace!");
-
-            var inputStream = new AntlrInputStream(new StringReader(input));
-            var lexer = new MathLexer(inputStream);
-            var tokenStream = new CommonTokenStream(lexer);
-            var parser = new MathParser(tokenStream);
-
-            try
-            {
-                // Extract CST from antlr's shitty files
-                var cst = parser.main();
-                // Build AST from CST
-                var ast = new Visitor.Math.BuildMathAstVisitor().VisitMain(cst);
-                // Evaluate our newly compilled shitty code
-                var value = new Visitor.Math.EvaluateMathExpressionVisitor().Visit(ast);
-
-                Console.WriteLine($"= { value }");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            Console.WriteLine();
-        }
-
-        private static void CompileCorona()
+        /// <summary>
+        /// Compiles corona
+        /// </summary>
+        /// <returns>A grid object</returns>
+        private Grid CompileCorona()
         {
             // Load code example
             string input = String.Empty;
@@ -75,24 +47,45 @@ namespace CellularCompiler
 
             // Evaluate grid
             GridNode gridNode = (GridNode)ast.First();
-            Grid grid = new EvaluateGridVisitor().Visit(gridNode);
-                
-            Console.WriteLine(grid);
+            return new EvaluateGridVisitor().Visit(gridNode);
+        }
 
+        /// <summary>
+        /// An old example of how the math example works
+        /// </summary>
+        private static void CompileMath()
+        {
+            while (true)
+            {
+                Console.WriteLine("> ");
+                string input = Console.ReadLine();
 
+                if (string.IsNullOrWhiteSpace(input))
+                    throw new ArgumentNullException("input", "Argument was null or whitespace!");
 
+                var inputStream = new AntlrInputStream(new StringReader(input));
+                var lexer = new MathLexer(inputStream);
+                var tokenStream = new CommonTokenStream(lexer);
+                var parser = new MathParser(tokenStream);
 
-                // Evaluate our newly compilled shitty code
-                //var value = new Visitor.Corona.EvaluateMathExpressionVisitor().Visit(ast);
+                try
+                {
+                    // Extract CST from antlr's shitty files
+                    var cst = parser.main();
+                    // Build AST from CST
+                    var ast = new Visitor.Math.BuildMathAstVisitor().VisitMain(cst);
+                    // Evaluate our newly compilled shitty code
+                    var value = new Visitor.Math.EvaluateMathExpressionVisitor().Visit(ast);
 
-                //Console.WriteLine($"= { value }");
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex.Message);
-            //}
+                    Console.WriteLine($"= { value }");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
 
-            Console.WriteLine();
+                Console.WriteLine();
+            }
         }
     }
 }

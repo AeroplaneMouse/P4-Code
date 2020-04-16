@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using CellularCompiler.Nodes;
+using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Evaluators
 {
@@ -8,7 +8,6 @@ namespace CellularCompiler.Evaluators
         
         public int Visit(ArrowValueNode node)
             => node.RightValue;
-
 
         public int Visit(MemberNode node)
         {

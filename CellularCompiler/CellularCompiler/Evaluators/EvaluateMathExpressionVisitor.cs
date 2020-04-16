@@ -1,5 +1,4 @@
-﻿using CellularCompiler.Nodes;
-using CellularCompiler.Visitor.Corona;
+﻿using CellularCompiler.Nodes.Math;
 
 namespace CellularCompiler.Evaluators
 {

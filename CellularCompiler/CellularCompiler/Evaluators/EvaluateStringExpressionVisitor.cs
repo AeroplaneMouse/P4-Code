@@ -1,4 +1,4 @@
-﻿using CellularCompiler.Nodes;
+﻿using CellularCompiler.Nodes.Math;
 
 namespace CellularCompiler.Evaluators
 {

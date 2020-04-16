@@ -1,4 +1,4 @@
-﻿namespace CellularCompiler.Nodes
+﻿namespace CellularCompiler.Nodes.Members
 {
     class ArrowValueNode : MemberValueNode
     {

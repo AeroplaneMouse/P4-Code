@@ -1,8 +1,8 @@
-﻿using Antlr4.Runtime.Tree;
-using CellularCompiler.Nodes;
-using CellularCompiler.Nodes.Base;
+﻿using System.Linq;
+using Antlr4.Runtime.Tree;
 using System.Collections.Generic;
-using System.Linq;
+using CellularCompiler.Nodes.Base;
+using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Builders
 {

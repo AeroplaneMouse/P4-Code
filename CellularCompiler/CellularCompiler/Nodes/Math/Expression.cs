@@ -1,6 +1,6 @@
 ﻿using CellularCompiler.Nodes.Base;
 
-namespace CellularCompiler.Nodes
+namespace CellularCompiler.Nodes.Math
 {
     abstract class ExpressionNode : BaseNode
     { }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using CellularCompiler.Nodes;
+using CellularCompiler.Nodes.Math;
 
 namespace CellularCompiler.Builders
 {
