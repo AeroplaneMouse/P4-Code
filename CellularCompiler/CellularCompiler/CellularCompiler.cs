@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using Antlr4.Runtime;
@@ -14,8 +14,8 @@ namespace CellularCompiler
     {
         private static void Main()
         {
-            CellularCompiler compiler = new CellularCompiler();
-            Grid grid = compiler.CompileCorona();
+            CellularCompiler interpreter = new CellularCompiler();
+            Grid grid = interpreter.InterpretCorona();
 
             Console.WriteLine(grid);
         }
@@ -24,7 +24,7 @@ namespace CellularCompiler
         /// Compiles corona
         /// </summary>
         /// <returns>A grid object</returns>
-        private Grid CompileCorona()
+        private Grid InterpretCorona()
         {
             // Load code example
             string input = String.Empty;
