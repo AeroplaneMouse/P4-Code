@@ -734,14 +734,17 @@ public partial class CoronaParser : Parser {
 	}
 
 	public partial class IterationStatementContext : ParserRuleContext {
+		public ExprContext initializer;
+		public ExprContext condition;
+		public ExprContext iterator;
+		public StatementContext statement() {
+			return GetRuleContext<StatementContext>(0);
+		}
 		public ExprContext[] expr() {
 			return GetRuleContexts<ExprContext>();
 		}
 		public ExprContext expr(int i) {
 			return GetRuleContext<ExprContext>(i);
-		}
-		public StatementContext statement() {
-			return GetRuleContext<StatementContext>(0);
 		}
 		public IterationStatementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -772,11 +775,11 @@ public partial class CoronaParser : Parser {
 			{
 			State = 128; Match(T__13);
 			State = 129; Match(T__10);
-			State = 130; expr(0);
+			State = 130; _localctx.initializer = expr(0);
 			State = 131; Match(T__8);
-			State = 132; expr(0);
+			State = 132; _localctx.condition = expr(0);
 			State = 133; Match(T__8);
-			State = 134; expr(0);
+			State = 134; _localctx.iterator = expr(0);
 			State = 135; Match(T__12);
 			State = 136; statement();
 			}

@@ -41,7 +41,7 @@ selectionStatement
 	;
 
 iterationStatement
-	: 'for' '(' expr ';' expr ';' expr ')' statement
+	: 'for' '(' initializer=expr ';' condition=expr ';' iterator=expr ')' statement
 	;
 
 assignmentStatement
