@@ -1,7 +1,6 @@
 ﻿namespace CellularCompiler.Nodes.Members
 {
-    class MemberValueNode
+    abstract class MemberValueNode
     {
-
     }
 }
