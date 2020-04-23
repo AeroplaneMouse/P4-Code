@@ -174,17 +174,6 @@ public partial class CoronaBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>StringExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.expr"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitStringExpr([NotNull] CoronaParser.StringExprContext context) { return VisitChildren(context); }
-	/// <summary>
 	/// Visit a parse tree produced by the <c>NumberExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// <para>

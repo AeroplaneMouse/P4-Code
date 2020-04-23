@@ -116,13 +116,6 @@ public interface ICoronaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>StringExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitStringExpr([NotNull] CoronaParser.StringExprContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>NumberExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// </summary>

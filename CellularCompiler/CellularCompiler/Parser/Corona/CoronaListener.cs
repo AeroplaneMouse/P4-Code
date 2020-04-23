@@ -171,18 +171,6 @@ public interface ICoronaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCaseStatement([NotNull] CoronaParser.CaseStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>StringExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterStringExpr([NotNull] CoronaParser.StringExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>StringExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitStringExpr([NotNull] CoronaParser.StringExprContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>NumberExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// </summary>

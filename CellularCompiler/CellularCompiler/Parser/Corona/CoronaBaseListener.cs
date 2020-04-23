@@ -203,20 +203,6 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCaseStatement([NotNull] CoronaParser.CaseStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>StringExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.expr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterStringExpr([NotNull] CoronaParser.StringExprContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>StringExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.expr"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitStringExpr([NotNull] CoronaParser.StringExprContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>NumberExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
