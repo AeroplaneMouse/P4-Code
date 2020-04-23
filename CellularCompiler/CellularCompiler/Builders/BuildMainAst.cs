@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using CellularCompiler.Nodes.Base;
+using CellularCompiler.Nodes.Statement;
 
 namespace CellularCompiler.Builders
 {
@@ -8,10 +9,10 @@ namespace CellularCompiler.Builders
     {
         public override MainNode VisitMain(CoronaParser.MainContext context)
         {
-            BuildBaseAst visitor = new BuildBaseAst();
+            BuildBaseAst baseVisitor = new BuildBaseAst();
 
             // Visit grid
-            GridNode grid = visitor.Visit(context.grid()) as GridNode;
+            GridNode grid = baseVisitor.Visit(context.grid()) as GridNode;
 
             // Visit all states
             List<StateNode> states = null;
@@ -20,12 +21,10 @@ namespace CellularCompiler.Builders
             //    baseNodes.Add(visitor.Visit(s));
 
             // Visit initial
-            InitialNode initial = null;
-            //baseNodes.Add(visitor.Visit(context.initial()));
-
+            InitialNode initial = baseVisitor.Visit(context.initial()) as InitialNode;
 
             // Visit rules
-            RulesNode rules = visitor.Visit(context.rules()) as RulesNode;
+            RulesNode rules = baseVisitor.Visit(context.rules()) as RulesNode;
 
             return new MainNode(grid, states, initial, rules);
         }
