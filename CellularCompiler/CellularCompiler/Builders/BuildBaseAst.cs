@@ -3,6 +3,8 @@ using Antlr4.Runtime.Tree;
 using System.Collections.Generic;
 using CellularCompiler.Nodes.Base;
 using CellularCompiler.Nodes.Members;
+using CellularCompiler.Nodes.Statement;
+using System;
 
 namespace CellularCompiler.Builders
 {
@@ -37,7 +39,22 @@ namespace CellularCompiler.Builders
 
         public override BaseNode VisitRules(CoronaParser.RulesContext context)
         {
-            return base.VisitRules(context);
+            RulesNode node = new RulesNode(new List<SelectionStatementNode>());
+
+            // Extract selectionStatements
+            BuildStatementAst statementVisitor = new BuildStatementAst();
+            CoronaParser.SelectionStatementContext[] selections = context.selectionStatement();
+            foreach (CoronaParser.SelectionStatementContext s in selections)
+            {
+                // Visit each selectionStatement in rules
+                StatementNode statement = statementVisitor.Visit(s);
+                if (statement is SelectionStatementNode selection)
+                    node.Statements.Add(selection);
+                else
+                    throw new ArgumentException(nameof(statement));
+            }
+
+            return node;
         }
     }
 }

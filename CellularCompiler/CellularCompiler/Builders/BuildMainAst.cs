@@ -9,21 +9,21 @@ namespace CellularCompiler.Builders
         public override List<BaseNode> VisitMain(CoronaParser.MainContext context)
         {
             BuildBaseAst visitor = new BuildBaseAst();
+            List<BaseNode> baseNodes = new List<BaseNode>();
 
             // Visit grid
-            List<BaseNode> baseNodes = new List<BaseNode>();
             baseNodes.Add(visitor.Visit(context.grid()));
 
-            // Visit all states
-            // ...
+            //// Visit all states
+            //CoronaParser.StatesContext[] states = context.states();
+            //foreach(CoronaParser.StatesContext s in states)
+            //    baseNodes.Add(visitor.Visit(s));
 
+            //// Visit initial
+            //baseNodes.Add(visitor.Visit(context.initial()));
 
-            //List<CoronaParser.StatesContext> states = new List<CoronaParser.StatesContext>(context.states());
-            //states.ForEach(s => Visit(s).ForEach(a => expressions.Add(a)));
-
-            //Visit(context.initial()).ForEach(a => expressions.Add(a));
-            //Visit(context.rules()).ForEach(a => expressions.Add(a));
-
+            // Visit rules
+            baseNodes.Add(visitor.Visit(context.rules()));
 
             return baseNodes;
         }
