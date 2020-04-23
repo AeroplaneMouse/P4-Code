@@ -26,11 +26,15 @@ STATES blue
 #Set initial state, all cells are white#
 INITIAL
 {
-	grid[27, 52].Direction = "n";
+    for(2 + 2; 2 < 3; 4 + 4)
+	{
+		
+	}
+
+	#grid[27, 52].Direction = "n";#
 
 	#Makes a rectangle of black cells from x = 2 to 5 and y = 2 to 4#
-	grid[2 -> 5, 2 -> 4] = black;
-
+	#grid[2 -> 5, 2 -> 4] = black;#
 }
 
 #Define rules#
