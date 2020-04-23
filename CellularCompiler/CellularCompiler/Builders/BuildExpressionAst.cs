@@ -4,7 +4,7 @@ using CellularCompiler.Nodes.Math;
 
 namespace CellularCompiler.Builders
 {
-    class BuildExpressionVisitor : CoronaBaseVisitor<ExpressionNode>
+    class BuildExpressionAst : CoronaBaseVisitor<ExpressionNode>
     {
         public override ExpressionNode VisitInfixExpr(CoronaParser.InfixExprContext context)
         {
@@ -23,11 +23,6 @@ namespace CellularCompiler.Builders
             node.Right = Visit(context.right);
 
             return node;
-        }
-
-        public override ExpressionNode VisitStringExpr(CoronaParser.StringExprContext context)
-        {
-            return new StringNode(context.value.Text);
         }
 
         public override ExpressionNode VisitNumberExpr(CoronaParser.NumberExprContext context)

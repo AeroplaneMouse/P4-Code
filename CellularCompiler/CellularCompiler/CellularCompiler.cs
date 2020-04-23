@@ -43,7 +43,7 @@ namespace CellularCompiler
             var cst = parser.main();
                 
             // Build AST from CST
-            List<BaseNode> ast = new BuildBaseAstVisitor().VisitMain(cst);
+            List<BaseNode> ast = new BuildMainAst().VisitMain(cst);
 
             // Evaluate grid
             GridNode gridNode = (GridNode)ast.First();

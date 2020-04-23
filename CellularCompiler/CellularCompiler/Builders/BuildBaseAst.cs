@@ -6,7 +6,7 @@ using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Builders
 {
-    class BuildAstVisitor : CoronaBaseVisitor<BaseNode>
+    class BuildBaseAst : CoronaBaseVisitor<BaseNode>
     {
         public override BaseNode VisitGrid(CoronaParser.GridContext context)
         {
@@ -14,7 +14,7 @@ namespace CellularCompiler.Builders
             GridNode node = new GridNode(new List<MemberNode>());
 
             // Extract and visit gridnode children
-            BuildMemberAstVisitor memberVisitor = new BuildMemberAstVisitor();
+            BuildMemberAst memberVisitor = new BuildMemberAst();
             List<IParseTree> memberDeclarations = context.memberBlock().children.ToList();
             foreach (IParseTree t in memberDeclarations.Skip(1).SkipLast(1))
             {
@@ -23,6 +23,21 @@ namespace CellularCompiler.Builders
             }
 
             return node;
+        }
+
+        public override BaseNode VisitStates(CoronaParser.StatesContext context)
+        {
+            return base.VisitStates(context);
+        }
+
+        public override BaseNode VisitInitial(CoronaParser.InitialContext context)
+        {
+            return base.VisitInitial(context);
+        }
+
+        public override BaseNode VisitRules(CoronaParser.RulesContext context)
+        {
+            return base.VisitRules(context);
         }
     }
 }

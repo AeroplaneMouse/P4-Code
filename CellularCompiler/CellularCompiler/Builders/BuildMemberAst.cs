@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CellularCompiler
 {
-    class BuildMemberAstVisitor : CoronaBaseVisitor<MemberNode>
+    class BuildMemberAst : CoronaBaseVisitor<MemberNode>
     {
         public override MemberNode VisitMemberDeclaration(CoronaParser.MemberDeclarationContext context)
         {
@@ -12,7 +12,7 @@ namespace CellularCompiler
             string label = context.ID().GetText();
 
             //// Extract and call visit on all memberValues
-            BuildMemberValueAstVisitor memberValueVisitor = new BuildMemberValueAstVisitor();
+            BuildMemberValueAst memberValueVisitor = new BuildMemberValueAst();
             List<MemberValueNode> valueNodes = new List<MemberValueNode>();
             foreach(CoronaParser.MemberValueContext value in context.memberValue())
             {

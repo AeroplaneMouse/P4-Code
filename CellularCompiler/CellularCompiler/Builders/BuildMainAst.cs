@@ -4,11 +4,11 @@ using CellularCompiler.Nodes.Base;
 
 namespace CellularCompiler.Builders
 {
-    class BuildBaseAstVisitor : CoronaBaseVisitor<List<BaseNode>>
+    class BuildMainAst : CoronaBaseVisitor<List<BaseNode>>
     {
         public override List<BaseNode> VisitMain(CoronaParser.MainContext context)
         {
-            BuildAstVisitor visitor = new BuildAstVisitor();
+            BuildBaseAst visitor = new BuildBaseAst();
 
             // Visit grid
             List<BaseNode> baseNodes = new List<BaseNode>();

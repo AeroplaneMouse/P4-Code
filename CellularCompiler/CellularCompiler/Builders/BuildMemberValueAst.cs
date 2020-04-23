@@ -3,7 +3,7 @@ using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Builders
 {
-    class BuildMemberValueAstVisitor : CoronaBaseVisitor<MemberValueNode>
+    class BuildMemberValueAst : CoronaBaseVisitor<MemberValueNode>
     {
         public override MemberValueNode VisitMemberValue(CoronaParser.MemberValueContext context)
         {
