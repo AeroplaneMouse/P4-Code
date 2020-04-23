@@ -34,7 +34,17 @@ namespace CellularCompiler.Builders
 
         public override BaseNode VisitInitial(CoronaParser.InitialContext context)
         {
-            return base.VisitInitial(context);
+            InitialNode node = new InitialNode(new List<StatementNode>());
+
+            // Extract statements
+            CoronaParser.StatementContext[] statements = context.compoundStatement().statement();
+
+            // Visit each statement and add to the initial node
+            BuildStatementAst statementVisitor = new BuildStatementAst();
+            foreach(CoronaParser.StatementContext s in statements)
+                node.Statements.Add(statementVisitor.Visit(s));
+
+            return node;
         }
 
         public override BaseNode VisitRules(CoronaParser.RulesContext context)
