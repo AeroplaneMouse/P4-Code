@@ -26,10 +26,9 @@ STATES blue
 #Set initial state, all cells are white#
 INITIAL
 {
-    for(2 + 2; 2 < 3; 4 + 4)
-	{
-		
-	}
+   for(2 + 2; 2 < 3; 4 + 4)
+		return 2;	
+	
 
 	#grid[27, 52].Direction = "n";#
 
