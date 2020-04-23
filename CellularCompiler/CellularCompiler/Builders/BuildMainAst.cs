@@ -4,28 +4,30 @@ using CellularCompiler.Nodes.Base;
 
 namespace CellularCompiler.Builders
 {
-    class BuildMainAst : CoronaBaseVisitor<List<BaseNode>>
+    class BuildMainAst : CoronaBaseVisitor<MainNode>
     {
-        public override List<BaseNode> VisitMain(CoronaParser.MainContext context)
+        public override MainNode VisitMain(CoronaParser.MainContext context)
         {
             BuildBaseAst visitor = new BuildBaseAst();
-            List<BaseNode> baseNodes = new List<BaseNode>();
 
             // Visit grid
-            baseNodes.Add(visitor.Visit(context.grid()));
+            GridNode grid = visitor.Visit(context.grid()) as GridNode;
 
-            //// Visit all states
+            // Visit all states
+            List<StateNode> states = null;
             //CoronaParser.StatesContext[] states = context.states();
             //foreach(CoronaParser.StatesContext s in states)
             //    baseNodes.Add(visitor.Visit(s));
 
-            //// Visit initial
+            // Visit initial
+            InitialNode initial = null;
             //baseNodes.Add(visitor.Visit(context.initial()));
 
-            // Visit rules
-            baseNodes.Add(visitor.Visit(context.rules()));
 
-            return baseNodes;
+            // Visit rules
+            RulesNode rules = visitor.Visit(context.rules()) as RulesNode;
+
+            return new MainNode(grid, states, initial, rules);
         }
     }
 }

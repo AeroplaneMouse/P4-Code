@@ -43,11 +43,12 @@ namespace CellularCompiler
             var cst = parser.main();
                 
             // Build AST from CST
-            List<BaseNode> ast = new BuildMainAst().VisitMain(cst);
+            MainNode ast = new BuildMainAst().VisitMain(cst);
 
             // Evaluate grid
-            GridNode gridNode = (GridNode)ast.First();
-            return new EvaluateGridVisitor().Visit(gridNode);
+            //GridNode gridNode = (GridNode)ast.First();
+            //return new EvaluateGridVisitor().Visit(gridNode);
+            throw new NotImplementedException("What ever this is going to return, has yet to be implemented");
         }
 
         /// <summary>
