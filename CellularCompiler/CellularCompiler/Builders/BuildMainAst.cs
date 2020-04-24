@@ -24,7 +24,8 @@ namespace CellularCompiler.Builders
             InitialNode initial = baseVisitor.Visit(context.initial()) as InitialNode;
 
             // Visit rules
-            RulesNode rules = baseVisitor.Visit(context.rules()) as RulesNode;
+            //RulesNode rules = baseVisitor.Visit(context.rules()) as RulesNode;
+            RulesNode rules = null;
 
             return new MainNode(grid, states, initial, rules);
         }

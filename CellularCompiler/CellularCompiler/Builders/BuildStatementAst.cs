@@ -1,4 +1,4 @@
-﻿using CellularCompiler.Nodes.Math;
+using CellularCompiler.Nodes.Math;
 using CellularCompiler.Nodes.Statement;
 using System;
 using System.Collections.Generic;
@@ -8,11 +8,6 @@ namespace CellularCompiler.Builders
 {
     class BuildStatementAst : CoronaBaseVisitor<StatementNode>
     {
-        public override StatementNode VisitStatement(CoronaParser.StatementContext context)
-        {
-            return base.Visit(context);
-        }
-
         public override StatementNode VisitIterationStatement(CoronaParser.IterationStatementContext context)
         {
             BuildExpressionAst exprVisitor = new BuildExpressionAst();
