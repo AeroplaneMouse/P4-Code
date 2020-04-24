@@ -15,6 +15,12 @@ namespace CellularCompiler.Builders
                 "-" => new SubstractionNode(),
                 "*" => new MultiplicationNode(),
                 "/" => new DivisionNode(),
+                "==" => new EqualityNode(),
+                "!=" => new NotEqualNode(),
+                "<" => new LessThanNode(),
+                ">" => new BiggerThanNode(),
+                "<=" => new LessThenOrEqualNode(),
+                ">=" => new BiggerThanOrEqualNode(),
                 _ => throw new ArgumentOutOfRangeException("context", "Unknown operator in switch statement - VisitInfixExpr")
             };
 
