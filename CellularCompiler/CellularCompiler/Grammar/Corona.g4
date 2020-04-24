@@ -64,7 +64,7 @@ expr
 	: value=INT 									# NumberExpr
 	| value=ID										# NumberExpr
 	| member 										# NumberExpr
-	| left=expr op=operator right=expr 		# InfixExpr
+	| left=expr op=operator right=expr 				# InfixExpr
 	;
 
 operator
