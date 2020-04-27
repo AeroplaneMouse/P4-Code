@@ -91,18 +91,22 @@ namespace CellularCompiler.Builders
             return new CaseStatementNode(listValues, Visit(context.statement()));
         }
 
-        public override StatementNode VisitAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context)
+        public override StatementNode VisitAssignmentStatement(CoronaParser.AssignmentStatementContext context)
         {
+            BuildExpressionAst expressionVisitor = new BuildExpressionAst();
             GridPointNode gridPointNode = new GridPointNode(new List<ExpressionNode>());
             MemberIDNode memberIDNode = new MemberIDNode(context.member().GetText());
 
-            CoronaParser.GridPointContext gridPoint = context.gridPoint();
-            CoronaParser.ExprContext[] expressionValues = gridPoint.expr();
-
+            // Extract gridPoint and visit it's expressions
+            CoronaParser.ExprContext[] expressionValues = context.gridPoint().expr();
             foreach (CoronaParser.ExprContext value in expressionValues)
-                gridPointNode.ExpressionNodes.Add(new BuildExpressionAst().Visit(value));
+                gridPointNode.ExpressionNodes.Add(expressionVisitor.Visit(value));
 
-            return base.VisitAssignmentStatement(context);
+            // Visit expression
+            ExpressionNode expressionNode = expressionVisitor.Visit(context.expr());
+
+
+            return new AssignmentStatementNode(gridPointNode, memberIDNode, expressionNode);
         }
 
         /// <summary>
