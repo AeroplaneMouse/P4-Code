@@ -108,25 +108,40 @@ namespace CellularCompiler.Builders
             return new CaseStatementNode(listValues, Visit(context.statement()));
         }
 
-        private List<MemberIdNode> ExtractMemberIdNodes(IParseTree[] context)
+        private List<MemberIDNode> ExtractMemberIDNodes(IParseTree[] context)
         {
-            int startIndex = 0;
-            int endIndex = 0;
+            int startIndex = -1;
+            int endIndex = -1;
             int currentIndex = 0;
 
             // Extract elements
             foreach (IParseTree c in context)
             {
-                if (c.GetText() == "(")
-                    startIndex = currentIndex;
-                else if (c.GetText() == ")")
-                    endIndex = currentIndex;
-
+                // Find start and end of match values
+                switch (c.GetText())
+                {
+                    case "(":
+                        startIndex = currentIndex; break;
+                    case ")":
+                        endIndex = currentIndex; break;
+                }
+                
+                // Break when end of match values has been found
+                if (endIndex == currentIndex)
+                    break;
                 currentIndex++;
             }
 
             // Construct nodes
-            List<MemberIdNode> nodes = null;
+            List<MemberIDNode> nodes = new List<MemberIDNode>();
+            for(currentIndex = startIndex; currentIndex <= endIndex; currentIndex++)
+            {
+                string label = context[currentIndex].GetText();
+                if (label == "state")
+                    continue;
+                else
+                    nodes.Add(new MemberIDNode(label));
+            }
 
             return nodes;
         }
