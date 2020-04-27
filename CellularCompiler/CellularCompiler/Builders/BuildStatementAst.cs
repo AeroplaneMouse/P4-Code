@@ -7,6 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CellularCompiler.Nodes.Members;
+using CellularCompiler.Nodes;
+using System.Net.Mime;
+using CellularCompiler.Models;
+using System.Linq.Expressions;
 
 namespace CellularCompiler.Builders
 {
@@ -89,7 +93,14 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context)
         {
-            AssignmentStatementNode node = new AssignmentStatementNode();
+            GridPointNode gridPointNode = new GridPointNode(new List<ExpressionNode>());
+            MemberIDNode memberIDNode = new MemberIDNode(context.member().GetText());
+
+            CoronaParser.GridPointContext gridPoint = context.gridPoint();
+            CoronaParser.ExprContext[] expressionValues = gridPoint.expr();
+
+            foreach (CoronaParser.ExprContext value in expressionValues)
+                gridPointNode.ExpressionNodes.Add(new BuildExpressionAst().Visit(value));
 
             return base.VisitAssignmentStatement(context);
         }

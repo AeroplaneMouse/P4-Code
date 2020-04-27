@@ -108,7 +108,7 @@ RULES
 					grid[.x, .y-1].Direction = "s";
 				}
 			}
-			return .white;
+			return white;
 		}
 		[white]
 		{
@@ -126,7 +126,7 @@ RULES
 
 				}
 			}
-			return .black;
+			return black;
 		}
 	}
 }
