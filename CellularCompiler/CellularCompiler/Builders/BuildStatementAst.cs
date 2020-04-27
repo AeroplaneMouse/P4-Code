@@ -95,7 +95,12 @@ namespace CellularCompiler.Builders
             return new CaseStatementNode(listValues, Visit(context.statement()));
         }
 
-        private List<MemberIDNode> ExtractMemberIDNodes(IParseTree[] context)
+        /// <summary>
+        /// Extracts MemberIDNodes from matchStatement context
+        /// </summary>
+        /// <param name="context">Children of context</param>
+        /// <returns>A list of MemberIDNodes</returns>
+        private List<MemberIDNode> ExtractMemberIDNodes(IList<IParseTree> context)
         {
             int startIndex = -1;
             int endIndex = -1;
