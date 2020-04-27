@@ -126,7 +126,7 @@ namespace CellularCompiler.Builders
 
             // Construct nodes
             List<MemberIDNode> nodes = new List<MemberIDNode>();
-            for(currentIndex = startIndex; currentIndex <= endIndex; currentIndex++)
+            for(currentIndex = startIndex + 1; currentIndex < endIndex; currentIndex++)
             {
                 string label = context[currentIndex].GetText();
                 if (label == "state")
