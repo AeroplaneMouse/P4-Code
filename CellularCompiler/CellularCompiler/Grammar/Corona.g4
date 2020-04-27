@@ -37,7 +37,7 @@ statement
 	;
 
 selectionStatement
-	: 'match' '(' ('state' | member) (',' ('state' | member))*  ')' '{' caseStatement+ '}'
+	: 'match' '(' ('state' | member) (',' member)*  ')' '{' caseStatement+ '}'
 	;
 
 iterationStatement
