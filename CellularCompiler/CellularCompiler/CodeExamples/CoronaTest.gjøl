@@ -68,7 +68,14 @@ match(state)
    for(2 + 2; 2 < 3; 4 + 4)
 		return 2;	
 	
+	match(state)
+	{
+		[black]
+		{
 
+		}
+	}
+	
 	#grid[27, 52].Direction = "n";#
 
 	#Makes a rectangle of black cells from x = 2 to 5 and y = 2 to 4#

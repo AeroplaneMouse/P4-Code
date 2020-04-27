@@ -7,5 +7,10 @@ namespace CellularCompiler.Nodes.Members
     class MemberIDNode
     {
         public string Label { get; set; }
+
+        public MemberIDNode(string label)
+        {
+            Label = label;
+        }
     }
 }
