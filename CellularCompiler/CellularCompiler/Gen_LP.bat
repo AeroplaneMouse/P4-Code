@@ -1,7 +1,8 @@
 @ECHO off
 
 REM Check for arguments
-SET GRAMMAR_NAME=%1
+REM SET GRAMMAR_NAME=%1
+SET GRAMMAR_NAME=Corona
 GOTO CheckGrammarName
 
 REM Ask the user to enter the grammar name
