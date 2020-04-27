@@ -51,28 +51,20 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context)
         {
+            SelectionStatementNode node = new SelectionStatementNode(new List<MemberIDNode>(), new List<CaseStatementNode>());
+
             bool macthOnState = context.children[2].GetText() == "state";
 
-            foreach(var c in context.children)
-            {
-                Console.WriteLine(c);
-            }
+            CoronaParser.CaseStatementContext[] caseStatements = context.caseStatement();
 
-            foreach(var value in context.caseStatement())
+            foreach (var value in caseStatements)
             {
-                
-            }
-            BuildMemberAst membVisitor = new BuildMemberAst();
-            SelectionStatementNode node = new SelectionStatementNode();
-            CoronaParser.MemberContext[] members = context.member();
-            node = new SelectionStatementNode(new List<StatementNode>());
-            foreach (CoronaParser.MemberContext member in members)
-            {
-                node.Members.Add(Visit(member));
+                node.CaseStatements.Add(Visit(value) as CaseStatementNode);
             }
 
 
-            return base.VisitSelectionStatement(context);
+
+            return node;
         }
 
         public override StatementNode VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context)
