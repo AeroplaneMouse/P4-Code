@@ -1,8 +1,10 @@
 using Antlr4.Runtime.Misc;
+using Antlr4.Runtime.Tree;
 using CellularCompiler.Nodes.Math;
 using CellularCompiler.Nodes.Statement;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CellularCompiler.Nodes.Members;
 
@@ -51,6 +53,20 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context)
         {
+            // Check for state
+
+            // Extract member identifiers
+
+            // Visit member identifiers
+
+            // Extract caseStatements
+
+            // Visit caseStatements
+
+            // Return SelectionStatementNode(matchOnState, memberIdentifiers, caseStatements)
+            
+
+
             bool macthOnState = context.children[2].GetText() == "state";
 
             foreach(var c in context.children)
@@ -71,6 +87,7 @@ namespace CellularCompiler.Builders
                 node.Members.Add(Visit(member));
             }
 
+            //context.children[0].GetText == "state";
 
             return base.VisitSelectionStatement(context);
         }
@@ -89,6 +106,29 @@ namespace CellularCompiler.Builders
 
 
             return new CaseStatementNode(listValues, Visit(context.statement()));
+        }
+
+        private List<MemberIdNode> ExtractMemberIdNodes(IParseTree[] context)
+        {
+            int startIndex = 0;
+            int endIndex = 0;
+            int currentIndex = 0;
+
+            // Extract elements
+            foreach (IParseTree c in context)
+            {
+                if (c.GetText() == "(")
+                    startIndex = currentIndex;
+                else if (c.GetText() == ")")
+                    endIndex = currentIndex;
+
+                currentIndex++;
+            }
+
+            // Construct nodes
+            List<MemberIdNode> nodes = null;
+
+            return nodes;
         }
 
         public override StatementNode VisitAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context)
