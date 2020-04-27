@@ -958,14 +958,10 @@ public partial class CoronaParser : Parser {
 
 	public partial class ReturnStatementContext : ParserRuleContext {
 
-		public StatementContext returnstatement()
+		public ExprContext expr()
 		{
-			return GetRuleContext<StatementContext>(0);
+			return GetRuleContext<ExprContext>(0);
 		}
-		//public ExprContext returnexpression()
-		//{
-		//	return GetRuleContexts<ExprContext>();!!!ER IKKE LAVET KORREKT!!!
-		//}
 		public ReturnStatementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{

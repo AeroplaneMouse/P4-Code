@@ -8,13 +8,11 @@ namespace CellularCompiler.Nodes.Statement
     class ReturnStatementNode : StatementNode
     {
         public ExpressionNode ReturnExpression { get; set; }
-        public StatementNode ReturnStatement { get; set; }
         public ReturnStatementNode()
-            : this(null, null) { }
-        public ReturnStatementNode(ExpressionNode returnexpression, StatementNode returnstatement)
+            : this(null) { }
+        public ReturnStatementNode(ExpressionNode returnexpression)
         {
             ReturnExpression = returnexpression;
-            ReturnStatement = returnstatement;
         }
     }
 }

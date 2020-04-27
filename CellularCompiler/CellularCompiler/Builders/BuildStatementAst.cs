@@ -4,6 +4,7 @@ using CellularCompiler.Nodes.Statement;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Builders
 {
@@ -37,33 +38,57 @@ namespace CellularCompiler.Builders
             return node;
         }
 
-        //public override StatementNode VisitReturnStatement(CoronaParser.ReturnStatementContext context)
-        //{
-        //    BuildExpressionAst exprVisitor = new BuildExpressionAst();
-        //    ReturnStatementNode node = new ReturnStatementNode();
+        public override StatementNode VisitReturnStatement(CoronaParser.ReturnStatementContext context)
+        {
+            BuildExpressionAst exprVisitor = new BuildExpressionAst();
+            ReturnStatementNode node = new ReturnStatementNode();
 
-        //    //Visit Statement
-        //    node.ReturnStatement = Visit(context.returnstatement());
+            //Visit expression
+            node.ReturnExpression = exprVisitor.Visit(context.expr());
 
-        //    //Visit expression
-        //    //node.ReturnExpression = exprVisitor.Visit(context.returnexpression()); !!!ER IKKE LAVET KORREKT!!!
-
-        //    return node;
-        //}
+            return node;
+        }
 
         public override StatementNode VisitSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context)
         {
+            bool macthOnState = context.children[2].GetText() == "state";
+
+            foreach(var c in context.children)
+            {
+                Console.WriteLine(c);
+            }
+
+            foreach(var value in context.caseStatement())
+            {
+                
+            }
             BuildMemberAst membVisitor = new BuildMemberAst();
             SelectionStatementNode node = new SelectionStatementNode();
             CoronaParser.MemberContext[] members = context.member();
-            //node = new SelectionStatementNode(new List<StatementNode>());
-            //foreach (CoronaParser.MemberContext member in members)
-            //{
-            //    node.Members.Add(Visit(member));
-            //} !!!ER IKKE LAVET KORREKT!!!
+            node = new SelectionStatementNode(new List<StatementNode>());
+            foreach (CoronaParser.MemberContext member in members)
+            {
+                node.Members.Add(Visit(member));
+            }
 
 
             return base.VisitSelectionStatement(context);
+        }
+
+        public override StatementNode VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context)
+        {
+            BuildMemberValueAst memberValueVisitor = new BuildMemberValueAst();
+            CoronaParser.MemberValueContext[] memberValues = context.memberValue();
+
+            List<MemberValueNode> listValues = new List<MemberValueNode>();
+
+            foreach (var value in memberValues)
+            {
+                listValues.Add(memberValueVisitor.Visit(value));
+            }
+
+
+            return new CaseStatementNode(listValues, Visit(context.statement()));
         }
 
         public override StatementNode VisitAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context)
