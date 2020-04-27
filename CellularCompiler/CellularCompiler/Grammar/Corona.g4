@@ -62,8 +62,7 @@ caseStatement
 
 expr
 	: value=INT 									# NumberExpr
-	| value=ID										# NumberExpr
-	| member 										# NumberExpr
+	| member 										# IdentifierExpr
 	| left=expr op=operator right=expr 				# InfixExpr
 	;
 

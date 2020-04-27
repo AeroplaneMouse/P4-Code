@@ -37,5 +37,10 @@ namespace CellularCompiler.Builders
                 double.Parse(context.value.Text, NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent)
             );
         }
+
+        public override ExpressionNode VisitIdentifierExpr(CoronaParser.IdentifierExprContext context)
+        {
+            return new IdentifierNode(context.GetText());
+        }
     }
 }

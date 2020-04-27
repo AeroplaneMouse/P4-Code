@@ -50,13 +50,13 @@ match(state)
 		{
 			match(.Direction){
 				["n"]
-					grid[x+1, y].Direction = "e";
+					grid[.x+1, .y].Direction = "e";
 				["s"]
-					grid[x-1, y].Direction = "w";
+					grid[.x-1, .y].Direction = "w";
 				["e"]
-					grid[x, y-1].Direction = "s";
+					grid[.x, .y-1].Direction = "s";
 				["w"]
-					grid[x, y+1].Direction = "n";
+					grid[.x, .y+1].Direction = "n";
 				[_]
 				{
 
@@ -108,25 +108,25 @@ RULES
 					grid[.x, .y-1].Direction = "s";
 				}
 			}
-			return white;
+			return .white;
 		}
 		[white]
 		{
 			match(.Direction){
 				["n"]
-					grid[x+1, y].Direction = "e";
+					grid[.x+1, .y].Direction = "e";
 				["s"]
-					grid[x-1, y].Direction = "w";
+					grid[.x-1, .y].Direction = "w";
 				["e"]
-					grid[x, y-1].Direction = "s";
+					grid[.x, .y-1].Direction = "s";
 				["w"]
-					grid[x, y+1].Direction = "n";
+					grid[.x, .y+1].Direction = "n";
 				[_]
 				{
 
 				}
 			}
-			return black;
+			return .black;
 		}
 	}
 }

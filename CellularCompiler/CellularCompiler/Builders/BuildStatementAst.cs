@@ -87,6 +87,13 @@ namespace CellularCompiler.Builders
             return new CaseStatementNode(listValues, Visit(context.statement()));
         }
 
+        public override StatementNode VisitAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context)
+        {
+            AssignmentStatementNode node = new AssignmentStatementNode();
+
+            return base.VisitAssignmentStatement(context);
+        }
+
         /// <summary>
         /// Extracts MemberIDNodes from matchStatement context
         /// </summary>
@@ -128,13 +135,6 @@ namespace CellularCompiler.Builders
             }
 
             return nodes;
-        }
-
-        public override StatementNode VisitAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context)
-        {
-            AssignmentStatementNode node = new AssignmentStatementNode();
-
-            return base.VisitAssignmentStatement(context);
         }
     }
 }
