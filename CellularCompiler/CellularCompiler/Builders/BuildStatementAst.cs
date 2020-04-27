@@ -24,7 +24,7 @@ namespace CellularCompiler.Builders
             node.Conditioner = exprVisitor.Visit(context.condition);
             node.Iterator = exprVisitor.Visit(context.iterator);
 
-            // Visit statements
+            // Visit statement
             node.Statement = Visit(context.statement());
 
             return node;
@@ -32,12 +32,12 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitCompoundStatement(CoronaParser.CompoundStatementContext context)
         {
-            CoronaParser.StatementContext[] statements = context.statement();
             CompoundStatementNode node = new CompoundStatementNode(new List<StatementNode>());
+            
+            // Visit each statement in the compound statement
+            CoronaParser.StatementContext[] statements = context.statement();
             foreach (CoronaParser.StatementContext statement in statements)
-            {
                 node.Statements.Add(Visit(statement));
-            }
 
             return node;
         }
