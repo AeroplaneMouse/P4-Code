@@ -9,11 +9,6 @@ namespace CellularCompiler.Builders
 {
     class BuildStatementAst : CoronaBaseVisitor<StatementNode>
     {
-        public override StatementNode VisitStatement(CoronaParser.StatementContext context)
-        {
-            return base.Visit(context);
-        }
-
         public override StatementNode VisitIterationStatement(CoronaParser.IterationStatementContext context)
         {
             BuildExpressionAst exprVisitor = new BuildExpressionAst();
@@ -42,19 +37,19 @@ namespace CellularCompiler.Builders
             return node;
         }
 
-        public override StatementNode VisitReturnStatement(CoronaParser.ReturnStatementContext context)
-        {
-            BuildExpressionAst exprVisitor = new BuildExpressionAst();
-            ReturnStatementNode node = new ReturnStatementNode();
+        //public override StatementNode VisitReturnStatement(CoronaParser.ReturnStatementContext context)
+        //{
+        //    BuildExpressionAst exprVisitor = new BuildExpressionAst();
+        //    ReturnStatementNode node = new ReturnStatementNode();
 
-            //Visit Statement
-            node.ReturnStatement = Visit(context.returnstatement());
+        //    //Visit Statement
+        //    node.ReturnStatement = Visit(context.returnstatement());
 
-            //Visit expression
-            //node.ReturnExpression = exprVisitor.Visit(context.returnexpression()); !!!ER IKKE LAVET KORREKT!!!
+        //    //Visit expression
+        //    //node.ReturnExpression = exprVisitor.Visit(context.returnexpression()); !!!ER IKKE LAVET KORREKT!!!
 
-            return node;
-        }
+        //    return node;
+        //}
 
         public override StatementNode VisitSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context)
         {

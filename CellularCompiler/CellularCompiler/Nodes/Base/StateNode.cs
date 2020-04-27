@@ -7,12 +7,15 @@ namespace CellularCompiler.Nodes.Base
 {
     class StateNode : BaseNode
     {
-        public string Label { get; set; }
+        public List<string> Labels { get; set; }
         public List<MemberNode> Members { get; set; }
 
-        public StateNode(string label, List<MemberNode> members)
+        public StateNode()
+            : this(null, null) { }
+
+        public StateNode(List<string> labels, List<MemberNode> members)
         {
-            Label = label;
+            Labels = labels;
             Members = members;
         }
     }
