@@ -59,22 +59,14 @@ namespace CellularCompiler.Builders
 
             // Extract member identifiers
             List<MemberIDNode> memberIDNodes = ExtractMemberIDNodes(context.children);
-
-            // Visit member identifiers
+            node.MemberIDs = memberIDNodes;
 
             // Extract caseStatements
             CoronaParser.CaseStatementContext[] caseStatements = context.caseStatement();
 
             // Visit caseStatements
-            foreach (var value in caseStatements)
-            {
+            foreach (CoronaParser.CaseStatementContext value in caseStatements)
                 node.CaseStatements.Add(Visit(value) as CaseStatementNode);
-            }
-
-            // Return SelectionStatementNode(matchOnState, memberIdentifiers, caseStatements)
-
-            //context.children[0].GetText == "state";
-
 
             return node;
         }
