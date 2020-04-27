@@ -1,3 +1,4 @@
+using Antlr4.Runtime.Misc;
 using CellularCompiler.Nodes.Math;
 using CellularCompiler.Nodes.Statement;
 using System;
@@ -8,10 +9,14 @@ namespace CellularCompiler.Builders
 {
     class BuildStatementAst : CoronaBaseVisitor<StatementNode>
     {
+        public override StatementNode VisitStatement(CoronaParser.StatementContext context)
+        {
+            return base.Visit(context);
+        }
+
         public override StatementNode VisitIterationStatement(CoronaParser.IterationStatementContext context)
         {
             BuildExpressionAst exprVisitor = new BuildExpressionAst();
-            BuildStatementAst statementVisitor = new BuildStatementAst();
             IterationStatementNode node = new IterationStatementNode();
 
             // Visit expressions
@@ -20,14 +25,58 @@ namespace CellularCompiler.Builders
             node.Iterator = exprVisitor.Visit(context.iterator);
 
             // Visit statements
-            node.Statement = statementVisitor.Visit(context.statement());
+            node.Statement = Visit(context.statement());
 
             return node;
         }
 
         public override StatementNode VisitCompoundStatement(CoronaParser.CompoundStatementContext context)
         {
-            return base.VisitCompoundStatement(context);
+            CoronaParser.StatementContext[] statements = context.statement();
+            CompoundStatementNode node = new CompoundStatementNode(new List<StatementNode>());
+            foreach (CoronaParser.StatementContext statement in statements)
+            {
+                node.Statements.Add(Visit(statement));
+            }
+
+            return node;
+        }
+
+        public override StatementNode VisitReturnStatement(CoronaParser.ReturnStatementContext context)
+        {
+            BuildExpressionAst exprVisitor = new BuildExpressionAst();
+            ReturnStatementNode node = new ReturnStatementNode();
+
+            //Visit Statement
+            node.ReturnStatement = Visit(context.returnstatement());
+
+            //Visit expression
+            //node.ReturnExpression = exprVisitor.Visit(context.returnexpression()); !!!ER IKKE LAVET KORREKT!!!
+
+            return node;
+        }
+
+        public override StatementNode VisitSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context)
+        {
+            BuildMemberAst membVisitor = new BuildMemberAst();
+            SelectionStatementNode node = new SelectionStatementNode();
+            CoronaParser.MemberContext[] members = context.member();
+            //node = new SelectionStatementNode(new List<StatementNode>());
+            //foreach (CoronaParser.MemberContext member in members)
+            //{
+            //    node.Members.Add(Visit(member));
+            //} !!!ER IKKE LAVET KORREKT!!!
+
+
+            return base.VisitSelectionStatement(context);
+        }
+
+        public override StatementNode VisitAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context)
+        {
+            AssignmentStatementNode node = new AssignmentStatementNode();
+
+            return base.VisitAssignmentStatement(context);
         }
     }
 }
+

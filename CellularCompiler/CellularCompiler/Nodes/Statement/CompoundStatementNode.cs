@@ -6,7 +6,7 @@ namespace CellularCompiler.Nodes.Statement
 {
     class CompoundStatementNode : StatementNode
     {
-        List<StatementNode> Statements { get; set; }
+        public List<StatementNode> Statements { get; set; }
 
         public CompoundStatementNode()
             : this(null) { }
