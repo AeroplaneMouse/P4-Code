@@ -10,14 +10,14 @@ namespace CellularCompiler.Nodes.Statement
     {
         public bool MatchOnState { get; set;}
         public List<MemberIDNode> MemberIDs { get; set; }
-        
-
         public List<CaseStatementNode> CaseStatements { get; set; }
-        public SelectionStatementNode()
-            : this(null, null) { }
 
-        public SelectionStatementNode(List<MemberIDNode> memberIDs, List<CaseStatementNode> caseStatements)
+        public SelectionStatementNode()
+            : this(false, null, null) { }
+
+        public SelectionStatementNode(bool matchOnState, List<MemberIDNode> memberIDs, List<CaseStatementNode> caseStatements)
         {
+            MatchOnState = matchOnState;
             MemberIDs = memberIDs;
             CaseStatements = caseStatements;
         }

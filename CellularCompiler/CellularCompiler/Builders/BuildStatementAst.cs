@@ -57,35 +57,31 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context)
         {
-            SelectionStatementNode node = new SelectionStatementNode(new List<MemberIDNode>(), new List<CaseStatementNode>());
             // Check for state
             bool matchOnState = context.children[2].GetText() == "state";
 
             // Extract member identifiers
             List<MemberIDNode> memberIDNodes = ExtractMemberIDNodes(context.children);
-            node.MemberIDs = memberIDNodes;
 
-            // Extract caseStatements
+            // Extract and visit caseStatements
+            List<CaseStatementNode> caseNodes = new List<CaseStatementNode>();
             CoronaParser.CaseStatementContext[] caseStatements = context.caseStatement();
+            foreach (CoronaParser.CaseStatementContext cs in caseStatements)
+                caseNodes.Add(Visit(cs) as CaseStatementNode);
 
-            // Visit caseStatements
-            foreach (CoronaParser.CaseStatementContext value in caseStatements)
-                node.CaseStatements.Add(Visit(value) as CaseStatementNode);
-
-            return node;
+            return new SelectionStatementNode(matchOnState, memberIDNodes, caseNodes);
         }
 
         public override StatementNode VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context)
         {
             BuildMemberValueAst memberValueVisitor = new BuildMemberValueAst();
             CoronaParser.MemberValueContext[] memberValues = context.memberValue();
-
+            
             List<MemberValueNode> listValues = new List<MemberValueNode>();
-
+            
+            // Visit each memberValue and add it to the CaseStatementNode
             foreach (var value in memberValues)
-            {
                 listValues.Add(memberValueVisitor.Visit(value));
-            }
 
 
             return new CaseStatementNode(listValues, Visit(context.statement()));
@@ -105,7 +101,6 @@ namespace CellularCompiler.Builders
             // Visit expression
             ExpressionNode expressionNode = expressionVisitor.Visit(context.expr());
 
-
             return new AssignmentStatementNode(gridPointNode, memberIDNode, expressionNode);
         }
 
@@ -120,10 +115,9 @@ namespace CellularCompiler.Builders
             int endIndex = -1;
             int currentIndex = 0;
 
-            // Extract elements
+            // Find start and end
             foreach (IParseTree c in context)
             {
-                // Find start and end of match values
                 switch (c.GetText())
                 {
                     case "(":
@@ -132,7 +126,7 @@ namespace CellularCompiler.Builders
                         endIndex = currentIndex; break;
                 }
                 
-                // Break when end of match values has been found
+                // Break, when the end of match values has been found
                 if (endIndex == currentIndex)
                     break;
                 currentIndex++;
