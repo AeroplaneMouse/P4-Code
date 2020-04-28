@@ -80,7 +80,7 @@ memberValue
 	;
 
 arrowValue
-	: INT '->' INT
+	: '0' '->' INT
 	;
 
 member
