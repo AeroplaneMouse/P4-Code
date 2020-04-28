@@ -257,17 +257,75 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitOperator([NotNull] CoronaParser.OperatorContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.memberValue"/>.
+	/// Enter a parse tree produced by the <c>ArrowMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMemberValue([NotNull] CoronaParser.MemberValueContext context) { }
+	public virtual void EnterArrowMemberValue([NotNull] CoronaParser.ArrowMemberValueContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.memberValue"/>.
+	/// Exit a parse tree produced by the <c>ArrowMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMemberValue([NotNull] CoronaParser.MemberValueContext context) { }
+	public virtual void ExitArrowMemberValue([NotNull] CoronaParser.ArrowMemberValueContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>IntMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIntMemberValue([NotNull] CoronaParser.IntMemberValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>IntMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIntMemberValue([NotNull] CoronaParser.IntMemberValueContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>StringMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStringMemberValue([NotNull] CoronaParser.StringMemberValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>StringMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStringMemberValue([NotNull] CoronaParser.StringMemberValueContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>IdentifierMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIdentifierMemberValue([NotNull] CoronaParser.IdentifierMemberValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>IdentifierMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIdentifierMemberValue([NotNull] CoronaParser.IdentifierMemberValueContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>DefaultMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDefaultMemberValue([NotNull] CoronaParser.DefaultMemberValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>DefaultMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDefaultMemberValue([NotNull] CoronaParser.DefaultMemberValueContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.arrowValue"/>.
 	/// <para>The default implementation does nothing.</para>

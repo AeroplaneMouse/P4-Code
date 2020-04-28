@@ -72,11 +72,11 @@ operator
 	;
 
 memberValue
-	: arrowValue
-	| INT
-	| STRING
-	| ID
-	| '_'
+	: arrowValue		# ArrowMemberValue
+	| value=INT       # IntMemberValue
+	| value=STRING    # StringMemberValue
+	| value=ID        # IdentifierMemberValue
+	| '_'					# DefaultMemberValue
 	;
 
 arrowValue

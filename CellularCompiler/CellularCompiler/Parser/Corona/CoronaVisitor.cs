@@ -143,11 +143,40 @@ public interface ICoronaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitOperator([NotNull] CoronaParser.OperatorContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CoronaParser.memberValue"/>.
+	/// Visit a parse tree produced by the <c>ArrowMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitMemberValue([NotNull] CoronaParser.MemberValueContext context);
+	Result VisitArrowMemberValue([NotNull] CoronaParser.ArrowMemberValueContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>IntMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIntMemberValue([NotNull] CoronaParser.IntMemberValueContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>StringMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStringMemberValue([NotNull] CoronaParser.StringMemberValueContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>IdentifierMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIdentifierMemberValue([NotNull] CoronaParser.IdentifierMemberValueContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>DefaultMemberValue</c>
+	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDefaultMemberValue([NotNull] CoronaParser.DefaultMemberValueContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoronaParser.arrowValue"/>.
 	/// </summary>

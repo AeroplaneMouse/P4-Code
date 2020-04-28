@@ -1,13 +1,31 @@
 ﻿using System;
+using Antlr4.Runtime.Misc;
 using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Builders
 {
     class BuildMemberValueAst : CoronaBaseVisitor<MemberValueNode>
     {
-        public override MemberValueNode VisitMemberValue(CoronaParser.MemberValueContext context)
+        public override MemberValueNode VisitIntMemberValue([NotNull] CoronaParser.IntMemberValueContext context)
         {
-            return base.VisitMemberValue(context);
+            return new IntValueNode(
+                Int32.Parse(context.value.Text)
+            );
+        }
+
+        public override MemberValueNode VisitStringMemberValue([NotNull] CoronaParser.StringMemberValueContext context)
+        {
+            return new StringValueNode(context.value.Text);
+        }
+
+        public override MemberValueNode VisitIdentifierMemberValue([NotNull] CoronaParser.IdentifierMemberValueContext context)
+        {
+            return new IdentifierValueNode(context.value.Text);
+        }
+
+        public override MemberValueNode VisitDefaultMemberValue([NotNull] CoronaParser.DefaultMemberValueContext context)
+        {
+            return new DefaultValueNode();
         }
 
         public override MemberValueNode VisitArrowValue(CoronaParser.ArrowValueContext context)

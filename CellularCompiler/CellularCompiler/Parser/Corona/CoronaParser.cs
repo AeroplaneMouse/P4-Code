@@ -1274,28 +1274,103 @@ public partial class CoronaParser : Parser {
 	}
 
 	public partial class MemberValueContext : ParserRuleContext {
-		public ArrowValueContext arrowValue() {
-			return GetRuleContext<ArrowValueContext>(0);
-		}
-		public ITerminalNode INT() { return GetToken(CoronaParser.INT, 0); }
-		public ITerminalNode STRING() { return GetToken(CoronaParser.STRING, 0); }
-		public ITerminalNode ID() { return GetToken(CoronaParser.ID, 0); }
 		public MemberValueContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_memberValue; } }
+	 
+		public MemberValueContext() { }
+		public virtual void CopyFrom(MemberValueContext context) {
+			base.CopyFrom(context);
+		}
+	}
+	public partial class IdentifierMemberValueContext : MemberValueContext {
+		public IToken value;
+		public ITerminalNode ID() { return GetToken(CoronaParser.ID, 0); }
+		public IdentifierMemberValueContext(MemberValueContext context) { CopyFrom(context); }
 		public override void EnterRule(IParseTreeListener listener) {
 			ICoronaListener typedListener = listener as ICoronaListener;
-			if (typedListener != null) typedListener.EnterMemberValue(this);
+			if (typedListener != null) typedListener.EnterIdentifierMemberValue(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
 			ICoronaListener typedListener = listener as ICoronaListener;
-			if (typedListener != null) typedListener.ExitMemberValue(this);
+			if (typedListener != null) typedListener.ExitIdentifierMemberValue(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICoronaVisitor<TResult> typedVisitor = visitor as ICoronaVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitMemberValue(this);
+			if (typedVisitor != null) return typedVisitor.VisitIdentifierMemberValue(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class IntMemberValueContext : MemberValueContext {
+		public IToken value;
+		public ITerminalNode INT() { return GetToken(CoronaParser.INT, 0); }
+		public IntMemberValueContext(MemberValueContext context) { CopyFrom(context); }
+		public override void EnterRule(IParseTreeListener listener) {
+			ICoronaListener typedListener = listener as ICoronaListener;
+			if (typedListener != null) typedListener.EnterIntMemberValue(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ICoronaListener typedListener = listener as ICoronaListener;
+			if (typedListener != null) typedListener.ExitIntMemberValue(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICoronaVisitor<TResult> typedVisitor = visitor as ICoronaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitIntMemberValue(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class StringMemberValueContext : MemberValueContext {
+		public IToken value;
+		public ITerminalNode STRING() { return GetToken(CoronaParser.STRING, 0); }
+		public StringMemberValueContext(MemberValueContext context) { CopyFrom(context); }
+		public override void EnterRule(IParseTreeListener listener) {
+			ICoronaListener typedListener = listener as ICoronaListener;
+			if (typedListener != null) typedListener.EnterStringMemberValue(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ICoronaListener typedListener = listener as ICoronaListener;
+			if (typedListener != null) typedListener.ExitStringMemberValue(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICoronaVisitor<TResult> typedVisitor = visitor as ICoronaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitStringMemberValue(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class ArrowMemberValueContext : MemberValueContext {
+		public ArrowValueContext arrowValue() {
+			return GetRuleContext<ArrowValueContext>(0);
+		}
+		public ArrowMemberValueContext(MemberValueContext context) { CopyFrom(context); }
+		public override void EnterRule(IParseTreeListener listener) {
+			ICoronaListener typedListener = listener as ICoronaListener;
+			if (typedListener != null) typedListener.EnterArrowMemberValue(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ICoronaListener typedListener = listener as ICoronaListener;
+			if (typedListener != null) typedListener.ExitArrowMemberValue(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICoronaVisitor<TResult> typedVisitor = visitor as ICoronaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitArrowMemberValue(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class DefaultMemberValueContext : MemberValueContext {
+		public DefaultMemberValueContext(MemberValueContext context) { CopyFrom(context); }
+		public override void EnterRule(IParseTreeListener listener) {
+			ICoronaListener typedListener = listener as ICoronaListener;
+			if (typedListener != null) typedListener.EnterDefaultMemberValue(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ICoronaListener typedListener = listener as ICoronaListener;
+			if (typedListener != null) typedListener.ExitDefaultMemberValue(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICoronaVisitor<TResult> typedVisitor = visitor as ICoronaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitDefaultMemberValue(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -1309,30 +1384,35 @@ public partial class CoronaParser : Parser {
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,16,Context) ) {
 			case 1:
+				_localctx = new ArrowMemberValueContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
 				State = 191; arrowValue();
 				}
 				break;
 			case 2:
+				_localctx = new IntMemberValueContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 192; Match(INT);
+				State = 192; ((IntMemberValueContext)_localctx).value = Match(INT);
 				}
 				break;
 			case 3:
+				_localctx = new StringMemberValueContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 193; Match(STRING);
+				State = 193; ((StringMemberValueContext)_localctx).value = Match(STRING);
 				}
 				break;
 			case 4:
+				_localctx = new IdentifierMemberValueContext(_localctx);
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 194; Match(ID);
+				State = 194; ((IdentifierMemberValueContext)_localctx).value = Match(ID);
 				}
 				break;
 			case 5:
+				_localctx = new DefaultMemberValueContext(_localctx);
 				EnterOuterAlt(_localctx, 5);
 				{
 				State = 195; Match(T__28);
