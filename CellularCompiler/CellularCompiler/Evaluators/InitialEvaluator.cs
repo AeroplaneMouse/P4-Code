@@ -1,37 +1,33 @@
-﻿using CellularCompiler.Exceptions;
+﻿using System;
 using CellularCompiler.Models;
+using System.Collections.Generic;
+using CellularCompiler.Exceptions;
 using CellularCompiler.Nodes.Base;
 using CellularCompiler.Nodes.Members;
 using CellularCompiler.Nodes.Statement;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CellularCompiler.Evaluators
 {
-    class MainAstEvaluator
+    class InitialEvaluator
     {
-        public Grid Visit(MainNode node)
+        public void Visit(MainNode node, out Grid grid, out List<State> states, out List<Rule> rules)
         {
-            Grid grid = VisitGrid(node.GridNode);
+            grid = VisitGrid(node.GridNode);
 
             // Extract all states
-            List<State> states = new List<State>();
-            foreach(StatesNode s in node.StatesNodes)
+            states = new List<State>();
+            foreach (StatesNode s in node.StatesNodes)
                 VisitState(s, ref states);
 
             // Evaluate each statement in the initialNode, on the grid
             VisitInitial(node.InitialNode, ref grid);
 
             //node.RulesNode;
+            rules = new List<Rule>();
 
-
-
-
-            return grid;
         }
 
-        public Grid VisitGrid(GridNode node)
+        private  Grid VisitGrid(GridNode node)
         {
             // Extract the numbers of axies to create. Might be usefull later
             int axis = node.Members.Count;
@@ -55,13 +51,13 @@ namespace CellularCompiler.Evaluators
         /// </summary>
         /// <param name="node">The StatesNode from which the new states should be generated from.</param>
         /// <param name="stateList">A reference to the list, of which the extracted states should be added to.</param>
-        public void VisitState(StatesNode node, ref List<State> stateList)
+        private void VisitState(StatesNode node, ref List<State> stateList)
         {
             List<State> states = new List<State>();
 
             // Generete x new states, equal to the number of labels
             // TODO: Later, its members should also be saved
-            foreach(string l in node.Labels)
+            foreach (string l in node.Labels)
             {
                 stateList.Add(new State());
             }
@@ -72,10 +68,10 @@ namespace CellularCompiler.Evaluators
         /// </summary>
         /// <param name="node"></param>
         /// <param name="grid"></param>
-        public void VisitInitial(InitialNode node, ref Grid grid)
+        private void VisitInitial(InitialNode node, ref Grid grid)
         {
             //StatementAstEvaluator statementEvaluator = new StatementAstEvaluator();
-            //foreach(StatementNode s in node.Statements)
+            //foreach (StatementNode s in node.Statements)
             //    statementEvaluator.Visit(s, ref grid);
         }
 
