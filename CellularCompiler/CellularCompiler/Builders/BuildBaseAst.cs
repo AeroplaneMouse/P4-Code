@@ -29,7 +29,7 @@ namespace CellularCompiler.Builders
 
         public override BaseNode VisitStates(CoronaParser.StatesContext context)
         {
-            StateNode node = new StateNode(new List<string>(), new List<MemberNode>());
+            StatesNode node = new StatesNode(new List<string>(), new List<MemberNode>());
 
             //Get the ids for the states
             foreach(var id in context.ID())

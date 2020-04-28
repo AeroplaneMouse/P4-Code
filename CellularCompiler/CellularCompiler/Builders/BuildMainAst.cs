@@ -15,10 +15,10 @@ namespace CellularCompiler.Builders
             GridNode grid = baseVisitor.Visit(context.grid()) as GridNode;
 
             // Visit all states
-            List<StateNode> states = new List<StateNode>();
+            List<StatesNode> states = new List<StatesNode>();
             CoronaParser.StatesContext[] statesContext = context.states();
             foreach(CoronaParser.StatesContext s in statesContext)
-                states.Add(baseVisitor.Visit(s) as StateNode);
+                states.Add(baseVisitor.Visit(s) as StatesNode);
 
             // Visit initial
             InitialNode initial = baseVisitor.Visit(context.initial()) as InitialNode;
