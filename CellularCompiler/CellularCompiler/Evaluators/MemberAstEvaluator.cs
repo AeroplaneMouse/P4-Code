@@ -3,7 +3,7 @@ using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Evaluators
 {
-    class EvaluateMemberVisitor
+    class MemberAstEvaluator
     {
         
         public int Visit(ArrowValueNode node)

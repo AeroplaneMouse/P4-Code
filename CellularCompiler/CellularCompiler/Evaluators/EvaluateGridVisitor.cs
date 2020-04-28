@@ -7,8 +7,8 @@ namespace CellularCompiler.Evaluators
     {
         public Grid Visit(GridNode node)
         {
-            int x = new EvaluateMemberVisitor().Visit(node.Members[0]);
-            int y = new EvaluateMemberVisitor().Visit(node.Members[1]);
+            int x = new MemberAstEvaluator().Visit(node.Members[0]);
+            int y = new MemberAstEvaluator().Visit(node.Members[1]);
             return new Grid(x, y);
         }
     }

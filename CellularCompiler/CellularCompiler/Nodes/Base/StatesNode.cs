@@ -5,15 +5,15 @@ using System.Text;
 
 namespace CellularCompiler.Nodes.Base
 {
-    class StateNode : BaseNode
+    class StatesNode : BaseNode
     {
         public List<string> Labels { get; set; }
         public List<MemberNode> Members { get; set; }
 
-        public StateNode()
+        public StatesNode()
             : this(null, null) { }
 
-        public StateNode(List<string> labels, List<MemberNode> members)
+        public StatesNode(List<string> labels, List<MemberNode> members)
         {
             Labels = labels;
             Members = members;
