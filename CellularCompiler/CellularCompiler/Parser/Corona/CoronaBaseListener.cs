@@ -203,19 +203,19 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCaseStatement([NotNull] CoronaParser.CaseStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>NumberExpr</c>
+	/// Enter a parse tree produced by the <c>CompareExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNumberExpr([NotNull] CoronaParser.NumberExprContext context) { }
+	public virtual void EnterCompareExpr([NotNull] CoronaParser.CompareExprContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>NumberExpr</c>
+	/// Exit a parse tree produced by the <c>CompareExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNumberExpr([NotNull] CoronaParser.NumberExprContext context) { }
+	public virtual void ExitCompareExpr([NotNull] CoronaParser.CompareExprContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>IdentifierExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
@@ -231,15 +231,29 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIdentifierExpr([NotNull] CoronaParser.IdentifierExprContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>NumberExpr</c>
+	/// labeled alternative in <see cref="CoronaParser.mathExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNumberExpr([NotNull] CoronaParser.NumberExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>NumberExpr</c>
+	/// labeled alternative in <see cref="CoronaParser.mathExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNumberExpr([NotNull] CoronaParser.NumberExprContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>InfixExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.expr"/>.
+	/// labeled alternative in <see cref="CoronaParser.mathExpr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void EnterInfixExpr([NotNull] CoronaParser.InfixExprContext context) { }
 	/// <summary>
 	/// Exit a parse tree produced by the <c>InfixExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.expr"/>.
+	/// labeled alternative in <see cref="CoronaParser.mathExpr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -256,6 +270,18 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitOperator([NotNull] CoronaParser.OperatorContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.compareOperator"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCompareOperator([NotNull] CoronaParser.CompareOperatorContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.compareOperator"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCompareOperator([NotNull] CoronaParser.CompareOperatorContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ArrowMemberValue</c>
 	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.

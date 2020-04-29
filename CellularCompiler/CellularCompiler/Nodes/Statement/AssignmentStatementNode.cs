@@ -12,15 +12,24 @@ namespace CellularCompiler.Nodes.Statement
         public GridPointNode GridPoint { get; set; }
         public MemberIDNode MemberIDNode { get; set; }
         public ExpressionNode ExpressionNode { get; set; }
+        public string Value { get; set; }
 
         public AssignmentStatementNode()
-            : this(null, null, null) { }
+            : this(null, null, null, null) { }
 
-        public AssignmentStatementNode(GridPointNode gridPointNode, MemberIDNode memberIDNode, ExpressionNode expressionNode)
+        public AssignmentStatementNode(GridPointNode gridPointNode, MemberIDNode memberIDNode, string value)
+            : this(gridPointNode, memberIDNode, null, value) { }
+
+        public AssignmentStatementNode(GridPointNode gridPointNode, MemberIDNode memberIDNode, ExpressionNode expr)
+            : this(gridPointNode, memberIDNode, expr, null) { }
+
+        public AssignmentStatementNode(GridPointNode gridPointNode, MemberIDNode memberIDNode, ExpressionNode expressionNode, string value)
         {
             GridPoint = gridPointNode;
             MemberIDNode = memberIDNode;
             ExpressionNode = expressionNode;
+            Value = value;
         }
     }
+        
 }

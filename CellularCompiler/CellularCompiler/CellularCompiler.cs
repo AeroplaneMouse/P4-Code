@@ -45,7 +45,21 @@ namespace CellularCompiler
             // Build AST from CST
             MainNode ast = new BuildMainAst().VisitMain(cst);
 
-            // Evaluate grid
+            // Evaluate
+            InitialEvaluator inEval = new InitialEvaluator();
+            RunningEvaluator runEval = new RunningEvaluator();
+            Grid grid;
+            List<State> states;
+            List<Rule> rules;
+
+            inEval.Visit(ast, out grid, out states, out rules);
+            //runEval.DoStuff
+
+
+            return grid;
+
+
+
             //GridNode gridNode = (GridNode)ast.First();
             //return new EvaluateGridVisitor().Visit(gridNode);
             throw new NotImplementedException("What ever this is going to return, has yet to be implemented");

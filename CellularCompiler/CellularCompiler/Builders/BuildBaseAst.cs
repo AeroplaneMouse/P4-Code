@@ -17,8 +17,8 @@ namespace CellularCompiler.Builders
 
             // Extract and visit gridnode children
             BuildMemberAst memberVisitor = new BuildMemberAst();
-            List<IParseTree> memberDeclarations = context.memberBlock().children.ToList();
-            foreach (IParseTree t in memberDeclarations.Skip(1).SkipLast(1))
+            CoronaParser.MemberDeclarationContext[] mDeclarations = context.memberDeclaration();
+            foreach (CoronaParser.MemberDeclarationContext t in mDeclarations)
             {
                 MemberNode n = memberVisitor.Visit(t);
                 node.Members.Add(n);
@@ -29,7 +29,7 @@ namespace CellularCompiler.Builders
 
         public override BaseNode VisitStates(CoronaParser.StatesContext context)
         {
-            StateNode node = new StateNode(new List<string>(), new List<MemberNode>());
+            StatesNode node = new StatesNode(new List<string>(), new List<MemberNode>());
 
             //Get the ids for the states
             foreach(var id in context.ID())
