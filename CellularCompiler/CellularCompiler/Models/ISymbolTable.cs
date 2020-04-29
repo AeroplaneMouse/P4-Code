@@ -13,7 +13,5 @@ namespace CellularCompiler.Models
         Symbol RetrieveSymbol(string name);
 
         void InsertSymbol(Symbol symbol);
-
-        void SetAttribute();
     }
 }

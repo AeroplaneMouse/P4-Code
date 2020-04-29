@@ -8,6 +8,6 @@ namespace CellularCompiler.Models
     {
         public string Name { get; set; }
 
-        //Other things that are common for all symbols?
+
     }
 }

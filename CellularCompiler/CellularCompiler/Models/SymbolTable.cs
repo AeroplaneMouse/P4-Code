@@ -38,10 +38,5 @@ namespace CellularCompiler.Models
 
             return null;
         }
-
-        public void SetAttribute() //Den her bliver nedern fordi der nok skal være en metode for alle type klasser vi får
-        {
-            throw new NotImplementedException();
-        }
     }
 }
