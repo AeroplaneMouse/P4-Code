@@ -7,8 +7,8 @@ namespace CellularCompiler.Models
         public int XSize { get; }
         public int YSize { get; }
 
-        public int[,] Cells { get; }
-        public int[,] CellsNext { get; }
+        private int[,] Cells { get; }
+        private int[,] CellsNext { get; }
 
         public Grid(int xSize, int ySize)
         {
@@ -24,6 +24,11 @@ namespace CellularCompiler.Models
             for (int r = 0; r < XSize; r++)
                 for (int c = 0; c < YSize; c++)
                     action(r, c);
+        }
+
+        public void SetCell(int x, int y, int value)
+        {
+            CellsNext[x, y] = value;
         }
 
         public override string ToString()

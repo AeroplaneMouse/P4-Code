@@ -6,6 +6,7 @@ namespace CellularCompiler.Builders
 {
     class BuildExpressionAst : CoronaBaseVisitor<ExpressionNode>
     {
+
         public override ExpressionNode VisitInfixExpr(CoronaParser.InfixExprContext context)
         {
             // Get infix expression node type

@@ -91,17 +91,30 @@ namespace CellularCompiler.Builders
         {
             BuildExpressionAst expressionVisitor = new BuildExpressionAst();
             GridPointNode gridPointNode = new GridPointNode(new List<ExpressionNode>());
-            MemberIDNode memberIDNode = new MemberIDNode(context.member().GetText());
-
+            MemberIDNode memberIDNode = null;
+            if (context.member() != null)
+                memberIDNode = new MemberIDNode(context.member().GetText());
+             
             // Extract gridPoint and visit it's expressions
-            CoronaParser.ExprContext[] expressionValues = context.gridPoint().expr();
-            foreach (CoronaParser.ExprContext value in expressionValues)
-                gridPointNode.ExpressionNodes.Add(expressionVisitor.Visit(value));
+            CoronaParser.MathExprContext[] exprValues = context.gridPoint().mathExpr();
+            foreach (CoronaParser.MathExprContext expr in exprValues)
+                gridPointNode.ExpressionNodes.Add(expressionVisitor.Visit(expr));
 
             // Visit expression
-            ExpressionNode expressionNode = expressionVisitor.Visit(context.expr());
+            if (context.expr() != null)
+                return new AssignmentStatementNode(
+                    gridPointNode,
+                    memberIDNode,
+                    expressionVisitor.Visit(context.expr()));
 
-            return new AssignmentStatementNode(gridPointNode, memberIDNode, expressionNode);
+            // Visit string
+            else if (context.STRING() != null)
+                return new AssignmentStatementNode(
+                    gridPointNode,
+                    memberIDNode,
+                    context.STRING().GetText());
+            else
+                throw new ArgumentNullException();
         }
 
         /// <summary>

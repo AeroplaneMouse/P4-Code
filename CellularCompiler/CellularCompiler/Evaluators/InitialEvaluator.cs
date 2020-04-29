@@ -21,11 +21,15 @@ namespace CellularCompiler.Evaluators
 
             // Evaluate each statement in the initialNode, on the grid
             VisitInitial(node.InitialNode, ref grid);
+            grid.Push();
 
             //node.RulesNode;
             rules = new List<Rule>();
+            //rules = VisitRules(node.RulesNode);
 
         }
+
+        
 
         private  Grid VisitGrid(GridNode node)
         {
@@ -70,10 +74,19 @@ namespace CellularCompiler.Evaluators
         /// <param name="grid"></param>
         private void VisitInitial(InitialNode node, ref Grid grid)
         {
-            //StatementAstEvaluator statementEvaluator = new StatementAstEvaluator();
-            //foreach (StatementNode s in node.Statements)
-            //    statementEvaluator.Visit(s, ref grid);
+            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(ref grid);
+            foreach (StatementNode s in node.Statements)
+                statementEvaluator.Visit(s);
         }
 
+        /// <summary>
+        /// Extracts rules..
+        /// </summary>
+        /// <param name="rulesNode"></param>
+        /// <returns>A list of the extracted rules</returns>
+        private List<Rule> VisitRules(RulesNode rulesNode)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

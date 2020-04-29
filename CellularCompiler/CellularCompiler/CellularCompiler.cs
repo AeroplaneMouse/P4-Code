@@ -53,7 +53,10 @@ namespace CellularCompiler
             List<Rule> rules;
 
             inEval.Visit(ast, out grid, out states, out rules);
-            
+            //runEval.DoStuff
+
+
+            return grid;
 
 
 
