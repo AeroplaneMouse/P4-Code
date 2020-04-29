@@ -5,7 +5,7 @@ main
 	;
 
 grid
-	: 'GRID' memberBlock
+	: 'GRID' '{' memberDeclaration+ '}'
 	;
 
 states
@@ -21,7 +21,7 @@ rules
 	;
 
 memberBlock
-	: '{' memberDeclaration+ '}'
+	: '{' memberDeclaration* '}'
 	;
 
 memberDeclaration
@@ -45,7 +45,8 @@ iterationStatement
 	;
 
 assignmentStatement
-	: (gridPoint member? | ID) '=' (expr | STRING) ';'
+	: gridPoint member? '=' (expr | STRING) ';'
+	| ID = (expr | STRING) ';'
 	; 
 
 compoundStatement
