@@ -7,23 +7,39 @@ namespace CellularCompiler.Models
         public int XSize { get; }
         public int YSize { get; }
 
-        private Cell[,] Cells { get; }
-        private Cell[,] CellsNext { get; }
+        private Cell[,] Cells { get; set; }
+        private Cell[,] CellsNext { get; set; }
 
         public Grid(int xSize, int ySize)
         {
             XSize = xSize;
             YSize = ySize;
+            InitializeCells();
+        }
 
+        private void InitializeCells()
+        {
             Cells = new Cell[XSize, YSize];
             CellsNext = new Cell[XSize, YSize];
+
+            ForAll(CellsNext, (cell) =>
+            {
+                cell = new Cell(0);
+            });
+
+            Push();
         }
 
         public void ForAll(Action<Cell> action)
         {
+            ForAll(CellsNext, action);
+        }
+
+        private void ForAll(Cell[,] grid, Action<Cell> action)
+        {
             for (int r = 0; r < XSize; r++)
                 for (int c = 0; c < YSize; c++)
-                    action(Cells[r, c]);
+                    action(grid[r, c]);
         }
 
         public void SetCell(int x, int y, int value)

@@ -2,7 +2,7 @@
 {
     class Cell
     {
-        public int State { get; set; }
+        public int State { get; set; } = 0;
 
         public Cell(int state)
         {
