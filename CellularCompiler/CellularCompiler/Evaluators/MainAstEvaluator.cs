@@ -63,7 +63,7 @@ namespace CellularCompiler.Evaluators
             // TODO: Later, its members should also be saved
             foreach(string l in node.Labels)
             {
-                stateList.Add(new State());
+                stateList.Add(new State(l));
             }
         }
 

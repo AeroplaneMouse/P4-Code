@@ -63,7 +63,7 @@ namespace CellularCompiler.Evaluators
             // TODO: Later, its members should also be saved
             foreach (string l in node.Labels)
             {
-                stateList.Add(new State());
+                stateList.Add(new State(l));
             }
         }
 
@@ -74,7 +74,7 @@ namespace CellularCompiler.Evaluators
         /// <param name="grid"></param>
         private void VisitInitial(InitialNode node, ref Grid grid)
         {
-            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(ref grid);
+            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(ref grid, null);
             foreach (StatementNode s in node.Statements)
                 statementEvaluator.Visit(s);
         }

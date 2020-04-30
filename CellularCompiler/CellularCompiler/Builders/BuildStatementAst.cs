@@ -55,22 +55,22 @@ namespace CellularCompiler.Builders
             return node;
         }
 
-        public override StatementNode VisitSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context)
-        {
-            // Check for state
-            bool matchOnState = context.children[2].GetText() == "state";
+        //public override StatementNode VisitSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context)
+        //{
+        //    // Check for state
+        //    bool matchOnState = context.children[2].GetText() == "state";
 
-            // Extract member identifiers
-            List<MemberIDNode> memberIDNodes = ExtractMemberIDNodes(context.children);
+        //    // Extract member identifiers
+        //    List<MemberIDNode> memberIDNodes = ExtractMemberIDNodes(context.children);
 
-            // Extract and visit caseStatements
-            List<CaseStatementNode> caseNodes = new List<CaseStatementNode>();
-            CoronaParser.CaseStatementContext[] caseStatements = context.caseStatement();
-            foreach (CoronaParser.CaseStatementContext cs in caseStatements)
-                caseNodes.Add(Visit(cs) as CaseStatementNode);
+        //    // Extract and visit caseStatements
+        //    List<CaseStatementNode> caseNodes = new List<CaseStatementNode>();
+        //    CoronaParser.CaseStatementContext[] caseStatements = context.caseStatement();
+        //    foreach (CoronaParser.CaseStatementContext cs in caseStatements)
+        //        caseNodes.Add(Visit(cs) as CaseStatementNode);
 
-            return new SelectionStatementNode(matchOnState, memberIDNodes, caseNodes);
-        }
+        //    return new SelectionStatementNode(matchOnState, memberIDNodes, caseNodes);
+        //}
 
         public override StatementNode VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context)
         {
@@ -96,8 +96,8 @@ namespace CellularCompiler.Builders
                 memberIDNode = new MemberIDNode(context.member().GetText());
              
             // Extract gridPoint and visit it's expressions
-            CoronaParser.MathExprContext[] exprValues = context.gridPoint().mathExpr();
-            foreach (CoronaParser.MathExprContext expr in exprValues)
+            CoronaParser.ExprContext[] exprValues = context.gridPoint().expr();
+            foreach (CoronaParser.ExprContext expr in exprValues)
                 gridPointNode.ExpressionNodes.Add(expressionVisitor.Visit(expr));
 
             // Visit expression

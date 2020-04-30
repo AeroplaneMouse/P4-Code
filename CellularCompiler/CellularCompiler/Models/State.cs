@@ -9,16 +9,26 @@ namespace CellularCompiler.Models
         private static int _id;
 
         public int ID { get; }
+        public string Label { get; }
         //public List<Member> Members;
 
-        public State()
+        public State(string label)
         {
             ID = _id++;
+            Label = label;
         }
 
         public int GetLastID()
         {
             return _id - 1;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is State b)
+                return ID == b.ID;
+            else
+                return false;
         }
     }
 }

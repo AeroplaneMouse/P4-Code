@@ -15,16 +15,16 @@ namespace CellularCompiler
         private static void Main()
         {
             CellularCompiler interpreter = new CellularCompiler();
-            Grid grid = interpreter.InterpretCorona();
+            RunningEvaluator eval = interpreter.InterpretCorona();
 
-            Console.WriteLine(grid);
+            //Console.WriteLine(grid);
         }
 
         /// <summary>
         /// Compiles corona
         /// </summary>
         /// <returns>A grid object</returns>
-        private Grid InterpretCorona()
+        private RunningEvaluator InterpretCorona()
         {
             // Load code example
             string input = String.Empty;
@@ -47,16 +47,18 @@ namespace CellularCompiler
 
             // Evaluate
             InitialEvaluator inEval = new InitialEvaluator();
-            RunningEvaluator runEval = new RunningEvaluator();
             Grid grid;
             List<State> states;
             List<Rule> rules;
 
             inEval.Visit(ast, out grid, out states, out rules);
-            //runEval.DoStuff
+            
+            return new RunningEvaluator(grid, states, rules);
+
+            ////runEval.DoStuff
 
 
-            return grid;
+            //return grid;
 
 
 

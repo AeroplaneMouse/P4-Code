@@ -5,6 +5,7 @@ using CellularCompiler.Nodes.Base;
 using CellularCompiler.Nodes.Members;
 using CellularCompiler.Nodes.Statement;
 using System;
+using CellularCompiler.Models;
 
 namespace CellularCompiler.Builders
 {
@@ -64,19 +65,23 @@ namespace CellularCompiler.Builders
 
         public override BaseNode VisitRules(CoronaParser.RulesContext context)
         {
-            RulesNode node = new RulesNode(new List<SelectionStatementNode>());
+            RulesNode node = new RulesNode(new List<Rule>());
 
             // Extract selectionStatements
             BuildStatementAst statementVisitor = new BuildStatementAst();
-            CoronaParser.SelectionStatementContext[] selections = context.selectionStatement();
-            foreach (CoronaParser.SelectionStatementContext s in selections)
+            CoronaParser.RuleStatementContext[] selections = context.ruleStatement();
+            foreach (CoronaParser.RuleStatementContext s in selections)
             {
-                // Visit each selectionStatement in rules
-                StatementNode statement = statementVisitor.Visit(s);
-                if (statement is SelectionStatementNode selection)
-                    node.Statements.Add(selection);
-                else
-                    throw new ArgumentException(nameof(statement));
+                //// Visit each selectionStatement in rules
+                //StatementNode statement = statementVisitor.Visit(s);
+                //if (statement is SelectionStatementNode selection)
+                //    node.Statements.Add(selection);
+                //else
+                //    throw new ArgumentException(nameof(statement));
+                             
+            
+                // Create rule
+                // Add Rule to list
             }
 
             return node;

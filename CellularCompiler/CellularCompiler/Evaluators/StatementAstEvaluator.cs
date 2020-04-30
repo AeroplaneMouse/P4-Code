@@ -10,7 +10,7 @@ namespace CellularCompiler.Evaluators
     {
         Grid grid { get; }
 
-        public StatementAstEvaluator(ref Grid grid)
+        public StatementAstEvaluator(ref Grid grid, Cell cell)
         {
             this.grid = grid;
         }
@@ -22,6 +22,7 @@ namespace CellularCompiler.Evaluators
 
         public void Visit(IterationStatementNode node)
         {
+            //node.Initializer
 
             return;
             for(; ; )
@@ -51,8 +52,21 @@ namespace CellularCompiler.Evaluators
             // TODO: This should be some sort of state
             int resultI = (int)Math.Floor(result);
 
+            // Set specified cells nextState
             grid.SetCell(xI, yI, resultI);
         }
 
+        public void Visit(SelectionStatementNode node)
+        {
+            throw new NotImplementedException();
+            //node.MatchOnState;
+
+            //node.MemberIDs;
+            //node.CaseStatements;
+
+            
+
+
+        }
     } 
 }
