@@ -111,15 +111,15 @@ public interface ICoronaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStatement([NotNull] CoronaParser.StatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.selectionStatement"/>.
+	/// Enter a parse tree produced by <see cref="CoronaParser.ruleStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context);
+	void EnterRuleStatement([NotNull] CoronaParser.RuleStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.selectionStatement"/>.
+	/// Exit a parse tree produced by <see cref="CoronaParser.ruleStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context);
+	void ExitRuleStatement([NotNull] CoronaParser.RuleStatementContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.iterationStatement"/>.
 	/// </summary>
@@ -171,17 +171,17 @@ public interface ICoronaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCaseStatement([NotNull] CoronaParser.CaseStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>CompareExpr</c>
+	/// Enter a parse tree produced by the <c>NumberExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterCompareExpr([NotNull] CoronaParser.CompareExprContext context);
+	void EnterNumberExpr([NotNull] CoronaParser.NumberExprContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>CompareExpr</c>
+	/// Exit a parse tree produced by the <c>NumberExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitCompareExpr([NotNull] CoronaParser.CompareExprContext context);
+	void ExitNumberExpr([NotNull] CoronaParser.NumberExprContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>IdentifierExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
@@ -195,26 +195,14 @@ public interface ICoronaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitIdentifierExpr([NotNull] CoronaParser.IdentifierExprContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>NumberExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.mathExpr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterNumberExpr([NotNull] CoronaParser.NumberExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>NumberExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.mathExpr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitNumberExpr([NotNull] CoronaParser.NumberExprContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>InfixExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.mathExpr"/>.
+	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void EnterInfixExpr([NotNull] CoronaParser.InfixExprContext context);
 	/// <summary>
 	/// Exit a parse tree produced by the <c>InfixExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.mathExpr"/>.
+	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitInfixExpr([NotNull] CoronaParser.InfixExprContext context);
@@ -228,16 +216,6 @@ public interface ICoronaListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitOperator([NotNull] CoronaParser.OperatorContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.compareOperator"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterCompareOperator([NotNull] CoronaParser.CompareOperatorContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.compareOperator"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitCompareOperator([NotNull] CoronaParser.CompareOperatorContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ArrowMemberValue</c>
 	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.

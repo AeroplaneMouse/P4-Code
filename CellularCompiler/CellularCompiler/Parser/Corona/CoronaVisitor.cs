@@ -80,11 +80,11 @@ public interface ICoronaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] CoronaParser.StatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CoronaParser.selectionStatement"/>.
+	/// Visit a parse tree produced by <see cref="CoronaParser.ruleStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context);
+	Result VisitRuleStatement([NotNull] CoronaParser.RuleStatementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoronaParser.iterationStatement"/>.
 	/// </summary>
@@ -116,12 +116,12 @@ public interface ICoronaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>CompareExpr</c>
+	/// Visit a parse tree produced by the <c>NumberExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitCompareExpr([NotNull] CoronaParser.CompareExprContext context);
+	Result VisitNumberExpr([NotNull] CoronaParser.NumberExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>IdentifierExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
@@ -130,15 +130,8 @@ public interface ICoronaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitIdentifierExpr([NotNull] CoronaParser.IdentifierExprContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>NumberExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.mathExpr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitNumberExpr([NotNull] CoronaParser.NumberExprContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>InfixExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.mathExpr"/>.
+	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
@@ -149,12 +142,6 @@ public interface ICoronaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitOperator([NotNull] CoronaParser.OperatorContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CoronaParser.compareOperator"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCompareOperator([NotNull] CoronaParser.CompareOperatorContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ArrowMemberValue</c>
 	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.

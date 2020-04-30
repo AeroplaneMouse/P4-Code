@@ -114,7 +114,7 @@ public partial class CoronaBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitStatement([NotNull] CoronaParser.StatementContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CoronaParser.selectionStatement"/>.
+	/// Visit a parse tree produced by <see cref="CoronaParser.ruleStatement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -122,7 +122,7 @@ public partial class CoronaBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context) { return VisitChildren(context); }
+	public virtual Result VisitRuleStatement([NotNull] CoronaParser.RuleStatementContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoronaParser.iterationStatement"/>.
 	/// <para>
@@ -174,7 +174,7 @@ public partial class CoronaBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>CompareExpr</c>
+	/// Visit a parse tree produced by the <c>NumberExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
@@ -183,7 +183,7 @@ public partial class CoronaBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitCompareExpr([NotNull] CoronaParser.CompareExprContext context) { return VisitChildren(context); }
+	public virtual Result VisitNumberExpr([NotNull] CoronaParser.NumberExprContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>IdentifierExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
@@ -196,19 +196,8 @@ public partial class CoronaBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <return>The visitor result.</return>
 	public virtual Result VisitIdentifierExpr([NotNull] CoronaParser.IdentifierExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>NumberExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.mathExpr"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitNumberExpr([NotNull] CoronaParser.NumberExprContext context) { return VisitChildren(context); }
-	/// <summary>
 	/// Visit a parse tree produced by the <c>InfixExpr</c>
-	/// labeled alternative in <see cref="CoronaParser.mathExpr"/>.
+	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -227,16 +216,6 @@ public partial class CoronaBaseVisitor<Result> : AbstractParseTreeVisitor<Result
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitOperator([NotNull] CoronaParser.OperatorContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CoronaParser.compareOperator"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitCompareOperator([NotNull] CoronaParser.CompareOperatorContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ArrowMemberValue</c>
 	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
