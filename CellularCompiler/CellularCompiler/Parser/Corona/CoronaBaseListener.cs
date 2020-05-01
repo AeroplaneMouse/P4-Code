@@ -155,17 +155,33 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIterationStatement([NotNull] CoronaParser.IterationStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.assignmentStatement"/>.
+	/// Enter a parse tree produced by the <c>GridAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context) { }
+	public virtual void EnterGridAssignStatement([NotNull] CoronaParser.GridAssignStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.assignmentStatement"/>.
+	/// Exit a parse tree produced by the <c>GridAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context) { }
+	public virtual void ExitGridAssignStatement([NotNull] CoronaParser.GridAssignStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>IdentifierAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>IdentifierAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.compoundStatement"/>.
 	/// <para>The default implementation does nothing.</para>

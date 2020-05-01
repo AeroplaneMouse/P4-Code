@@ -44,8 +44,8 @@ iterationStatement
 	;
 
 assignmentStatement
-	: gridPoint member? '=' (expr | STRING) ';'
-	| ID '=' (expr | STRING) ';'
+	: gridPoint member? '=' ID ';' 	# GridAssignStatement
+	| ID '=' (expr | STRING) ';'   	# IdentifierAssignStatement
 	; 
 
 compoundStatement
@@ -53,11 +53,11 @@ compoundStatement
 	;
 
 returnStatement
-	: 'return' expr ';'
+	: 'return' ID ';'
 	;
 
 caseStatement
-	: '[' memberValue (',' memberValue)* ']' statement
+	: '[' ID (',' ID)* ']' statement
 	;
 
 expr

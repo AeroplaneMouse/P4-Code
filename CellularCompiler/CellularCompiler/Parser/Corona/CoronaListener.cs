@@ -131,15 +131,29 @@ public interface ICoronaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitIterationStatement([NotNull] CoronaParser.IterationStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.assignmentStatement"/>.
+	/// Enter a parse tree produced by the <c>GridAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context);
+	void EnterGridAssignStatement([NotNull] CoronaParser.GridAssignStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.assignmentStatement"/>.
+	/// Exit a parse tree produced by the <c>GridAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context);
+	void ExitGridAssignStatement([NotNull] CoronaParser.GridAssignStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>IdentifierAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>IdentifierAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.compoundStatement"/>.
 	/// </summary>
