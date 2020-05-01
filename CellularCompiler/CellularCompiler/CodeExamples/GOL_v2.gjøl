@@ -18,11 +18,29 @@ INITIAL
 
 RULES
 {
-	count = Neightbors(1);
 	match(.state)
 	{
 		[alive]
 		{
+			# Count alive neighbors #
+			count = 0;
+			radius = 1;
+			for (r = -radius; r <= radius; r = r + 1)
+			{
+				for (c = -radius; c <= radius; c = c + 1)
+				{
+					include = r != 0 OR c != 0;
+					match(include)
+					{
+						[true]
+							match(grid[r, c].state)
+							{
+								[alive]
+									count = count + 1;
+							}
+					}
+				}
+			}
 			match(count)
 			{
 				[2 -> 3]
@@ -33,6 +51,25 @@ RULES
 		}
 		[dead]
 		{
+			# Count alive neighbors #
+			count = 0;
+			radius = 1;
+			for (r = -radius; r <= radius; r = r + 1)
+			{
+				for (c = -radius; c <= radius; c = c + 1)
+				{
+					include = r != 0 OR c != 0;
+					match(include)
+					{
+						[true]
+							match(grid[r, c].state)
+							{
+								[alive]
+									count = count + 1;
+							}
+					}
+				}
+			}
 			match(count)
 			{
 				[3]
@@ -40,27 +77,4 @@ RULES
 			}
 		}
 	}
-}
-
-# Return the number of alive neighbors #
-int Neighbors(radius)
-{
-	count = 0;
-	for (r = -radius; r <= radius; r = r + 1)
-	{
-		for (c = -radius; c <= radius; c = c + 1)
-		{
-			include = r != 0 OR c != 0;
-			match(include)
-			{
-				[true]
-					match(grid[r, c].state)
-					{
-						[alive]
-							count = count + 1;
-					}
-			}
-		}
-	}
-	return count;
 }
