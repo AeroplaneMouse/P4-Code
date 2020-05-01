@@ -5,12 +5,14 @@ using System.Collections.Generic;
 
 namespace CellularCompiler.Evaluators
 {
-    interface ICoronaEvaluator
+    public interface ICoronaEvaluator
     {
         void Initialize();
         State GetStateByLabel(string label);
         void PushNextGeneration();
         void GenerateNextGeneration();
         void Print();
+        Cell[,] GetCurrentGeneration();
+        List<State> GetStates();
     }
 }

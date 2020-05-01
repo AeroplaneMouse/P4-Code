@@ -7,24 +7,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CellularCompiler.Evaluators;
+using CellularCompiler.Models;
 
-namespace CAVisualForms
+namespace CAVisualFormsCore
 {
-    public partial class Form1 : Form
+    public partial class Visualization : Form
     {
-        int[,] array = new int[64, 64];
-        public Form1()
+        ICoronaEvaluator evaluator;
+
+
+        //Cell[,] array = null;
+        State black = new State("black");
+        State white = new State("white");
+
+
+        public Visualization(ICoronaEvaluator evaluator)
         {
             InitializeComponent();
             Graphics formGraphics = this.CreateGraphics();
 
-            for (int i = 0; i < array.GetLength(0); ++i)
-            {
-                for (int j = 0; j < array.GetLength(1); ++j)
-                {
-                    array[i, j] = (i + j) % 2 == 0 ? 1 : 0;
-                }
-            }
+            this.evaluator = evaluator;
+
+            //for (int i = 0; i < array.GetLength(0); ++i)
+            //{
+            //    for (int j = 0; j < array.GetLength(1); ++j)
+            //    {
+            //        array[i, j] = grid.GetCell(i, j);
+            //    }
+            //}
 
             main();
         }
@@ -43,25 +54,31 @@ namespace CAVisualForms
 
         public void RequestAnimationFrame(int test)
         {
-            array[test, test] = 0;
+            evaluator.GenerateNextGeneration();
+            evaluator.PushNextGeneration();
+
+            //array[test, test] = new Cell(black);
             Task.Delay(5000);
             Refresh();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            Cell[,] array = evaluator.GetCurrentGeneration();
+
             int box = 10;
             int firstDimensionLength = array.GetLength(0);
             int secondDimensionLength = array.GetLength(1);
             e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(0, 0, box*firstDimensionLength, box*secondDimensionLength));
+
             for (int i = 0; i < firstDimensionLength; ++i)
             {
                 for (int j = 0; j < secondDimensionLength; ++j)
                 {
-                    if (array[i, j] == 0)
-                        e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(box * i, box * j, box, box));
-                    else if (array[i, j] == 1)
-                        e.Graphics.FillRectangle(new SolidBrush(Color.White), new Rectangle(box * i, box * j, box, box));
+                    if (array[i, j].State.Label == "black")
+                        e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(box * j, box * i, box, box));
+                    else if (array[i, j].State.Label == "white")
+                        e.Graphics.FillRectangle(new SolidBrush(Color.White), new Rectangle(box * j, box * i, box, box));
                 }
             }
         }

@@ -1,6 +1,6 @@
-﻿namespace CAVisualForms
+﻿namespace CAVisualFormsCore
 {
-    partial class Form1
+    partial class Visualization
     {
         /// <summary>
         /// Required designer variable.

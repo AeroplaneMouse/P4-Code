@@ -2,7 +2,7 @@
 
 namespace CellularCompiler.Models
 {
-    class Grid
+    public class Grid
     {
         public int XSize { get; }
         public int YSize { get; }
@@ -81,6 +81,11 @@ namespace CellularCompiler.Models
         {
             ApplyRules();
             Push();
+        }
+
+        internal Cell[,] GetCells()
+        {
+            return Cells;
         }
 
         /// <summary>

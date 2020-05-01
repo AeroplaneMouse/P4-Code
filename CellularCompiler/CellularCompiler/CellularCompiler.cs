@@ -10,7 +10,7 @@ using CellularCompiler.Nodes.Base;
 
 namespace CellularCompiler
 {
-    internal class CellularCompiler
+    public class CellularCompiler
     {
         private static void Main()
         {
@@ -18,6 +18,7 @@ namespace CellularCompiler
             ICoronaEvaluator eval = interpreter.InterpretCorona();
             eval.Print();
 
+            /*
             for(int i = 0; i < 5; i++)
             {
                 Console.ReadLine();
@@ -25,7 +26,7 @@ namespace CellularCompiler
                 eval.PushNextGeneration();    
                 eval.Print();
             }
-
+            */
             //Console.WriteLine(grid);
         }
 
@@ -33,11 +34,12 @@ namespace CellularCompiler
         /// Compiles corona
         /// </summary>
         /// <returns>A grid object</returns>
-        private ICoronaEvaluator InterpretCorona()
+        public ICoronaEvaluator InterpretCorona()
         {
             // Load code example
             string input = String.Empty;
-            File.ReadAllLines("../../../CodeExamples/CoronaTest.gjøl").ToList<string>().ForEach(s => input += s);
+            File.ReadAllLines("../../../../CellularCompiler/CodeExamples/CoronaTest.gjøl").ToList<string>().ForEach(s => input += s);
+            //File.ReadAllLines("CodeExamples/CoronaTest.gjøl").ToList<string>().ForEach(s => input += s);
 
             if (string.IsNullOrWhiteSpace(input))
                 throw new ArgumentNullException("input", "Argument was null or whitespace!");

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CellularCompiler.Models
 {
-    class State
+    public class State
     {
         private static int _id;
 
