@@ -6,6 +6,7 @@ using CellularCompiler.Nodes.Members;
 using CellularCompiler.Nodes.Statement;
 using System;
 using CellularCompiler.Models;
+using CellularCompiler.Exceptions;
 
 namespace CellularCompiler.Builders
 {
@@ -38,10 +39,10 @@ namespace CellularCompiler.Builders
 
             // Extract and visit StateNode children
             BuildMemberAst memberVisitor = new BuildMemberAst();
-            List<IParseTree> memberDeclarations = context.memberBlock().children.ToList();
-            foreach (IParseTree t in memberDeclarations.Skip(1).SkipLast(1))
+            CoronaParser.MemberDeclarationContext[] memberDeclarations = context.memberBlock().memberDeclaration();
+            foreach (CoronaParser.MemberDeclarationContext member in memberDeclarations)
             {
-                MemberNode n = memberVisitor.Visit(t);
+                MemberNode n = memberVisitor.Visit(member);
                 node.Members.Add(n);
             }
 
@@ -65,12 +66,12 @@ namespace CellularCompiler.Builders
 
         public override BaseNode VisitRules(CoronaParser.RulesContext context)
         {
-            RulesNode node = new RulesNode(new List<Rule>());
+            RulesNode node = new RulesNode(new List<RuleStatementNode>());
 
-            // Extract selectionStatements
+            // Extract caseStatements
             BuildStatementAst statementVisitor = new BuildStatementAst();
-            CoronaParser.RuleStatementContext[] selections = context.ruleStatement();
-            foreach (CoronaParser.RuleStatementContext s in selections)
+            CoronaParser.RuleStatementContext[] ruleStatements = context.ruleStatement();
+            foreach (CoronaParser.RuleStatementContext rStatement in ruleStatements)
             {
                 //// Visit each selectionStatement in rules
                 //StatementNode statement = statementVisitor.Visit(s);
@@ -78,10 +79,29 @@ namespace CellularCompiler.Builders
                 //    node.Statements.Add(selection);
                 //else
                 //    throw new ArgumentException(nameof(statement));
-                             
-            
-                // Create rule
-                // Add Rule to list
+                                
+                //CoronaParser.CaseStatementContext[] cases = s.caseStatement();
+                //foreach(CoronaParser.CaseStatementContext c in cases)
+                //{
+                //    StatementNode casestatement = statementVisitor.Visit(c);
+
+                //    if (casestatement is CaseStatementNode caseNode)
+                //    {
+                        
+                //    }
+                //    else
+                //        throw new ArgumentException();
+
+                //    Rule r = new Rule(state, new List<StatementNode>());
+                    
+                //}
+                //s.caseStatement();
+
+
+                if (statementVisitor.Visit(rStatement) is RuleStatementNode sNode)
+                    node.RuleStatements.Add(sNode);
+                else
+                    throw new InvalidRuleStatementContentException();
             }
 
             return node;

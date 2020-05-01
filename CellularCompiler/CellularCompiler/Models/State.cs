@@ -30,5 +30,10 @@ namespace CellularCompiler.Models
             else
                 return false;
         }
+
+        public override int GetHashCode()
+        {
+            return ID;
+        }
     }
 }

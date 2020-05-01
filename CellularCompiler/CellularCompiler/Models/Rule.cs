@@ -1,4 +1,5 @@
 ﻿using CellularCompiler.Evaluators;
+using CellularCompiler.Nodes.Statement;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,29 +8,31 @@ namespace CellularCompiler.Models
 {
     class Rule
     {
-        //public State State { get; set; }
-        public int State { get; set; }
-        public List<Statement> Statements { get; set; }
+        public List<State> States { get; set; }
+        //public int State { get; set; }
+        //public string StateLabel { get; set; }
+        public StatementNode Statement { get; set; }
 
-        public Rule(int state, List<Statement> statements)
+        public Rule(List<State> states, StatementNode statement)
         {
-            State = state;
-            Statements = statements;
+            States = states;
+            Statement = statement;
         }
 
-        public bool Apply(Grid grid, Cell cell)
+        public bool Apply(ICoronaEvaluator sender, Grid grid, Cell cell)
         {
-            if (cell.State == State)
+            if (States.Contains(cell.State))
             {
-                StatementAstEvaluator statementEval = new StatementAstEvaluator(ref grid, cell);
+                StatementAstEvaluator statementEval = new StatementAstEvaluator(grid, cell);
 
                 // Do statements
-                foreach(Statement s in Statements)
-                {
-                    s.Evaluate();
-                }
+                statementEval.Visit(Statement, sender);
 
-
+                //Statement.
+                //foreach(StatementNode s in Statements)
+                //{
+                //    s.Evaluate();
+                //}
                 return true;
             }
             else

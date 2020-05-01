@@ -11,12 +11,13 @@ using CellularCompiler.Nodes;
 using System.Net.Mime;
 using CellularCompiler.Models;
 using System.Linq.Expressions;
+using CellularCompiler.Exceptions;
 
 namespace CellularCompiler.Builders
 {
     class BuildStatementAst : CoronaBaseVisitor<StatementNode>
     {
-        public override StatementNode VisitIterationStatement(CoronaParser.IterationStatementContext context)
+        public override StatementNode VisitIterationStatement([NotNull] CoronaParser.IterationStatementContext context)
         {
             BuildExpressionAst exprVisitor = new BuildExpressionAst();
             IterationStatementNode node = new IterationStatementNode();
@@ -32,7 +33,7 @@ namespace CellularCompiler.Builders
             return node;
         }
 
-        public override StatementNode VisitCompoundStatement(CoronaParser.CompoundStatementContext context)
+        public override StatementNode VisitCompoundStatement([NotNull] CoronaParser.CompoundStatementContext context)
         {
             CompoundStatementNode node = new CompoundStatementNode(new List<StatementNode>());
             
@@ -44,15 +45,9 @@ namespace CellularCompiler.Builders
             return node;
         }
 
-        public override StatementNode VisitReturnStatement(CoronaParser.ReturnStatementContext context)
+        public override StatementNode VisitReturnStatement([NotNull] CoronaParser.ReturnStatementContext context)
         {
-            BuildExpressionAst exprVisitor = new BuildExpressionAst();
-            ReturnStatementNode node = new ReturnStatementNode();
-
-            //Visit expression
-            node.ReturnExpression = exprVisitor.Visit(context.expr());
-
-            return node;
+            return new ReturnStatementNode(context.ID().GetText());
         }
 
         //public override StatementNode VisitSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context)
@@ -74,47 +69,84 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context)
         {
-            BuildMemberValueAst memberValueVisitor = new BuildMemberValueAst();
-            CoronaParser.MemberValueContext[] memberValues = context.memberValue();
-            
-            List<MemberValueNode> listValues = new List<MemberValueNode>();
-            
-            // Visit each memberValue and add it to the CaseStatementNode
-            foreach (var value in memberValues)
-                listValues.Add(memberValueVisitor.Visit(value));
+            ITerminalNode[] IDValues = context.ID();
+            List<string> values = new List<string>();
 
+            // Extract all the ID values
+            foreach (var value in IDValues)
+                values.Add(value.GetText());
 
-            return new CaseStatementNode(listValues, Visit(context.statement()));
+            return new CaseStatementNode(values, Visit(context.statement()));
         }
 
-        public override StatementNode VisitAssignmentStatement(CoronaParser.AssignmentStatementContext context)
+        public override StatementNode VisitRuleStatement([NotNull] CoronaParser.RuleStatementContext context)
+        {
+            List<CaseStatementNode> caseStatements = new List<CaseStatementNode>();
+
+            // Handle the state/member thing
+            // ...
+
+            // Visit each CaseStatement
+            CoronaParser.CaseStatementContext[] cases = context.caseStatement();
+            foreach (CoronaParser.CaseStatementContext c in cases)
+            {
+                if (Visit(c) is CaseStatementNode caseNode)
+                    caseStatements.Add(caseNode);
+                else
+                    throw new InvalidRuleStatementContentException();
+            }                
+
+            return new RuleStatementNode(caseStatements);
+        }
+
+        //public override StatementNode VisitAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context)
+        //{
+            
+        //    MemberIDNode memberIDNode = null;
+        //    if (context.member() != null)
+        //        memberIDNode = new MemberIDNode(context.member().GetText());
+             
+
+        //    // Visit expression
+        //    if (context.expr() != null)
+        //        return new AssignmentStatementNode(
+        //            gridPointNode,
+        //            memberIDNode,
+        //            expressionVisitor.Visit(context.expr()));
+
+        //    // Visit string
+        //    else if (context.STRING() != null)
+        //        return new AssignmentStatementNode(
+        //            gridPointNode,
+        //            memberIDNode,
+        //            context.STRING().GetText());
+        //    else
+        //        throw new ArgumentNullException();
+        //}
+
+        public override StatementNode VisitGridAssignStatement([NotNull] CoronaParser.GridAssignStatementContext context)
         {
             BuildExpressionAst expressionVisitor = new BuildExpressionAst();
+
             GridPointNode gridPointNode = new GridPointNode(new List<ExpressionNode>());
+            string idLabel = context.ID().GetText();
+            
+            // Extract memberID, if it is used
             MemberIDNode memberIDNode = null;
             if (context.member() != null)
                 memberIDNode = new MemberIDNode(context.member().GetText());
-             
+
             // Extract gridPoint and visit it's expressions
             CoronaParser.ExprContext[] exprValues = context.gridPoint().expr();
             foreach (CoronaParser.ExprContext expr in exprValues)
                 gridPointNode.ExpressionNodes.Add(expressionVisitor.Visit(expr));
 
-            // Visit expression
-            if (context.expr() != null)
-                return new AssignmentStatementNode(
-                    gridPointNode,
-                    memberIDNode,
-                    expressionVisitor.Visit(context.expr()));
+            return new GridAssignmentStatementNode(gridPointNode, memberIDNode, idLabel);
+        }
 
-            // Visit string
-            else if (context.STRING() != null)
-                return new AssignmentStatementNode(
-                    gridPointNode,
-                    memberIDNode,
-                    context.STRING().GetText());
-            else
-                throw new ArgumentNullException();
+        public override StatementNode VisitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context)
+        {
+            return base.VisitIdentifierAssignStatement(context);
         }
 
         /// <summary>

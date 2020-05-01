@@ -1,4 +1,6 @@
-﻿using CellularCompiler.Models;
+﻿using CellularCompiler.Exceptions;
+using CellularCompiler.Models;
+using CellularCompiler.Nodes.Base;
 using CellularCompiler.Nodes.Statement;
 using System;
 using System.Collections.Generic;
@@ -9,31 +11,39 @@ namespace CellularCompiler.Evaluators
     class StatementAstEvaluator
     {
         Grid grid { get; }
+        Cell cell { get; }
 
-        public StatementAstEvaluator(ref Grid grid, Cell cell)
+        public StatementAstEvaluator(Grid grid, Cell cell)
         {
             this.grid = grid;
+            this.cell = cell;
         }
 
-        public void Visit(StatementNode node)
+        public void Visit(StatementNode node, ICoronaEvaluator sender)
         {
-            Visit((dynamic)node);
+            Visit((dynamic)node, sender);
         }
 
-        public void Visit(IterationStatementNode node)
+        public void Visit(IterationStatementNode node, ICoronaEvaluator sender)
         {
             //node.Initializer
 
             return;
             for(; ; )
             {
-                Visit(node.Statement);
+                Visit(node.Statement, sender);
             }
 
 
         }
 
-        public void Visit(AssignmentStatementNode node)
+        public void Visit(ReturnStatementNode node, ICoronaEvaluator sender)
+        {
+            State state = sender.GetStateByLabel(node.IdentifierLabel);
+            grid.SetCell(cell, state);
+        }
+
+        public void Visit(GridAssignmentStatementNode node, ICoronaEvaluator sender)
         {
             ExpressionAstEvaluator exprEvaluator = new ExpressionAstEvaluator();
 
@@ -46,27 +56,33 @@ namespace CellularCompiler.Evaluators
             int yI = (int)Math.Floor(y);
 
             // Extract result
-            double result = exprEvaluator.Visit(node.ExpressionNode);
-
-            // Convert result to int, for now
-            // TODO: This should be some sort of state
-            int resultI = (int)Math.Floor(result);
+            State state = sender.GetStateByLabel(node.IdentifierLabel);
 
             // Set specified cells nextState
-            grid.SetCell(xI, yI, resultI);
+            grid.SetCell(xI, yI, state);
         }
 
-        public void Visit(SelectionStatementNode node)
+        public Rule VisitCaseStatementNode(CaseStatementNode node, ICoronaEvaluator sender)
         {
-            throw new NotImplementedException();
-            //node.MatchOnState;
+            List<State> ruleStates = new List<State>();
 
-            //node.MemberIDs;
-            //node.CaseStatements;
+            // Foreach state label in the caseStatement, find its right state object
+            foreach (string label in node.Values)
+                ruleStates.Add(sender.GetStateByLabel(label));
 
-            
-
-
+            return new Rule(ruleStates, node.Statement);
         }
+
+        public List<Rule> VisitRuleStatementNode(RuleStatementNode node, ICoronaEvaluator sender)
+        {
+            List<Rule> rules = new List<Rule>();
+
+            // Visit each CaseStatementNode to generate rules
+            foreach (CaseStatementNode csNode in node.CaseStatementNodes)
+                rules.Add(VisitCaseStatementNode(csNode, sender));
+
+            return rules;
+        }
+
     } 
 }

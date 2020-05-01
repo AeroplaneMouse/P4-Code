@@ -10,23 +10,24 @@ namespace CellularCompiler.Models
         private Cell[,] Cells { get; set; }
         private Cell[,] CellsNext { get; set; }
 
-        public Grid(int xSize, int ySize)
+        public Grid(int xSize, int ySize, State firstState)
         {
             XSize = xSize;
             YSize = ySize;
-            InitializeCells();
+            InitializeCells(firstState);
         }
 
-        private void InitializeCells()
+        private void InitializeCells(State firstState)
         {
             Cells = new Cell[XSize, YSize];
             CellsNext = new Cell[XSize, YSize];
 
-            ForAll(CellsNext, (cell) =>
-            {
-                cell = new Cell(0);
-            });
-
+            // Initialize next
+            for (int r = 0; r < XSize; r++)
+                for (int c = 0; c < YSize; c++)
+                    CellsNext[r, c] = new Cell(firstState);
+            
+            // Push the initialized cells
             Push();
         }
 
@@ -42,9 +43,19 @@ namespace CellularCompiler.Models
                     action(grid[r, c]);
         }
 
-        public void SetCell(int x, int y, int value)
+        public void SetCell(int x, int y, State state)
         {
-            CellsNext[x, y].State = value;
+            CellsNext[x, y].State = state;
+        }
+
+        public void SetCell(Cell cell, State state)
+        {
+            cell.State = state;
+        }
+
+        public Cell GetCell(int x, int y)
+        {
+            return CellsNext[x, y];
         }
 
         public override string ToString()
@@ -72,11 +83,14 @@ namespace CellularCompiler.Models
             Push();
         }
 
+        /// <summary>
+        /// Takes a copy of every cell in CellsNext and put them into Cells
+        /// </summary>
         public void Push()
         {
             for (int r = 0; r < XSize; r++)
                 for (int c = 0; c < YSize; c++)
-                    Cells[r, c] = CellsNext[r, c];
+                    Cells[r, c] = CellsNext[r, c].Copy();
 
 
             //ForAll((cell) =>

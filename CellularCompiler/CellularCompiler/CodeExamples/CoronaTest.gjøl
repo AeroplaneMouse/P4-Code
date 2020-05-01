@@ -11,8 +11,8 @@ STATES white, black
 
 INITIAL
 {
-	grid[1,1] = 1;
-	grid[1,2] = 1;
+	grid[1,1] = black;
+	grid[1,2] = black;
 	#grid[0,1] = 1;#
 }
 
