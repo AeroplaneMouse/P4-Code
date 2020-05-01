@@ -13,10 +13,10 @@ namespace CAVisualFormsCore
 {
     public partial class Visualization : Form
     {
-        Cell[,] array = new Cell[64, 64];
+        Cell[,] array = null;
         State black = new State("black");
         State white = new State("white");
-        public Visualization()
+        public Visualization(Grid grid)
         {
             InitializeComponent();
             Graphics formGraphics = this.CreateGraphics();
@@ -25,7 +25,7 @@ namespace CAVisualFormsCore
             {
                 for (int j = 0; j < array.GetLength(1); ++j)
                 {
-                    array[i, j] = (i + j) % 2 == 0 ? new Cell(white) : new Cell(black);
+                    array[i, j] = grid.GetCell(i, j);
                 }
             }
             

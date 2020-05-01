@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Include="..\..\CellularCompiler\CellularCompiler\Models\Cell.cs" Link="Cell.cs" />
+    <Compile Include="..\..\CellularCompiler\CellularCompiler\Models\Grid.cs" Link="Grid.cs" />
     <Compile Include="..\..\CellularCompiler\CellularCompiler\Models\State.cs" Link="State.cs" />
   </ItemGroup>
 
