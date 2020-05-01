@@ -37,6 +37,12 @@ namespace CellularCompiler.Evaluators
 
         }
 
+        public void Visit(CompoundStatementNode node, ICoronaEvaluator sender)
+        {
+            foreach (StatementNode sNode in node.Statements)
+                Visit(sNode, sender);
+        }
+
         public void Visit(ReturnStatementNode node, ICoronaEvaluator sender)
         {
             State state = sender.GetStateByLabel(node.IdentifierLabel);

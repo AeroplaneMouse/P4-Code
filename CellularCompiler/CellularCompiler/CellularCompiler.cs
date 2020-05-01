@@ -20,10 +20,10 @@ namespace CellularCompiler
 
             for(int i = 0; i < 5; i++)
             {
+                Console.ReadLine();
                 eval.GenerateNextGeneration();
                 eval.PushNextGeneration();    
                 eval.Print();
-                Console.ReadLine();
             }
 
             //Console.WriteLine(grid);

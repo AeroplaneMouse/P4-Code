@@ -16,6 +16,8 @@ namespace CellularCompiler.Evaluators
         List<Rule> rules { get; set; }
         MainNode ast;
 
+        public int Generation { get; private set; } = 1;
+
         public Evaluator(MainNode ast)
         {
             this.ast = ast;
@@ -69,21 +71,33 @@ namespace CellularCompiler.Evaluators
             {
                 ApplyRules(cell, rules);
             });
+            Generation++;
         }
 
-        public void ApplyRules(Cell cell, List<Rule> rules)
+        public void Print()
+        {
+            // Clear terminal
+            Console.Clear();
+
+            // Print all states
+            foreach (State state in states)
+                Console.WriteLine(state);
+
+            // Print generation number
+            Console.WriteLine();
+            Console.WriteLine($" Generation: { Generation }");
+
+            // Print grid
+            Console.WriteLine();
+            Console.WriteLine(grid);
+        }
+
+        private void ApplyRules(Cell cell, List<Rule> rules)
         {
             foreach (Rule r in rules)
                 if (r.Apply(this, grid, cell))
                     break;
         }
-
-        public void Print()
-        {
-            Console.Clear();
-            Console.WriteLine(grid);
-        }
-
 
         private Grid VisitGrid(GridNode node)
         {

@@ -23,6 +23,11 @@ namespace CellularCompiler.Models
             return _id - 1;
         }
 
+        public override string ToString()
+        {
+            return $" [{ ID }] { Label }";
+        }
+
         public override bool Equals(object obj)
         {
             if (obj is State b)

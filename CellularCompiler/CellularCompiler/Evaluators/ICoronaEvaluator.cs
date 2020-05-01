@@ -11,7 +11,6 @@ namespace CellularCompiler.Evaluators
         State GetStateByLabel(string label);
         void PushNextGeneration();
         void GenerateNextGeneration();
-        void ApplyRules(Cell cell, List<Rule> rules);
         void Print();
     }
 }
