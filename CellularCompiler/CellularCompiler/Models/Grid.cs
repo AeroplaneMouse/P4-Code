@@ -83,6 +83,11 @@ namespace CellularCompiler.Models
             Push();
         }
 
+        internal Cell[,] GetCells()
+        {
+            return Cells;
+        }
+
         /// <summary>
         /// Takes a copy of every cell in CellsNext and put them into Cells
         /// </summary>

@@ -3,14 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject>CellularCompiler.CellularCompiler</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.8.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\CAVisualFormsCore\CAVisualFormsCore\CAVisualFormsCore.csproj" />
   </ItemGroup>
 
 </Project>

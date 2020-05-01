@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace CellularCompiler.Evaluators
 {
-    class Evaluator : ICoronaEvaluator
+    internal class Evaluator : ICoronaEvaluator
     {
         Grid grid { get; set; }
         List<State> states { get; set; }
@@ -72,6 +72,16 @@ namespace CellularCompiler.Evaluators
                 ApplyRules(cell, rules);
             });
             Generation++;
+        }
+
+        public Cell[,] GetCurrentGeneration()
+        {
+            return grid.GetCells() ;
+        }
+
+        public List<State> GetStates()
+        {
+            return states;
         }
 
         public void Print()

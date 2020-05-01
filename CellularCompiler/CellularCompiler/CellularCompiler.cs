@@ -7,12 +7,10 @@ using CellularCompiler.Builders;
 using System.Collections.Generic;
 using CellularCompiler.Evaluators;
 using CellularCompiler.Nodes.Base;
-using CAVisualFormsCore;
-using System.Windows.Forms;
 
 namespace CellularCompiler
 {
-    internal class CellularCompiler
+    public class CellularCompiler
     {
         private static void Main()
         {
@@ -36,11 +34,12 @@ namespace CellularCompiler
         /// Compiles corona
         /// </summary>
         /// <returns>A grid object</returns>
-        private ICoronaEvaluator InterpretCorona()
+        public ICoronaEvaluator InterpretCorona()
         {
             // Load code example
             string input = String.Empty;
-            File.ReadAllLines("../../../CodeExamples/CoronaTest.gjøl").ToList<string>().ForEach(s => input += s);
+            File.ReadAllLines("../../../../CellularCompiler/CodeExamples/CoronaTest.gjøl").ToList<string>().ForEach(s => input += s);
+            //File.ReadAllLines("CodeExamples/CoronaTest.gjøl").ToList<string>().ForEach(s => input += s);
 
             if (string.IsNullOrWhiteSpace(input))
                 throw new ArgumentNullException("input", "Argument was null or whitespace!");
