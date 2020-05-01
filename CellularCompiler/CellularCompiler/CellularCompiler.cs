@@ -7,6 +7,8 @@ using CellularCompiler.Builders;
 using System.Collections.Generic;
 using CellularCompiler.Evaluators;
 using CellularCompiler.Nodes.Base;
+using CAVisualFormsCore;
+using System.Windows.Forms;
 
 namespace CellularCompiler
 {
@@ -14,7 +16,9 @@ namespace CellularCompiler
     {
         private static void Main()
         {
-            CellularCompiler interpreter = new CellularCompiler();
+            Visualization visual = new Visualization();
+            Application.Run(visual);
+            /*CellularCompiler interpreter = new CellularCompiler();
             ICoronaEvaluator eval = interpreter.InterpretCorona();
             eval.Print();
 
@@ -24,7 +28,7 @@ namespace CellularCompiler
                 eval.GenerateNextGeneration();
                 eval.PushNextGeneration();    
                 eval.Print();
-            }
+            }*/
 
             //Console.WriteLine(grid);
         }

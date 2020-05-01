@@ -1,6 +1,6 @@
 ﻿namespace CellularCompiler.Models
 {
-    class Cell
+    public class Cell
     {
         public State State { get; set; }
 

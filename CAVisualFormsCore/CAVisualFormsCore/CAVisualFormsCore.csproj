@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\CellularCompiler\CellularCompiler\Models\Cell.cs" Link="Cell.cs" />
+    <Compile Include="..\..\CellularCompiler\CellularCompiler\Models\State.cs" Link="State.cs" />
+  </ItemGroup>
+
+</Project>
