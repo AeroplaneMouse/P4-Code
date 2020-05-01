@@ -15,16 +15,25 @@ namespace CellularCompiler
         private static void Main()
         {
             CellularCompiler interpreter = new CellularCompiler();
-            Grid grid = interpreter.InterpretCorona();
+            ICoronaEvaluator eval = interpreter.InterpretCorona();
+            eval.Print();
 
-            Console.WriteLine(grid);
+            for(int i = 0; i < 5; i++)
+            {
+                Console.ReadLine();
+                eval.GenerateNextGeneration();
+                eval.PushNextGeneration();    
+                eval.Print();
+            }
+
+            //Console.WriteLine(grid);
         }
 
         /// <summary>
         /// Compiles corona
         /// </summary>
         /// <returns>A grid object</returns>
-        private Grid InterpretCorona()
+        private ICoronaEvaluator InterpretCorona()
         {
             // Load code example
             string input = String.Empty;
@@ -46,23 +55,10 @@ namespace CellularCompiler
             MainNode ast = new BuildMainAst().VisitMain(cst);
 
             // Evaluate
-            InitialEvaluator inEval = new InitialEvaluator();
-            RunningEvaluator runEval = new RunningEvaluator();
-            Grid grid;
-            List<State> states;
-            List<Rule> rules;
+            ICoronaEvaluator evaluator = new Evaluator(ast);
+            evaluator.Initialize();
 
-            inEval.Visit(ast, out grid, out states, out rules);
-            //runEval.DoStuff
-
-
-            return grid;
-
-
-
-            //GridNode gridNode = (GridNode)ast.First();
-            //return new EvaluateGridVisitor().Visit(gridNode);
-            throw new NotImplementedException("What ever this is going to return, has yet to be implemented");
+            return evaluator;
         }
 
         /// <summary>

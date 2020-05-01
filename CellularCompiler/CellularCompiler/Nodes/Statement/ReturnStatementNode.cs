@@ -7,12 +7,11 @@ namespace CellularCompiler.Nodes.Statement
 {
     class ReturnStatementNode : StatementNode
     {
-        public ExpressionNode ReturnExpression { get; set; }
-        public ReturnStatementNode()
-            : this(null) { }
-        public ReturnStatementNode(ExpressionNode returnexpression)
+        public string IdentifierLabel { get; set; }
+
+        public ReturnStatementNode(string identifierLabel)
         {
-            ReturnExpression = returnexpression;
+            IdentifierLabel = identifierLabel;
         }
     }
 }

@@ -17,7 +17,7 @@ initial
 	;
 
 rules
-	: 'RULES' '{' selectionStatement* '}'
+	: 'RULES' '{' ruleStatement* '}'
 	;
 
 memberBlock
@@ -29,14 +29,13 @@ memberDeclaration
 	;
 
 statement
-	: selectionStatement
-	| iterationStatement
+	: iterationStatement
 	| assignmentStatement
 	| compoundStatement
 	| returnStatement
 	;
 
-selectionStatement
+ruleStatement
 	: 'match' '(' ('state' | member) (',' member)*  ')' '{' caseStatement+ '}'
 	;
 
@@ -45,8 +44,8 @@ iterationStatement
 	;
 
 assignmentStatement
-	: gridPoint member? '=' (expr | STRING) ';'
-	| ID = (expr | STRING) ';'
+	: gridPoint member? '=' ID ';' 	# GridAssignStatement
+	| ID '=' (expr | STRING) ';'   	# IdentifierAssignStatement
 	; 
 
 compoundStatement
@@ -54,11 +53,11 @@ compoundStatement
 	;
 
 returnStatement
-	: 'return' expr ';'
+	: 'return' ID ';'
 	;
 
 caseStatement
-	: '[' memberValue (',' memberValue)* ']' statement
+	: '[' ID (',' ID)* ']' statement
 	;
 
 expr

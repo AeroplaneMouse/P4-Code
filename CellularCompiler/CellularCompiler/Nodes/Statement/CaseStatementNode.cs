@@ -7,9 +7,10 @@ namespace CellularCompiler.Nodes.Statement
 {
     class CaseStatementNode : StatementNode
     {
-        public List<MemberValueNode> Values { get; set; }
+        public List<string> Values { get; set; }
         public StatementNode Statement { get; set; }
-        public CaseStatementNode(List<MemberValueNode> values, StatementNode statement)
+
+        public CaseStatementNode(List<string> values, StatementNode statement)
         {
             Values = values;
             Statement = statement;

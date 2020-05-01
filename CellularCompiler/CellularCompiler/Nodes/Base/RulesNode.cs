@@ -1,4 +1,5 @@
-﻿using CellularCompiler.Nodes.Statement;
+﻿using CellularCompiler.Models;
+using CellularCompiler.Nodes.Statement;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,11 +8,11 @@ namespace CellularCompiler.Nodes.Base
 {
     class RulesNode : BaseNode
     {
-        public List<SelectionStatementNode> Statements { get; set; }
+        public List<RuleStatementNode> RuleStatements { get; set; }
 
-        public RulesNode(List<SelectionStatementNode> statements)
+        public RulesNode(List<RuleStatementNode> ruleStatements)
         {
-            Statements = statements;
+            RuleStatements = ruleStatements;
         }
     }
 }
