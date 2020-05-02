@@ -28,7 +28,7 @@ namespace CellularCompiler.Models
             }
             else
             {
-                throw new Exception($"Symbol {symbol.Name} has already been added to the symbol table!");
+                throw new Exception($"A symbol by name \"{symbol.Name}\" already exists in the symbol table!");
             }
         }
 
