@@ -23,16 +23,4 @@ namespace CellularCompiler.Nodes.Math
     class MultiplicationNode : InfixExpressionNode { }
 
     class DivisionNode : InfixExpressionNode { }
-
-    class EqualityNode : InfixExpressionNode { }
-
-    class NotEqualNode : InfixExpressionNode { }
-
-    class LessThanNode : InfixExpressionNode { }
-
-    class BiggerThanNode : InfixExpressionNode { }
-
-    class LessThenOrEqualNode : InfixExpressionNode { }
-
-    class BiggerThanOrEqualNode : InfixExpressionNode { }
 }

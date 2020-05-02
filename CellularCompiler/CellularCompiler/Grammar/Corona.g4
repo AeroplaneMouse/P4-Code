@@ -65,10 +65,15 @@ expr
 	| value=ID										# IdentifierExpr
 	| member 										# IdentifierExpr
 	| left=expr op=operator right=expr 				# InfixExpr
+	| left=expr op=comparisonOperator right=expr	# ComparisonExpr
 	;
 
 operator
-	: '+' | '-' | '*' | '/' | '==' | '!=' | '<' | '>' | '<=' | '>='
+	: '+' | '-' | '*' | '/'
+	;
+
+comparisonOperator
+	: '==' | '!=' | '<' | '>' | '<=' | '>='
 	;
 
 memberValue

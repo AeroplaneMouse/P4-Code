@@ -16,16 +16,29 @@ namespace CellularCompiler.Builders
                 "-" => new SubstractionNode(),
                 "*" => new MultiplicationNode(),
                 "/" => new DivisionNode(),
-                "==" => new EqualityNode(),
-                "!=" => new NotEqualNode(),
-                "<" => new LessThanNode(),
-                ">" => new BiggerThanNode(),
-                "<=" => new LessThenOrEqualNode(),
-                ">=" => new BiggerThanOrEqualNode(),
                 _ => throw new ArgumentOutOfRangeException("context", "Unknown operator in switch statement - VisitInfixExpr")
             };
 
             // Visit the left and  of the node
+            node.Left = Visit(context.left);
+            node.Right = Visit(context.right);
+
+            return node;
+        }
+
+        public override ExpressionNode VisitComparisonExpr(CoronaParser.ComparisonExprContext context)
+        {
+            ComparisonNode node = context.op.GetText() switch
+            {
+                "==" => new EqualityNode(),
+                "!=" => new NotEqualNode(),
+                "<" => new LessThanNode(),
+                ">" => new BiggerThanNode(),
+                "<=" => new LessThanOrEqualNode(),
+                ">=" => new BiggerThanOrEqualNode(),
+                _ => throw new ArgumentOutOfRangeException("context", "Unknown operator in switch statement - VisitComparisonExpr")
+            };
+
             node.Left = Visit(context.left);
             node.Right = Visit(context.right);
 

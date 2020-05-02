@@ -2,7 +2,7 @@
 
 namespace CellularCompiler.Evaluators
 {
-    internal class ExpressionAstEvaluator : MathAstVisitor<double>
+    internal class MathExpressionAstEvaluator : MathAstVisitor<double>
     {
         public override double Visit(AdditionNode node) 
             => Visit(node.Left) + Visit(node.Right);
