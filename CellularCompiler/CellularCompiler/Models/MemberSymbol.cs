@@ -27,7 +27,7 @@ namespace CellularCompiler.Models
             if (acceptedValues.Contains(value))
                 this.value = value;
             else
-                throw new Exception("Invalid value");
+                throw new Exception($"Invalid value assigned to {Name}");
         }
     }
 }
