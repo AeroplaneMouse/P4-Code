@@ -12,6 +12,7 @@ namespace CellularCompiler
 {
     public class CellularCompiler
     {
+
         private static void Main()
         {
             CellularCompiler interpreter = new CellularCompiler();
