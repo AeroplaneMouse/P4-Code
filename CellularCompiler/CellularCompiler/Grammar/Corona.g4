@@ -58,7 +58,7 @@ returnStatement
 	;
 
 caseStatement
-	: '[' (memberValue | ID | '_') ']' statement
+	: '[' (memberValue | ID | DEFAULT) ']' statement
 	;
 
 expr
@@ -116,6 +116,10 @@ INT
 
 STRING
 	: '"' .*? '"' 
+	;
+
+DEFAULT
+	: '_'
 	;
 
 COMMENT
