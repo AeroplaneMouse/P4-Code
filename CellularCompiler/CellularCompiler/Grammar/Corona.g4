@@ -37,7 +37,7 @@ statement
 	;
 
 ruleStatement
-	: 'match' '(' matchElement+ ')' '{' caseStatement+ '}'
+	: 'match' '(' matchElement (',' matchElement)* ')' '{' caseStatement+ '}'
 	;
 
 iterationStatement
@@ -58,7 +58,7 @@ returnStatement
 	;
 
 caseStatement
-	: '[' value=caseValue+ ']' statement
+	: '[' caseValue (',' caseValue)* ']' statement
 	;
 
 caseValue
