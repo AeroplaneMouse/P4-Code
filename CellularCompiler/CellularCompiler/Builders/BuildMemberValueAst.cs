@@ -27,10 +27,10 @@ namespace CellularCompiler.Builders
         public override MemberValueNode VisitArrowValue(CoronaParser.ArrowValueContext context)
         {
             // Extract node data
-            //int left = Int32.Parse(context.INT()[0].GetText());
-            //int right = Int32.Parse(context.INT()[1].GetText());
-            int left = 0;
-            int right = Int32.Parse(context.INT().GetText());
+            int left = Int32.Parse(context.INT()[0].GetText());
+            int right = Int32.Parse(context.INT()[1].GetText());
+            //int left = 0;
+            //int right = Int32.Parse(context.INT().GetText());
 
             return new ArrowValueNode(left, right); ;
         }
