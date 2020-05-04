@@ -5,11 +5,11 @@ main
 	;
 
 grid
-	: 'GRID' '{' memberDeclaration+ '}'
+	: 'GRID' '{' gridDeclaration+ '}'
 	;
 
 states
-	: 'STATES' ID (',' ID)* memberBlock
+	: 'STATES' ID (',' ID)* '{' memberDeclaration* '}'
 	;
 
 initial
@@ -20,12 +20,12 @@ rules
 	: 'RULES' '{' ruleStatement* '}'
 	;
 
-memberBlock
-	: '{' memberDeclaration* '}'
-	;
-
 memberDeclaration
 	: ID ':' memberValue (',' memberValue)*  ';'
+	;
+
+gridDeclaration
+	: ID ':' INT ';'
 	;
 
 statement
@@ -33,10 +33,11 @@ statement
 	| assignmentStatement
 	| compoundStatement
 	| returnStatement
+	| ruleStatement
 	;
 
 ruleStatement
-	: 'match' '(' ('state' | member) (',' member)*  ')' '{' caseStatement+ '}'
+	: 'match' '(' matchElement ')' '{' caseStatement+ '}'
 	;
 
 iterationStatement
@@ -57,7 +58,7 @@ returnStatement
 	;
 
 caseStatement
-	: '[' ID (',' ID)* ']' statement
+	: '[' (memberValue | ID | '_') ']' statement
 	;
 
 expr
@@ -80,23 +81,25 @@ memberValue
 	: arrowValue		# ArrowMemberValue
 	| value=INT       # IntMemberValue
 	| value=STRING    # StringMemberValue
-	| value=ID        # IdentifierMemberValue
-	| '_'					# DefaultMemberValue
-	;
-
-arrowValue
-	: '0' '->' INT
 	;
 
 member
 	: '.'ID
+	| '.state'
 	;
 
 gridPoint
 	: 'grid[' expr(',' expr)* ']'
 	;
 
+arrowValue
+	: INT '->' INT
+	;
 
+matchElement
+	: gridPoint? member
+	| expr 
+	;
 
 
 fragment DIGIT :   [0-9];
@@ -105,7 +108,6 @@ fragment Nondigit :   [a-zA-Z_];
 ID
 	: Nondigit (Nondigit | DIGIT)*
    ;
-
 
 INT
 	: '0'
