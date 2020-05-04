@@ -18,10 +18,6 @@ namespace CellularCompiler.Builders
             return new StringValueNode(context.value.Text);
         }
 
-        public override MemberValueNode VisitIdentifierMemberValue([NotNull] CoronaParser.IdentifierMemberValueContext context)
-        {
-            return new IdentifierValueNode(context.value.Text);
-        }
 
         public override MemberValueNode VisitDefaultMemberValue([NotNull] CoronaParser.DefaultMemberValueContext context)
         {
