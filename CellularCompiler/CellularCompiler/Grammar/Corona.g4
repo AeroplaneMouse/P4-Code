@@ -37,7 +37,7 @@ statement
 	;
 
 ruleStatement
-	: 'match' '(' matchElement ')' '{' caseStatement+ '}'
+	: 'match' '(' matchElement+ ')' '{' caseStatement+ '}'
 	;
 
 iterationStatement
@@ -58,7 +58,13 @@ returnStatement
 	;
 
 caseStatement
-	: '[' (memberValue | ID | DEFAULT) ']' statement
+	: '[' value=caseValue+ ']' statement
+	;
+
+caseValue
+	: memberValue # MemberCaseValue
+	| ID          # IdentifierCaseValue
+	| DEFAULT     # DefaultCaseValue
 	;
 
 expr

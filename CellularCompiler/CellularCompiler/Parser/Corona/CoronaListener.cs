@@ -185,6 +185,42 @@ public interface ICoronaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCaseStatement([NotNull] CoronaParser.CaseStatementContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>MemberCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMemberCaseValue([NotNull] CoronaParser.MemberCaseValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>MemberCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMemberCaseValue([NotNull] CoronaParser.MemberCaseValueContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>IdentifierCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIdentifierCaseValue([NotNull] CoronaParser.IdentifierCaseValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>IdentifierCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIdentifierCaseValue([NotNull] CoronaParser.IdentifierCaseValueContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>DefaultCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDefaultCaseValue([NotNull] CoronaParser.DefaultCaseValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>DefaultCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDefaultCaseValue([NotNull] CoronaParser.DefaultCaseValueContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>NumberExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// </summary>
