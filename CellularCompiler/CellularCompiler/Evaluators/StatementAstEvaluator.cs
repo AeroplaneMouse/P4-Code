@@ -51,7 +51,7 @@ namespace CellularCompiler.Evaluators
 
         public void Visit(GridAssignmentStatementNode node, ICoronaEvaluator sender)
         {
-            ExpressionAstEvaluator exprEvaluator = new ExpressionAstEvaluator();
+            MathExpressionAstEvaluator exprEvaluator = new MathExpressionAstEvaluator();
 
             // Extract pos
             double x = exprEvaluator.Visit(node.GridPoint.ExpressionNodes[0]);
