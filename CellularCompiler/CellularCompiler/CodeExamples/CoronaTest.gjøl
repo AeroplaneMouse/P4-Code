@@ -1,7 +1,7 @@
 GRID
 {
-	x: 0 -> 15;
-	y: 0 -> 15;
+	x: 15;
+	y: 15;
 }
 
 STATES white, black
@@ -13,22 +13,29 @@ INITIAL
 {
 	grid[1,1] = black;
 	grid[1,2] = black;
-	#grid[0,1] = 1;#
+	grid[0,0] = black;
 }
 
 #Define rules#
 # Rules ved dette shit om cell#
-# state 		#
+# .state 	#
 # .x  		#
 # .y 			#
 # .floor		#
 RULES
 {
-	match(state) # This is just a "Rule" #
+	match(.state) # This is just a simple "Rule" #
 	{
 		[black]
 		{
-			return white;
+			count = 2;
+			match (count)
+			{
+				[2 -> 3]
+					return white;
+				[_]
+					return black;
+			}
 		}
 		[white]
 		{

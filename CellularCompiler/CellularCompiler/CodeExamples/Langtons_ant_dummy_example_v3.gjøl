@@ -2,9 +2,9 @@
 
 GRID
 {
-	x: 1 -> 64;
-	y: 1 -> 64;
-	floor: "Stue", "Foerste", "Anden";
+	x: 64;
+	y: 64;
+	#floor: "Stue", "Foerste", "Anden";#
 }
 
 #Define states, white and black in this case#
@@ -20,9 +20,6 @@ STATES blue
 {
 	Height: "up", "down";
 }
-
-
-
 
 #Set initial state, all cells are white#
 INITIAL
@@ -42,7 +39,7 @@ INITIAL
 # .floor		#
 RULES
 {
-	match(state)
+	match(.state)
 	{
 		[black]
 		{
