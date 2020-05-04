@@ -4,25 +4,25 @@ using System.Text;
 
 namespace CellularCompiler.Models
 {
-    class MemberSymbol<T> : Symbol
+    class MemberSymbol : Symbol
     {
-        private T value;
+        private object value;
 
-        private List<T> acceptedValues = new List<T>(); 
+        private List<object> acceptedValues = new List<object>(); 
         
 
-        public MemberSymbol(T initial, List<T> values)
+        public MemberSymbol(object initial, List<object> values, string name) : base(name)
         {
             acceptedValues = values;
             value = initial;
         }
 
-        public T GetValue()
+        public object GetValue()
         {
             return value;
         }
 
-        public void SetValue(T value)
+        public void SetValue(object value)
         {
             if (acceptedValues.Contains(value))
                 this.value = value;
