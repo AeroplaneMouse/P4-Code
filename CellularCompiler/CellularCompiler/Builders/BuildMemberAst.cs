@@ -1,6 +1,7 @@
 ﻿using CellularCompiler.Nodes.Members;
 using CellularCompiler.Builders;
 using System.Collections.Generic;
+using System;
 
 namespace CellularCompiler
 {
@@ -21,6 +22,20 @@ namespace CellularCompiler
             }
 
             return new MemberNode(label, valueNodes);
+        }
+
+        public override MemberNode VisitGridDeclaration(CoronaParser.GridDeclarationContext context)
+        {
+            // Extract label and value
+            string id = context.ID().GetText();
+            int value = Int32.Parse(context.INT().GetText());
+
+            // Create valuenode and list
+            IntValueNode valueNode = new IntValueNode(value);
+            List<MemberValueNode> values = new List<MemberValueNode>();
+            values.Add(valueNode);
+
+            return new MemberNode(id, values);
         }
     }
 }

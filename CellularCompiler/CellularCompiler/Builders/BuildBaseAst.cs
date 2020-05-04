@@ -19,12 +19,9 @@ namespace CellularCompiler.Builders
 
             // Extract and visit gridnode children
             BuildMemberAst memberVisitor = new BuildMemberAst();
-            CoronaParser.MemberDeclarationContext[] mDeclarations = context.memberDeclaration();
-            foreach (CoronaParser.MemberDeclarationContext t in mDeclarations)
-            {
-                MemberNode n = memberVisitor.Visit(t);
-                node.Members.Add(n);
-            }
+            CoronaParser.GridDeclarationContext[] gDeclarations = context.gridDeclaration();
+            foreach (CoronaParser.GridDeclarationContext t in gDeclarations)
+                node.Members.Add(memberVisitor.Visit(t));
 
             return node;
         }
@@ -39,7 +36,7 @@ namespace CellularCompiler.Builders
 
             // Extract and visit StateNode children
             BuildMemberAst memberVisitor = new BuildMemberAst();
-            CoronaParser.MemberDeclarationContext[] memberDeclarations = context.memberBlock().memberDeclaration();
+            CoronaParser.MemberDeclarationContext[] memberDeclarations = context.memberDeclaration();
             foreach (CoronaParser.MemberDeclarationContext member in memberDeclarations)
             {
                 MemberNode n = memberVisitor.Visit(member);

@@ -69,11 +69,11 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context)
         {
-            ITerminalNode[] IDValues = context.ID();
-            List<string> values = new List<string>();
+            CoronaParser.CaseValueContext[] caseValues = context.caseValue();
 
-            // Extract all the ID values
-            foreach (var value in IDValues)
+            // Extract all caseValues
+            List<string> values = new List<string>();
+            foreach (var value in caseValues)
                 values.Add(value.GetText());
 
             return new CaseStatementNode(values, Visit(context.statement()));
