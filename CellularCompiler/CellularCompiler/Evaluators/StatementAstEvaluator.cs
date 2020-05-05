@@ -1,7 +1,9 @@
 ﻿using CellularCompiler.Exceptions;
 using CellularCompiler.Models;
 using CellularCompiler.Nodes.Base;
+using CellularCompiler.Nodes.Math;
 using CellularCompiler.Nodes.Statement;
+using CellularCompiler.Visitor.Math;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,14 +29,15 @@ namespace CellularCompiler.Evaluators
         public void Visit(IterationStatementNode node, ICoronaEvaluator sender)
         {
             //node.Initializer
+            MathExpressionAstEvaluator exprEvaluator = new MathExpressionAstEvaluator();
+            ComparisonExpressionAstEvaluator compEvaluator = new ComparisonExpressionAstEvaluator();
 
-            return;
-            for(; ; )
+            // We have to convert node.Conditioner as ExpressionNode returns an int because of public virtual T Visit(ExpressionNode node) in ComparisonVisitor
+
+            for (exprEvaluator.Visit(node.Initializer); compEvaluator.Visit(node.Conditioner); exprEvaluator.Visit(node.Iterator))
             {
                 Visit(node.Statement, sender);
-            }
-
-
+            }*
         }
 
         public void Visit(CompoundStatementNode node, ICoronaEvaluator sender)
