@@ -2,6 +2,7 @@
 using CellularCompiler.Builders;
 using System.Collections.Generic;
 using System;
+using CellularCompiler.Models;
 
 namespace CellularCompiler
 {
@@ -20,6 +21,8 @@ namespace CellularCompiler
                 MemberValueNode valueNode = memberValueVisitor.Visit(value);
                 valueNodes.Add(valueNode);
             }
+
+            Stbl.st.InsertSymbol(new MemberSymbol(valueNodes[0], valueNodes, label));
 
             return new MemberNode(label, valueNodes);
         }
