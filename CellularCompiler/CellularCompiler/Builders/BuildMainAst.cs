@@ -9,6 +9,8 @@ namespace CellularCompiler.Builders
     {
         public override MainNode VisitMain(CoronaParser.MainContext context)
         {
+            Stbl.st.OpenScope();
+
             BuildBaseAst baseVisitor = new BuildBaseAst();
 
             // Visit grid
@@ -25,6 +27,8 @@ namespace CellularCompiler.Builders
 
             // Visit rules
             RulesNode rules = baseVisitor.Visit(context.rules()) as RulesNode;
+
+            Stbl.st.CloseScope();
 
             return new MainNode(grid, states, initial, rules);
         }

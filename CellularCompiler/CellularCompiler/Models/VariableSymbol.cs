@@ -8,7 +8,7 @@ namespace CellularCompiler.Models
     {
         T value;
 
-        public VariableSymbol(T value)
+        public VariableSymbol(T value, string name) : base(name)
         {
             this.value = value;
         }

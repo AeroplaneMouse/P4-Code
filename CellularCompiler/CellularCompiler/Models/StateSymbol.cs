@@ -6,14 +6,19 @@ namespace CellularCompiler.Models
 {
     class StateSymbol : Symbol
     {
-        private List<MemberSymbol<object>> members = new List<MemberSymbol<object>>();
+        private List<MemberSymbol> members = new List<MemberSymbol>();
 
-        public void AddMember(MemberSymbol<object> member)
+        public StateSymbol(string name) : base(name)
+        {
+
+        }
+
+        public void AddMember(MemberSymbol member)
         {
             members.Add(member);
         }
 
-        public MemberSymbol<object> RetrieveMember(string name)
+        public MemberSymbol RetrieveMember(string name)
         {
             return members.Find(s => s.Name.Equals(name));
         }
