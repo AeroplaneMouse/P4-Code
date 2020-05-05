@@ -124,6 +124,27 @@ public interface ICoronaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>MemberCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMemberCaseValue([NotNull] CoronaParser.MemberCaseValueContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>IdentifierCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIdentifierCaseValue([NotNull] CoronaParser.IdentifierCaseValueContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>DefaultCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDefaultCaseValue([NotNull] CoronaParser.DefaultCaseValueContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>NumberExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// </summary>

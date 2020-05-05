@@ -219,6 +219,48 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCaseStatement([NotNull] CoronaParser.CaseStatementContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>MemberCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMemberCaseValue([NotNull] CoronaParser.MemberCaseValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>MemberCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMemberCaseValue([NotNull] CoronaParser.MemberCaseValueContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>IdentifierCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIdentifierCaseValue([NotNull] CoronaParser.IdentifierCaseValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>IdentifierCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIdentifierCaseValue([NotNull] CoronaParser.IdentifierCaseValueContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>DefaultCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDefaultCaseValue([NotNull] CoronaParser.DefaultCaseValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>DefaultCaseValue</c>
+	/// labeled alternative in <see cref="CoronaParser.caseValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDefaultCaseValue([NotNull] CoronaParser.DefaultCaseValueContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>NumberExpr</c>
 	/// labeled alternative in <see cref="CoronaParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
