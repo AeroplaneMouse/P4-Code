@@ -111,21 +111,15 @@ namespace CellularCompiler.Evaluators
 
         private Grid VisitGrid(GridNode node)
         {
-            // Extract the numbers of axies to create. Might be usefull later
-            int axis = node.Members.Count;
+            // Just a check
+            if (node.Members.Count != 2)
+                throw new Exception("There must be exactly 2 axis in the grid. Otherwise, how whould it be 2D?");
 
-            // Extract limits for each axis
-            List<int> axisLimit = new List<int>();
-            node.Members.ForEach((m) =>
-            {
-                // Extract limit from ArrowValueNode
-                if (m.Values[0] is ArrowValueNode valueNode)
-                    axisLimit.Add(valueNode.RightValue);
-                else
-                    throw new InvalidGridContentException($"Member: { m.Label } in grid, contains an invalid value. Must be a single ArrowValue");
-            });
+            // Extract axis limits
+            int x = (node.Members[0].Values[0] as IntValueNode).Value;
+            int y = (node.Members[1].Values[0] as IntValueNode).Value;
 
-            return new Grid(axisLimit[0], axisLimit[1], states.First());
+            return new Grid(x, y, states.First());
         }
 
         /// <summary>
