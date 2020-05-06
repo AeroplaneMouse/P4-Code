@@ -15,7 +15,7 @@ INITIAL
 	grid[2,2] = alive;
 	grid[3,3] = alive;
 
-	test = 2 != 3;
+	test = 4 == 2;
 }
 
 #Define rules#
