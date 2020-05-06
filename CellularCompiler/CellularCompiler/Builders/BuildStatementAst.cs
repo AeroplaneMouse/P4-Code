@@ -8,6 +8,7 @@ using CellularCompiler.Exceptions;
 using CellularCompiler.Nodes.Math;
 using CellularCompiler.Nodes.Statement;
 using CellularCompiler.Nodes.Values;
+using CellularCompiler.Evaluators;
 
 namespace CellularCompiler.Builders
 {
@@ -43,7 +44,7 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitReturnStatement([NotNull] CoronaParser.ReturnStatementContext context)
         {
-            if (new BuildValueAst().Visit(context) is IdentifierValueNode node)
+            if (new BuildValueAst().Visit(context.identifierValue()) is IdentifierValueNode node)
                 return new ReturnStatementNode(node);
             else
                 throw new Exception("ReturnStatement does not contain an identifier");
@@ -64,66 +65,42 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitMatchStatement([NotNull] CoronaParser.MatchStatementContext context)
         {
-            //BuildValueAst valueVisitor = new BuildValueAst();
-            //BuildExpressionAst exprVisitor = new BuildExpressionAst();
-            //List<CaseStatementNode> caseStatements = new List<CaseStatementNode>();
+            BuildValueAst valueVisitor = new BuildValueAst();
+            BuildExpressionAst exprVisitor = new BuildExpressionAst();
 
-            //// Visit each match element
-            //List<ValueNode> matchElements = new List<ValueNode>();
-            //CoronaParser.MatchElementContext[] elements = context.matchElement();
-            //foreach (var element in elements)
-            //{
-            //    if (element.GetText() == ".state")
-            //        matchElements.Add(new IdentifierValueNode(".state"));
-            //    else if(element.gridPoint() != null)
-            //    {
+            CoronaParser.MatchElementContext[] matchElements = context.matchElement();
+            List<ValueNode> elements = new List<ValueNode>();
 
+            // Visit each of the different elements to match against
+            foreach (var e in matchElements)
+            {
+                if (e.member() != null)
+                    elements.Add(new IdentifierValueNode(e.member().GetText()));
 
-            //        ExpressionNode expr1 = exprVisitor.Visit();
+                else if (e.gridPoint() != null)
+                    elements.Add(valueVisitor.Visit(e.gridPoint()));
+                
+                else if (e.expr() != null)
+                    elements.Add(exprVisitor.Visit(e.expr()));
+            }
 
-            //        matchElements.Add(GridPointNode);
+            // Visit each CaseStatement
+            List<CaseStatementNode> caseStatements = new List<CaseStatementNode>();
+            CoronaParser.CaseStatementContext[] cases = context.caseStatement();
+            foreach (CoronaParser.CaseStatementContext c in cases)
+                caseStatements.Add(Visit(c) as CaseStatementNode);
 
-            //    }
-            //    else if(element.expr() != null)
-            //    {
-            //        exprVisitor.Visit(element.expr());
-            //        matchElements.Add();
-            //    }
-
-
-            //    valueVisitor.Visit(element);
-
-            //}
-
-            //// Visit each CaseStatement
-            //CoronaParser.CaseStatementContext[] cases = context.caseStatement();
-            //foreach (CoronaParser.CaseStatementContext c in cases)
-            //{
-            //    if (Visit(c) is CaseStatementNode caseNode)
-            //        caseStatements.Add(caseNode);
-            //    else
-            //        throw new InvalidMatchStatementContentException();
-            //}                
-
-            //return new MatchStatementNode(caseStatements);
-            //throw new NotImplementedException();
-            return new MatchStatementNode(null, null);
+            return new MatchStatementNode(elements, caseStatements);
         }
 
         public override StatementNode VisitGridAssignStatement([NotNull] CoronaParser.GridAssignStatementContext context)
         {
+            //TODO: Handle expressions in grid assignment
             BuildExpressionAst expressionVisitor = new BuildExpressionAst();
-            BuildGridPointAst gridpointVisitor = new BuildGridPointAst();
+            BuildValueAst valueVisitor= new BuildValueAst();
 
             IdentifierValueNode id = new IdentifierValueNode(context.ID().GetText());
-            
-            // Extract memberID, if it is used
-            MemberIDNode memberIDNode = null;
-            if (context.member() != null)
-                memberIDNode = new MemberIDNode(context.member().GetText());
-
-            // Visit GridPoint
-            GridValueNode gridpoint = gridpointVisitor.Visit(context.gridPoint());
+            GridValueNode gridpoint = (GridValueNode) valueVisitor.Visit(context.gridPoint());
 
             return new GridAssignmentStatementNode(gridpoint, null, id);
         }
