@@ -17,7 +17,7 @@ initial
 	;
 
 rules
-	: 'RULES' '{' ruleStatement* '}'
+	: 'RULES' compoundStatement
 	;
 
 memberDeclaration
@@ -33,13 +33,18 @@ statement
 	| assignmentStatement
 	| compoundStatement
 	| returnStatement
-	| ruleStatement
+	| matchStatement
 	;
 
-ruleStatement
+matchStatement
 	: 'match' '(' matchElement (',' matchElement)* ')' '{' caseStatement+ '}'
 	;
 
+matchElement
+	: gridPoint? '.state'
+	| expr 
+	;
+	
 iterationStatement
 	: 'for' '(' initializer=expr ';' condition=expr ';' iterator=expr ')' statement
 	;
@@ -91,7 +96,6 @@ memberValue
 
 member
 	: '.'ID
-	| '.state'
 	;
 
 gridPoint
@@ -102,10 +106,7 @@ arrowValue
 	: INT '->' INT
 	;
 
-matchElement
-	: gridPoint? member
-	| expr 
-	;
+
 
 
 fragment DIGIT :   [0-9];

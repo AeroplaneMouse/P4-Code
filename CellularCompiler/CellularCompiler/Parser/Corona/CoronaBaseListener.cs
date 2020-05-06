@@ -131,17 +131,29 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatement([NotNull] CoronaParser.StatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.ruleStatement"/>.
+	/// Enter a parse tree produced by <see cref="CoronaParser.matchStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterRuleStatement([NotNull] CoronaParser.RuleStatementContext context) { }
+	public virtual void EnterMatchStatement([NotNull] CoronaParser.MatchStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.ruleStatement"/>.
+	/// Exit a parse tree produced by <see cref="CoronaParser.matchStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitRuleStatement([NotNull] CoronaParser.RuleStatementContext context) { }
+	public virtual void ExitMatchStatement([NotNull] CoronaParser.MatchStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.matchElement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMatchElement([NotNull] CoronaParser.MatchElementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.matchElement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMatchElement([NotNull] CoronaParser.MatchElementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.iterationStatement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -418,18 +430,6 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitArrowValue([NotNull] CoronaParser.ArrowValueContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.matchElement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMatchElement([NotNull] CoronaParser.MatchElementContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.matchElement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMatchElement([NotNull] CoronaParser.MatchElementContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

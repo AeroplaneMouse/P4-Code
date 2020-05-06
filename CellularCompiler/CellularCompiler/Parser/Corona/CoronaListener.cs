@@ -111,15 +111,25 @@ public interface ICoronaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStatement([NotNull] CoronaParser.StatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.ruleStatement"/>.
+	/// Enter a parse tree produced by <see cref="CoronaParser.matchStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterRuleStatement([NotNull] CoronaParser.RuleStatementContext context);
+	void EnterMatchStatement([NotNull] CoronaParser.MatchStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.ruleStatement"/>.
+	/// Exit a parse tree produced by <see cref="CoronaParser.matchStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitRuleStatement([NotNull] CoronaParser.RuleStatementContext context);
+	void ExitMatchStatement([NotNull] CoronaParser.MatchStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.matchElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMatchElement([NotNull] CoronaParser.MatchElementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.matchElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMatchElement([NotNull] CoronaParser.MatchElementContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.iterationStatement"/>.
 	/// </summary>
@@ -354,14 +364,4 @@ public interface ICoronaListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitArrowValue([NotNull] CoronaParser.ArrowValueContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.matchElement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterMatchElement([NotNull] CoronaParser.MatchElementContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.matchElement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitMatchElement([NotNull] CoronaParser.MatchElementContext context);
 }

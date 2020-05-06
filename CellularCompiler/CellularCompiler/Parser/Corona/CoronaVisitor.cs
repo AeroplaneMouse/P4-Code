@@ -80,11 +80,17 @@ public interface ICoronaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] CoronaParser.StatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CoronaParser.ruleStatement"/>.
+	/// Visit a parse tree produced by <see cref="CoronaParser.matchStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitRuleStatement([NotNull] CoronaParser.RuleStatementContext context);
+	Result VisitMatchStatement([NotNull] CoronaParser.MatchStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoronaParser.matchElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMatchElement([NotNull] CoronaParser.MatchElementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoronaParser.iterationStatement"/>.
 	/// </summary>
@@ -223,10 +229,4 @@ public interface ICoronaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitArrowValue([NotNull] CoronaParser.ArrowValueContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="CoronaParser.matchElement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitMatchElement([NotNull] CoronaParser.MatchElementContext context);
 }
