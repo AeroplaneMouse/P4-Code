@@ -1,17 +1,17 @@
-﻿using CellularCompiler.Nodes.Members;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Text;
+using System.Collections.Generic;
+using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Models
 {
     class MemberSymbol : Symbol
     {
         private object value;
-        private List<MemberValueNode> acceptedValues = new List<MemberValueNode>();
+        private List<ValueNode> acceptedValues = new List<ValueNode>();
 
 
-        public MemberSymbol(MemberValueNode initial, List<MemberValueNode> values, string name) : base(name)
+        public MemberSymbol(ValueNode initial, List<ValueNode> values, string name) : base(name)
         {
             acceptedValues = values;
             value = initial;

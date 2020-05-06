@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 using CellularCompiler.Nodes.Math;
+using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Nodes.Statement
 {
     class ReturnStatementNode : StatementNode
     {
-        public string IdentifierLabel { get; set; }
+        public IdentifierValueNode Identifier { get; set; }
 
-        public ReturnStatementNode(string identifierLabel)
+        public ReturnStatementNode(IdentifierValueNode id)
         {
-            IdentifierLabel = identifierLabel;
+            Identifier = id;
         }
     }
 }

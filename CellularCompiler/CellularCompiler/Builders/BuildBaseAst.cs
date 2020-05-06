@@ -1,12 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Antlr4.Runtime.Tree;
-using System.Collections.Generic;
-using CellularCompiler.Nodes.Base;
-using CellularCompiler.Nodes.Members;
-using CellularCompiler.Nodes.Statement;
-using System;
 using CellularCompiler.Models;
+using System.Collections.Generic;
 using CellularCompiler.Exceptions;
+using CellularCompiler.Nodes.Base;
+using CellularCompiler.Nodes.Statement;
+using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Builders
 {
@@ -63,43 +63,13 @@ namespace CellularCompiler.Builders
 
         public override BaseNode VisitRules(CoronaParser.RulesContext context)
         {
-            RulesNode node = new RulesNode(new List<RuleStatementNode>());
-
-            // Extract caseStatements
             BuildStatementAst statementVisitor = new BuildStatementAst();
-            CoronaParser.RuleStatementContext[] ruleStatements = context.ruleStatement();
-            foreach (CoronaParser.RuleStatementContext rStatement in ruleStatements)
-            {
-                //// Visit each selectionStatement in rules
-                //StatementNode statement = statementVisitor.Visit(s);
-                //if (statement is SelectionStatementNode selection)
-                //    node.Statements.Add(selection);
-                //else
-                //    throw new ArgumentException(nameof(statement));
-                                
-                //CoronaParser.CaseStatementContext[] cases = s.caseStatement();
-                //foreach(CoronaParser.CaseStatementContext c in cases)
-                //{
-                //    StatementNode casestatement = statementVisitor.Visit(c);
+            RulesNode node = new RulesNode(new List<StatementNode>());
 
-                //    if (casestatement is CaseStatementNode caseNode)
-                //    {
-                        
-                //    }
-                //    else
-                //        throw new ArgumentException();
-
-                //    Rule r = new Rule(state, new List<StatementNode>());
-                    
-                //}
-                //s.caseStatement();
-
-
-                if (statementVisitor.Visit(rStatement) is RuleStatementNode sNode)
-                    node.RuleStatements.Add(sNode);
-                else
-                    throw new InvalidRuleStatementContentException();
-            }
+            // Visit each statement in rules
+            CoronaParser.StatementContext[] statements = context.compoundStatement().statement();
+            foreach (var s in statements)
+                node.Statements.Add(statementVisitor.Visit(s));
 
             return node;
         }

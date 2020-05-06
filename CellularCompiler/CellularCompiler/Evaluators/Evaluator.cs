@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Linq;
 using CellularCompiler.Models;
 using System.Collections.Generic;
 using CellularCompiler.Exceptions;
 using CellularCompiler.Nodes.Base;
-using CellularCompiler.Nodes.Members;
 using CellularCompiler.Nodes.Statement;
-using System.Linq;
+using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Evaluators
 {
@@ -160,13 +160,15 @@ namespace CellularCompiler.Evaluators
         /// <returns>A list of the extracted rules</returns>
         private List<Rule> VisitRules(RulesNode rulesNode)
         {
-            List<Rule> rules = new List<Rule>();
+            //List<Rule> rules = new List<Rule>();
 
-            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(null, null);
-            foreach (RuleStatementNode rsNode in rulesNode.RuleStatements)
-                rules.AddRange(statementEvaluator.VisitRuleStatementNode(rsNode, this));
+            //StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(null, null);
+            //foreach (MatchStatementNode rsNode in rulesNode.RuleStatements)
+            //    rules.AddRange(statementEvaluator.VisitRuleStatementNode(rsNode, this));
 
-            return rules;
+            //return rules;
+
+            throw new NotImplementedException();
         }
     }
 }

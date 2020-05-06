@@ -45,8 +45,9 @@ namespace CellularCompiler.Evaluators
 
         public void Visit(ReturnStatementNode node, ICoronaEvaluator sender)
         {
-            State state = sender.GetStateByLabel(node.IdentifierLabel);
-            grid.SetCell(cell, state);
+            //State state = sender.GetStateByLabel(node.IdentifierLabel);
+            //grid.SetCell(cell, state);
+            throw new NotImplementedException();
         }
 
         public void Visit(GridAssignmentStatementNode node, ICoronaEvaluator sender)
@@ -70,16 +71,17 @@ namespace CellularCompiler.Evaluators
 
         public Rule VisitCaseStatementNode(CaseStatementNode node, ICoronaEvaluator sender)
         {
-            List<State> ruleStates = new List<State>();
+            //List<State> ruleStates = new List<State>();
 
-            // Foreach state label in the caseStatement, find its right state object
-            foreach (string label in node.Values)
-                ruleStates.Add(sender.GetStateByLabel(label));
+            //// Foreach state label in the caseStatement, find its right state object
+            //foreach (string label in node.Values)
+            //    ruleStates.Add(sender.GetStateByLabel(label));
 
-            return new Rule(ruleStates, node.Statement);
+            //return new Rule(ruleStates, node.Statement);
+            throw new NotImplementedException();
         }
 
-        public List<Rule> VisitRuleStatementNode(RuleStatementNode node, ICoronaEvaluator sender)
+        public List<Rule> VisitRuleStatementNode(MatchStatementNode node, ICoronaEvaluator sender)
         {
             List<Rule> rules = new List<Rule>();
 

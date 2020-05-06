@@ -1,5 +1,5 @@
 ﻿using System;
-using CellularCompiler.Nodes.Members;
+using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Nodes.Statement
 {
