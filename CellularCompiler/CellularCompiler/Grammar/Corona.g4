@@ -44,7 +44,7 @@ matchElement
 	: gridPoint? '.state'
 	| expr 
 	;
-	
+
 iterationStatement
 	: 'for' '(' initializer=expr ';' condition=expr ';' iterator=expr ')' statement
 	;
@@ -59,7 +59,7 @@ compoundStatement
 	;
 
 returnStatement
-	: 'return' ID ';'
+	: 'return' identifierValue ';'
 	;
 
 caseStatement
@@ -67,15 +67,15 @@ caseStatement
 	;
 
 caseValue
-	: memberValue # MemberCaseValue
-	| ID          # IdentifierCaseValue
-	| DEFAULT     # DefaultCaseValue
+	: memberValue     # MemberCaseValue
+	| identifierValue	# IdentifierCaseValue
+	| DEFAULT     		# DefaultCaseValue
 	;
 
 expr
-	: value=INT 									# NumberExpr
-	| value=ID										# IdentifierExpr
-	| member 										# IdentifierExpr
+	: intValue 											   # NumberExpr
+	| identifierValue										# IdentifierExpr
+	| member 										      # IdentifierExpr
 	| left=expr op=operator right=expr 				# InfixExpr
 	| left=expr op=comparisonOperator right=expr	# ComparisonExpr
 	;
@@ -89,9 +89,9 @@ comparisonOperator
 	;
 
 memberValue
-	: arrowValue		# ArrowMemberValue
-	| value=INT       # IntMemberValue
-	| value=STRING    # StringMemberValue
+	: arrowValue
+	| intValue
+	| stringValue
 	;
 
 member
@@ -105,6 +105,19 @@ gridPoint
 arrowValue
 	: INT '->' INT
 	;
+
+intValue
+	: INT
+	;
+
+stringValue
+	: STRING
+	;
+
+identifierValue
+	: ID
+	;
+
 
 
 

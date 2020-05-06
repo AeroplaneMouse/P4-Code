@@ -191,26 +191,11 @@ public interface ICoronaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitComparisonOperator([NotNull] CoronaParser.ComparisonOperatorContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>ArrowMemberValue</c>
-	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// Visit a parse tree produced by <see cref="CoronaParser.memberValue"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitArrowMemberValue([NotNull] CoronaParser.ArrowMemberValueContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>IntMemberValue</c>
-	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitIntMemberValue([NotNull] CoronaParser.IntMemberValueContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>StringMemberValue</c>
-	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitStringMemberValue([NotNull] CoronaParser.StringMemberValueContext context);
+	Result VisitMemberValue([NotNull] CoronaParser.MemberValueContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoronaParser.member"/>.
 	/// </summary>
@@ -229,4 +214,22 @@ public interface ICoronaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitArrowValue([NotNull] CoronaParser.ArrowValueContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoronaParser.intValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIntValue([NotNull] CoronaParser.IntValueContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoronaParser.stringValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStringValue([NotNull] CoronaParser.StringValueContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoronaParser.identifierValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIdentifierValue([NotNull] CoronaParser.IdentifierValueContext context);
 }

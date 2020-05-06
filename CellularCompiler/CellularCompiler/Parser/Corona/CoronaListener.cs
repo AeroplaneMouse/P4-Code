@@ -299,41 +299,15 @@ public interface ICoronaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitComparisonOperator([NotNull] CoronaParser.ComparisonOperatorContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>ArrowMemberValue</c>
-	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// Enter a parse tree produced by <see cref="CoronaParser.memberValue"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterArrowMemberValue([NotNull] CoronaParser.ArrowMemberValueContext context);
+	void EnterMemberValue([NotNull] CoronaParser.MemberValueContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>ArrowMemberValue</c>
-	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
+	/// Exit a parse tree produced by <see cref="CoronaParser.memberValue"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitArrowMemberValue([NotNull] CoronaParser.ArrowMemberValueContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>IntMemberValue</c>
-	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterIntMemberValue([NotNull] CoronaParser.IntMemberValueContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>IntMemberValue</c>
-	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitIntMemberValue([NotNull] CoronaParser.IntMemberValueContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>StringMemberValue</c>
-	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterStringMemberValue([NotNull] CoronaParser.StringMemberValueContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>StringMemberValue</c>
-	/// labeled alternative in <see cref="CoronaParser.memberValue"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitStringMemberValue([NotNull] CoronaParser.StringMemberValueContext context);
+	void ExitMemberValue([NotNull] CoronaParser.MemberValueContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.member"/>.
 	/// </summary>
@@ -364,4 +338,34 @@ public interface ICoronaListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitArrowValue([NotNull] CoronaParser.ArrowValueContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.intValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIntValue([NotNull] CoronaParser.IntValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.intValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIntValue([NotNull] CoronaParser.IntValueContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.stringValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStringValue([NotNull] CoronaParser.StringValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.stringValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStringValue([NotNull] CoronaParser.StringValueContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.identifierValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIdentifierValue([NotNull] CoronaParser.IdentifierValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.identifierValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIdentifierValue([NotNull] CoronaParser.IdentifierValueContext context);
 }
