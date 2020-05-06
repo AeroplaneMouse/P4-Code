@@ -42,7 +42,7 @@ matchStatement
 
 matchElement
 	: member
-	| gridPoint member?
+	| gridPoint
 	| expr 
 	;
 
@@ -51,7 +51,7 @@ iterationStatement
 	;
 
 assignmentStatement
-	: gridPoint member? '=' ID ';' 	# GridAssignStatement
+	: gridPoint '=' ID ';' 	# GridAssignStatement
 	| identifierValue '=' (expr | STRING) ';'   	# IdentifierAssignStatement
 	; 
 
@@ -76,6 +76,7 @@ caseValue
 expr
 	: intValue 											   # NumberExpr
 	| identifierValue										# IdentifierExpr
+	| '.' identifierValue                        # IdentifierExpr
 	| left=expr op=operator right=expr 				# InfixExpr
 	| left=expr op=comparisonOperator right=expr	# ComparisonExpr
 	;
@@ -100,7 +101,7 @@ member
 	;
 
 gridPoint
-	: 'grid[' expr(',' expr)* ']'
+	: 'grid[' expr(',' expr)* ']' member?
 	;
 
 arrowValue
