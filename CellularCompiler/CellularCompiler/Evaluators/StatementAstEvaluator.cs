@@ -73,5 +73,15 @@ namespace CellularCompiler.Evaluators
             // Set specified cells nextState
             sender.SetCell(c, state);
         }
+
+        public void Visit(IdentifierAssignmentStatementNode node)
+        {
+            object exprResult = null;
+
+            if (node.Expression is ComparisonNode)
+                exprResult = new ComparisonExpressionAstEvaluator().Visit(node.Expression);
+
+            Console.WriteLine($"Expression result: { exprResult }");
+        }
     } 
 }

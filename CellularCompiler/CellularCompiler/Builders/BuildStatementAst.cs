@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Net.Mime;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using CellularCompiler.Nodes;
@@ -9,7 +8,6 @@ using CellularCompiler.Exceptions;
 using CellularCompiler.Nodes.Math;
 using CellularCompiler.Nodes.Statement;
 using CellularCompiler.Nodes.Values;
-using System.Diagnostics.Tracing;
 
 namespace CellularCompiler.Builders
 {
@@ -132,7 +130,13 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context)
         {
-            return base.VisitIdentifierAssignStatement(context);
+            BuildValueAst valueVisitor = new BuildValueAst();
+            BuildExpressionAst exprVisitor = new BuildExpressionAst();
+
+            IdentifierValueNode id = valueVisitor.Visit(context.identifierValue()) as IdentifierValueNode;
+            ExpressionNode expr = exprVisitor.Visit(context.expr());
+
+            return new IdentifierAssignmentStatementNode(id, expr);
         }
 
         /// <summary>
