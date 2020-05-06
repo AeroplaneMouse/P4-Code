@@ -41,7 +41,8 @@ matchStatement
 	;
 
 matchElement
-	: gridPoint? '.state'
+	: member
+	| gridPoint member?
 	| expr 
 	;
 
@@ -75,7 +76,6 @@ caseValue
 expr
 	: intValue 											   # NumberExpr
 	| identifierValue										# IdentifierExpr
-	| member 										      # IdentifierExpr
 	| left=expr op=operator right=expr 				# InfixExpr
 	| left=expr op=comparisonOperator right=expr	# ComparisonExpr
 	;
@@ -96,6 +96,7 @@ memberValue
 
 member
 	: '.'ID
+	| '.state'
 	;
 
 gridPoint
