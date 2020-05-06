@@ -19,15 +19,15 @@ namespace CellularCompiler
             ICoronaEvaluator eval = interpreter.InterpretCorona();
             eval.Print();
 
-            /*
-            for(int i = 0; i < 5; i++)
+
+            for (int i = 0; i < 5; i++)
             {
                 Console.ReadLine();
                 eval.GenerateNextGeneration();
-                eval.PushNextGeneration();    
+                eval.PushNextGeneration();
                 eval.Print();
             }
-            */
+
             //Console.WriteLine(grid);
         }
 

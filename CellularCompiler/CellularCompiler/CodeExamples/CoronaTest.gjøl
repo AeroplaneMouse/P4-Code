@@ -1,38 +1,40 @@
 GRID
 {
-	x: 0 -> 15;
-	y: 0 -> 15;
+	x: 15;
+	y: 15;
 }
 
-STATES white, black
+STATES dead, alive
 {
 	
 }
 
 INITIAL
 {
-	grid[1,1] = black;
-	grid[1,2] = black;
-	#grid[0,1] = 1;#
+	grid[1,1] = alive;
+	grid[2,2] = alive;
+	grid[3,3] = alive;
+
+	test = 2 != 3;
 }
 
 #Define rules#
 # Rules ved dette shit om cell#
-# state 		#
+# .state 	#
 # .x  		#
 # .y 			#
 # .floor		#
 RULES
 {
-	match(state) # This is just a "Rule" #
+	match(.state, grid[.x-1, .y].state) # This is just a simple "Rule" #
 	{
-		[black]
-		{
-			return white;
-		}
-		[white]
-		{
-			return black;
-		}
+		[dead, alive]
+			return alive;
+	}
+
+	match(.state, grid[.x+1, .y].state)
+	{
+		[alive, alive]
+			return dead;
 	}
 }

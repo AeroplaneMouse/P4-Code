@@ -5,11 +5,11 @@ main
 	;
 
 grid
-	: 'GRID' '{' memberDeclaration+ '}'
+	: 'GRID' '{' gridDeclaration+ '}'
 	;
 
 states
-	: 'STATES' ID (',' ID)* memberBlock
+	: 'STATES' ID (',' ID)* '{' memberDeclaration* '}'
 	;
 
 initial
@@ -17,15 +17,15 @@ initial
 	;
 
 rules
-	: 'RULES' '{' ruleStatement* '}'
-	;
-
-memberBlock
-	: '{' memberDeclaration* '}'
+	: 'RULES' compoundStatement
 	;
 
 memberDeclaration
 	: ID ':' memberValue (',' memberValue)*  ';'
+	;
+
+gridDeclaration
+	: ID ':' INT ';'
 	;
 
 statement
@@ -33,10 +33,17 @@ statement
 	| assignmentStatement
 	| compoundStatement
 	| returnStatement
+	| matchStatement
 	;
 
-ruleStatement
-	: 'match' '(' ('state' | member) (',' member)*  ')' '{' caseStatement+ '}'
+matchStatement
+	: 'match' '(' matchElement (',' matchElement)* ')' '{' caseStatement+ '}'
+	;
+
+matchElement
+	: member
+	| gridPoint member?
+	| expr 
 	;
 
 iterationStatement
@@ -45,7 +52,7 @@ iterationStatement
 
 assignmentStatement
 	: gridPoint member? '=' ID ';' 	# GridAssignStatement
-	| ID '=' (expr | STRING) ';'   	# IdentifierAssignStatement
+	| identifierValue '=' (expr | STRING) ';'   	# IdentifierAssignStatement
 	; 
 
 compoundStatement
@@ -53,17 +60,22 @@ compoundStatement
 	;
 
 returnStatement
-	: 'return' ID ';'
+	: 'return' identifierValue ';'
 	;
 
 caseStatement
-	: '[' ID (',' ID)* ']' statement
+	: '[' caseValue (',' caseValue)* ']' statement
+	;
+
+caseValue
+	: memberValue     # MemberCaseValue
+	| identifierValue	# IdentifierCaseValue
+	| DEFAULT     		# DefaultCaseValue
 	;
 
 expr
-	: value=INT 									# NumberExpr
-	| value=ID										# IdentifierExpr
-	| member 										# IdentifierExpr
+	: intValue 											   # NumberExpr
+	| identifierValue										# IdentifierExpr
 	| left=expr op=operator right=expr 				# InfixExpr
 	| left=expr op=comparisonOperator right=expr	# ComparisonExpr
 	;
@@ -77,24 +89,36 @@ comparisonOperator
 	;
 
 memberValue
-	: arrowValue		# ArrowMemberValue
-	| value=INT       # IntMemberValue
-	| value=STRING    # StringMemberValue
-	| value=ID        # IdentifierMemberValue
-	| '_'					# DefaultMemberValue
-	;
-
-arrowValue
-	: '0' '->' INT
+	: arrowValue
+	| intValue
+	| stringValue
 	;
 
 member
 	: '.'ID
+	| '.state'
 	;
 
 gridPoint
 	: 'grid[' expr(',' expr)* ']'
 	;
+
+arrowValue
+	: INT '->' INT
+	;
+
+intValue
+	: INT
+	;
+
+stringValue
+	: STRING
+	;
+
+identifierValue
+	: ID
+	;
+
 
 
 
@@ -106,7 +130,6 @@ ID
 	: Nondigit (Nondigit | DIGIT)*
    ;
 
-
 INT
 	: '0'
 	| [1-9] DIGIT*
@@ -114,6 +137,10 @@ INT
 
 STRING
 	: '"' .*? '"' 
+	;
+
+DEFAULT
+	: '_'
 	;
 
 COMMENT

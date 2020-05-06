@@ -19,24 +19,24 @@ namespace CellularCompiler.Models
             Statement = statement;
         }
 
-        public bool Apply(ICoronaEvaluator sender, Grid grid, Cell cell)
-        {
-            if (States.Contains(cell.State))
-            {
-                StatementAstEvaluator statementEval = new StatementAstEvaluator(grid, cell);
+        //public bool Apply(ICoronaEvaluator sender, Grid grid, Cell cell)
+        //{
+        //    if (States.Contains(cell.State))
+        //    {
+        //        StatementAstEvaluator statementEval = new StatementAstEvaluator(grid, cell);
 
-                // Do statements
-                statementEval.Visit(Statement, sender);
+        //        // Do statements
+        //        statementEval.Visit(Statement, sender);
 
-                //Statement.
-                //foreach(StatementNode s in Statements)
-                //{
-                //    s.Evaluate();
-                //}
-                return true;
-            }
-            else
-                return false;
-        }
+        //        //Statement.
+        //        //foreach(StatementNode s in Statements)
+        //        //{
+        //        //    s.Evaluate();
+        //        //}
+        //        return true;
+        //    }
+        //    else
+        //        return false;
+        //}
     }
 }

@@ -14,5 +14,9 @@ namespace CellularCompiler.Evaluators
         void Print();
         Cell[,] GetCurrentGeneration();
         List<State> GetStates();
+
+        void SetCell(Cell cell, State state);
+        Cell GetCell(int x, int y);
+
     }
 }

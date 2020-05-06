@@ -33,7 +33,7 @@ namespace CellularCompiler.Visitor.Math
         public override ExpressionNode VisitNumberExpr(MathParser.NumberExprContext context)
         {
             return new NumberNode(
-                double.Parse(context.value.Text, NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent)
+                Int32.Parse(context.value.Text)
             );
         }
     }

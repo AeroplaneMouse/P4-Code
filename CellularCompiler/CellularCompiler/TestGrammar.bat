@@ -58,7 +58,8 @@ REM Create java lexer and parser files for testing
 :Create
 SET LASTARGS=%GRAMMAR_NAME% %ENTRY% %CODE%
 ECHO.
-ECHO Creating files from grammar "%GRAMMAR_NAME%"
+ECHO Creating tree from grammar: "%GRAMMAR_NAME%"
+ECHO Creating tree from source:  "%CODE%"
 ECHO | set /p=.
 java org.antlr.v4.Tool -o Testing/ Grammar/%GRAMMAR_NAME%
 ECHO | set /p=.

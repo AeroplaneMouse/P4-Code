@@ -1,16 +1,16 @@
-﻿using CellularCompiler.Nodes.Members;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Text;
+using System.Collections.Generic;
+using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Nodes.Statement
 {
     class CaseStatementNode : StatementNode
     {
-        public List<string> Values { get; set; }
+        public List<ValueNode> Values { get; set; }
         public StatementNode Statement { get; set; }
 
-        public CaseStatementNode(List<string> values, StatementNode statement)
+        public CaseStatementNode(List<ValueNode> values, StatementNode statement)
         {
             Values = values;
             Statement = statement;

@@ -8,6 +8,11 @@ namespace CellularCompiler.Models
     {
         public string Name { get; set; }
 
+        public Symbol(string name)
+        {
+            Name = name;
+        }
+
 
     }
 }

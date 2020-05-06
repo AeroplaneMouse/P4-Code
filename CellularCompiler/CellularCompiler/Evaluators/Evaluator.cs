@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 using CellularCompiler.Models;
 using System.Collections.Generic;
 using CellularCompiler.Exceptions;
 using CellularCompiler.Nodes.Base;
-using CellularCompiler.Nodes.Members;
 using CellularCompiler.Nodes.Statement;
-using System.Linq;
+using CellularCompiler.Nodes.Values;
+using CellularCompiler.Builders;
 
 namespace CellularCompiler.Evaluators
 {
@@ -13,7 +14,7 @@ namespace CellularCompiler.Evaluators
     {
         Grid grid { get; set; }
         List<State> states { get; set; }
-        List<Rule> rules { get; set; }
+        List<StatementNode> rules { get; set; }
         MainNode ast;
 
         public int Generation { get; private set; } = 1;
@@ -46,7 +47,8 @@ namespace CellularCompiler.Evaluators
             PushNextGeneration();
 
             // Extract all rules
-            rules = VisitRules(node.RulesNode);
+            rules = node.RulesNode.Statements;
+            //rules = VisitRules(node.RulesNode);
         }
 
         public State GetStateByLabel(string label)
@@ -102,30 +104,30 @@ namespace CellularCompiler.Evaluators
             Console.WriteLine(grid);
         }
 
-        private void ApplyRules(Cell cell, List<Rule> rules)
+        public void SetCell(Cell cell, State state)
+            => grid.SetCell(cell, state);
+
+        public Cell GetCell(int x, int y)
+            => grid.GetCell(x, y);
+
+        private void ApplyRules(Cell cell, List<StatementNode> rules)
         {
-            foreach (Rule r in rules)
-                if (r.Apply(this, grid, cell))
-                    break;
+            StatementAstEvaluator statementVisitor = new StatementAstEvaluator(this, grid, cell);
+            foreach (StatementNode r in rules)
+                statementVisitor.Visit(r);
         }
 
         private Grid VisitGrid(GridNode node)
         {
-            // Extract the numbers of axies to create. Might be usefull later
-            int axis = node.Members.Count;
+            // Just a check
+            if (node.Members.Count != 2)
+                throw new Exception("There must be exactly 2 axis in the grid. Otherwise, how whould it be 2D?");
 
-            // Extract limits for each axis
-            List<int> axisLimit = new List<int>();
-            node.Members.ForEach((m) =>
-            {
-                // Extract limit from ArrowValueNode
-                if (m.Values[0] is ArrowValueNode valueNode)
-                    axisLimit.Add(valueNode.RightValue);
-                else
-                    throw new InvalidGridContentException($"Member: { m.Label } in grid, contains an invalid value. Must be a single ArrowValue");
-            });
+            // Extract axis limits
+            int x = (node.Members[0].Values[0] as IntValueNode).Value;
+            int y = (node.Members[1].Values[0] as IntValueNode).Value;
 
-            return new Grid(axisLimit[0], axisLimit[1], states.First());
+            return new Grid(x, y, states.First());
         }
 
         /// <summary>
@@ -154,9 +156,9 @@ namespace CellularCompiler.Evaluators
         /// <param name="grid"></param>
         private void VisitInitial(InitialNode node, Grid grid)
         {
-            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(grid, null);
+            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(this, grid, null);
             foreach (StatementNode s in node.Statements)
-                statementEvaluator.Visit(s, this);
+                statementEvaluator.Visit(s);
         }
 
         /// <summary>
@@ -164,15 +166,9 @@ namespace CellularCompiler.Evaluators
         /// </summary>
         /// <param name="rulesNode"></param>
         /// <returns>A list of the extracted rules</returns>
-        private List<Rule> VisitRules(RulesNode rulesNode)
+        private void VisitRules(RulesNode rulesNode)
         {
-            List<Rule> rules = new List<Rule>();
-
-            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(null, null);
-            foreach (RuleStatementNode rsNode in rulesNode.RuleStatements)
-                rules.AddRange(statementEvaluator.VisitRuleStatementNode(rsNode, this));
-
-            return rules;
+            
         }
     }
 }

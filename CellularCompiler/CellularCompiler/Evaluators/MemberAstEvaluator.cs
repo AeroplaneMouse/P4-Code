@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using CellularCompiler.Nodes.Members;
+﻿using CellularCompiler.Nodes.Values;
+using System.Linq;
 
 namespace CellularCompiler.Evaluators
 {
