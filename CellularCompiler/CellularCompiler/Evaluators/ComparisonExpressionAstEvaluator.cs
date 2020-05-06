@@ -6,10 +6,10 @@ namespace CellularCompiler.Evaluators
     internal class ComparisonExpressionAstEvaluator : ComparisonExpressionAstVisitor<int, bool>
     {
         public override bool Visit(EqualityNode node)
-            => Visit(node.Left) == Visit(node.Right);
+            => Visit(node.Left as NumberNode) == Visit(node.Right as NumberNode);
 
         public override bool Visit(NotEqualNode node)
-            => Visit(node.Left) != Visit(node.Right);
+            => Visit(node.Left as NumberNode) != Visit(node.Right as NumberNode);
 
         public override bool Visit(LessThanNode node)
             => Visit(node.Left as NumberNode) < Visit(node.Right as NumberNode);
