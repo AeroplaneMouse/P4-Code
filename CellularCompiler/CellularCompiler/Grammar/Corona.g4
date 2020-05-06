@@ -52,7 +52,7 @@ iterationStatement
 
 assignmentStatement
 	: gridPoint member? '=' ID ';' 	# GridAssignStatement
-	| ID '=' (expr | STRING) ';'   	# IdentifierAssignStatement
+	| identifierValue '=' (expr | STRING) ';'   	# IdentifierAssignStatement
 	; 
 
 compoundStatement
