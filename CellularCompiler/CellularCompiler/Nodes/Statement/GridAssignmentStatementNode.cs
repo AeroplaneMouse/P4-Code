@@ -1,19 +1,19 @@
 ﻿using System;
-using CellularCompiler.Nodes.Members;
+using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Nodes.Statement
 {
     class GridAssignmentStatementNode : AssignmentStatementNode
     {
-        public GridPointNode GridPoint { get; set; }
-        public MemberIDNode MemberID {get;set; }
-        public string IdentifierLabel { get; set;}
+        public GridValueNode GridPoint { get; set; }
+        public IdentifierValueNode MemberID {get;set; }
+        public IdentifierValueNode Identifier { get; set;}
 
-        public GridAssignmentStatementNode(GridPointNode gridPoint, MemberIDNode memberID, string identifierLabel)
+        public GridAssignmentStatementNode(GridValueNode gridPoint, IdentifierValueNode memberID, IdentifierValueNode id)
         {
             GridPoint = gridPoint;
             MemberID = memberID;
-            IdentifierLabel = identifierLabel;
+            Identifier = id;
         }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 using CellularCompiler.Models;
 using System.Collections.Generic;
 using CellularCompiler.Exceptions;
 using CellularCompiler.Nodes.Base;
-using CellularCompiler.Nodes.Members;
 using CellularCompiler.Nodes.Statement;
-using System.Linq;
+using CellularCompiler.Nodes.Values;
+using CellularCompiler.Builders;
 
 namespace CellularCompiler.Evaluators
 {
@@ -13,10 +14,11 @@ namespace CellularCompiler.Evaluators
     {
         Grid grid { get; set; }
         List<State> states { get; set; }
-        List<Rule> rules { get; set; }
+        List<StatementNode> rules { get; set; }
         MainNode ast;
 
         public int Generation { get; private set; } = 1;
+        public bool ReturnStatementHasBeenHit { get; set; } = false;
 
         public Evaluator(MainNode ast)
         {
@@ -46,7 +48,8 @@ namespace CellularCompiler.Evaluators
             PushNextGeneration();
 
             // Extract all rules
-            rules = VisitRules(node.RulesNode);
+            rules = node.RulesNode.Statements;
+            //rules = VisitRules(node.RulesNode);
         }
 
         public State GetStateByLabel(string label)
@@ -69,6 +72,7 @@ namespace CellularCompiler.Evaluators
         {
             grid.ForAll((cell) =>
             {
+                ReturnStatementHasBeenHit = false;
                 ApplyRules(cell, rules);
             });
             Generation++;
@@ -102,11 +106,26 @@ namespace CellularCompiler.Evaluators
             Console.WriteLine(grid);
         }
 
-        private void ApplyRules(Cell cell, List<Rule> rules)
+        public void SetCell(Cell cell, State state)
         {
-            foreach (Rule r in rules)
-                if (r.Apply(this, grid, cell))
+            grid.SetCell(cell.Next, state);
+        }
+
+        public Cell GetCell(int x, int y)
+        {
+            return grid.GetCell(x, y);
+        }
+
+        private void ApplyRules(Cell cell, List<StatementNode> rules)
+        {
+            StatementAstEvaluator statementVisitor = new StatementAstEvaluator(this, cell);
+            foreach (StatementNode r in rules)
+            {
+                if (!ReturnStatementHasBeenHit)
+                    statementVisitor.Visit(r);
+                else
                     break;
+            }
         }
 
         private Grid VisitGrid(GridNode node)
@@ -148,9 +167,9 @@ namespace CellularCompiler.Evaluators
         /// <param name="grid"></param>
         private void VisitInitial(InitialNode node, Grid grid)
         {
-            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(grid, null);
+            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(this, null);
             foreach (StatementNode s in node.Statements)
-                statementEvaluator.Visit(s, this);
+                statementEvaluator.Visit(s);
         }
 
         /// <summary>
@@ -158,15 +177,9 @@ namespace CellularCompiler.Evaluators
         /// </summary>
         /// <param name="rulesNode"></param>
         /// <returns>A list of the extracted rules</returns>
-        private List<Rule> VisitRules(RulesNode rulesNode)
+        private void VisitRules(RulesNode rulesNode)
         {
-            List<Rule> rules = new List<Rule>();
-
-            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(null, null);
-            foreach (RuleStatementNode rsNode in rulesNode.RuleStatements)
-                rules.AddRange(statementEvaluator.VisitRuleStatementNode(rsNode, this));
-
-            return rules;
+            
         }
     }
 }

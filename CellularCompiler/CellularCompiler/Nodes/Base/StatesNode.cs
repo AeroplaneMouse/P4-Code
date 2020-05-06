@@ -1,7 +1,7 @@
-﻿using CellularCompiler.Nodes.Members;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Text;
+using System.Collections.Generic;
+using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Nodes.Base
 {

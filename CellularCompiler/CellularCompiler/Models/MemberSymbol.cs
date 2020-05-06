@@ -1,20 +1,21 @@
-﻿using CellularCompiler.Nodes.Members;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Text;
 using System.Windows.Markup;
+using System.Collections.Generic;
+using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Models
 {
     public class MemberSymbol : Symbol
     {
         private object value;
-        private List<MemberValueNode> acceptedValues = new List<MemberValueNode>();
+        private List<ValueNode> acceptedValues = new List<ValueNode>();
 
 
-        public MemberSymbol(MemberNode mem) : base(mem.Label)
+        public MemberSymbol(ValueNode val) 
+            : base(val.Label)
         {
-            acceptedValues = mem.Values;
+            acceptedValues = val.Values;
             switch (acceptedValues[0])
             {
                 case IntValueNode i:

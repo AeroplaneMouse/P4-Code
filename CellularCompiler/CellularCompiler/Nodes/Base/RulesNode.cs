@@ -8,11 +8,11 @@ namespace CellularCompiler.Nodes.Base
 {
     class RulesNode : BaseNode
     {
-        public List<RuleStatementNode> RuleStatements { get; set; }
+        public List<StatementNode> Statements { get; set; }
 
-        public RulesNode(List<RuleStatementNode> ruleStatements)
+        public RulesNode(List<StatementNode> statements)
         {
-            RuleStatements = ruleStatements;
+            Statements = statements;
         }
     }
 }

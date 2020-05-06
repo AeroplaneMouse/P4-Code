@@ -1,6 +1,6 @@
-﻿namespace CellularCompiler.Nodes.Members
+﻿namespace CellularCompiler.Nodes.Values
 {
-    class ArrowValueNode : MemberValueNode
+    class ArrowValueNode : ValueNode
     {
         public int LeftValue { get; set; }
         public int RightValue { get; set; }

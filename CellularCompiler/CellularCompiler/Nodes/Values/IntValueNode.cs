@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CellularCompiler.Nodes.Members
+namespace CellularCompiler.Nodes.Values
 {
-    class IntValueNode : MemberValueNode
+    class IntValueNode : ValueNode
     {
         public int Value { get; set; }
 

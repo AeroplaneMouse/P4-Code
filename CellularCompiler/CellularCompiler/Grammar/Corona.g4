@@ -17,7 +17,7 @@ initial
 	;
 
 rules
-	: 'RULES' '{' ruleStatement* '}'
+	: 'RULES' compoundStatement
 	;
 
 memberDeclaration
@@ -33,11 +33,17 @@ statement
 	| assignmentStatement
 	| compoundStatement
 	| returnStatement
-	| ruleStatement
+	| matchStatement
 	;
 
-ruleStatement
+matchStatement
 	: 'match' '(' matchElement (',' matchElement)* ')' '{' caseStatement+ '}'
+	;
+
+matchElement
+	: member
+	| gridPoint
+	| expr 
 	;
 
 iterationStatement
@@ -45,8 +51,8 @@ iterationStatement
 	;
 
 assignmentStatement
-	: gridPoint member? '=' ID ';' 	# GridAssignStatement
-	| ID '=' (expr | STRING) ';'   	# IdentifierAssignStatement
+	: gridPoint '=' ID ';' 	# GridAssignStatement
+	| identifierValue '=' (expr | STRING) ';'   	# IdentifierAssignStatement
 	; 
 
 compoundStatement
@@ -54,7 +60,7 @@ compoundStatement
 	;
 
 returnStatement
-	: 'return' ID ';'
+	: 'return' identifierValue ';'
 	;
 
 caseStatement
@@ -62,15 +68,15 @@ caseStatement
 	;
 
 caseValue
-	: memberValue # MemberCaseValue
-	| ID          # IdentifierCaseValue
-	| DEFAULT     # DefaultCaseValue
+	: memberValue     # MemberCaseValue
+	| identifierValue	# IdentifierCaseValue
+	| DEFAULT     		# DefaultCaseValue
 	;
 
 expr
-	: value=INT 									# NumberExpr
-	| value=ID										# IdentifierExpr
-	| member 										# IdentifierExpr
+	: intValue 											   # NumberExpr
+	| identifierValue										# IdentifierExpr
+	| '.' identifierValue                        # IdentifierExpr
 	| left=expr op=operator right=expr 				# InfixExpr
 	| left=expr op=comparisonOperator right=expr	# ComparisonExpr
 	;
@@ -84,9 +90,9 @@ comparisonOperator
 	;
 
 memberValue
-	: arrowValue		# ArrowMemberValue
-	| value=INT       # IntMemberValue
-	| value=STRING    # StringMemberValue
+	: arrowValue
+	| intValue
+	| stringValue
 	;
 
 member
@@ -95,17 +101,27 @@ member
 	;
 
 gridPoint
-	: 'grid[' expr(',' expr)* ']'
+	: 'grid[' expr(',' expr)* ']' member?
 	;
 
 arrowValue
 	: INT '->' INT
 	;
 
-matchElement
-	: gridPoint? member
-	| expr 
+intValue
+	: INT
 	;
+
+stringValue
+	: STRING
+	;
+
+identifierValue
+	: ID
+	;
+
+
+
 
 
 fragment DIGIT :   [0-9];

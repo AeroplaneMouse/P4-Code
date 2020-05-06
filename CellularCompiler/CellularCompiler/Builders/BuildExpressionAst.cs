@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using CellularCompiler.Nodes.Math;
+using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Builders
 {
@@ -48,8 +49,12 @@ namespace CellularCompiler.Builders
         public override ExpressionNode VisitNumberExpr(CoronaParser.NumberExprContext context)
         {
             return new NumberNode(
-                double.Parse(context.value.Text, NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent)
+                Int32.Parse(context.intValue().GetText())
             );
+
+            //BuildValueAst valueVisitor = new BuildValueAst();
+            //return valueVisitor.Visit(context);
+            throw new NotImplementedException();
         }
 
         public override ExpressionNode VisitIdentifierExpr(CoronaParser.IdentifierExprContext context)

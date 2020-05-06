@@ -1,17 +1,14 @@
+using System;
+using System.Linq;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
+using CellularCompiler.Nodes;
+using System.Collections.Generic;
+using CellularCompiler.Exceptions;
 using CellularCompiler.Nodes.Math;
 using CellularCompiler.Nodes.Statement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CellularCompiler.Nodes.Members;
-using CellularCompiler.Nodes;
-using System.Net.Mime;
-using CellularCompiler.Models;
-using System.Linq.Expressions;
-using CellularCompiler.Exceptions;
+using CellularCompiler.Nodes.Values;
+using CellularCompiler.Evaluators;
 
 namespace CellularCompiler.Builders
 {
@@ -47,106 +44,76 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitReturnStatement([NotNull] CoronaParser.ReturnStatementContext context)
         {
-            return new ReturnStatementNode(context.ID().GetText());
+            if (new BuildValueAst().Visit(context.identifierValue()) is IdentifierValueNode node)
+                return new ReturnStatementNode(node);
+            else
+                throw new Exception("ReturnStatement does not contain an identifier");
         }
-
-        //public override StatementNode VisitSelectionStatement([NotNull] CoronaParser.SelectionStatementContext context)
-        //{
-        //    // Check for state
-        //    bool matchOnState = context.children[2].GetText() == "state";
-
-        //    // Extract member identifiers
-        //    List<MemberIDNode> memberIDNodes = ExtractMemberIDNodes(context.children);
-
-        //    // Extract and visit caseStatements
-        //    List<CaseStatementNode> caseNodes = new List<CaseStatementNode>();
-        //    CoronaParser.CaseStatementContext[] caseStatements = context.caseStatement();
-        //    foreach (CoronaParser.CaseStatementContext cs in caseStatements)
-        //        caseNodes.Add(Visit(cs) as CaseStatementNode);
-
-        //    return new SelectionStatementNode(matchOnState, memberIDNodes, caseNodes);
-        //}
 
         public override StatementNode VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context)
         {
+            BuildValueAst valueVisitor = new BuildValueAst();
             CoronaParser.CaseValueContext[] caseValues = context.caseValue();
 
             // Extract all caseValues
-            List<string> values = new List<string>();
+            List<ValueNode> values = new List<ValueNode>();
             foreach (var value in caseValues)
-                values.Add(value.GetText());
+                values.Add(valueVisitor.Visit(value));
 
             return new CaseStatementNode(values, Visit(context.statement()));
         }
 
-        public override StatementNode VisitRuleStatement([NotNull] CoronaParser.RuleStatementContext context)
+        public override StatementNode VisitMatchStatement([NotNull] CoronaParser.MatchStatementContext context)
         {
-            List<CaseStatementNode> caseStatements = new List<CaseStatementNode>();
+            BuildValueAst valueVisitor = new BuildValueAst();
+            BuildExpressionAst exprVisitor = new BuildExpressionAst();
 
-            // Handle the state/member thing
-            // ...
+            CoronaParser.MatchElementContext[] matchElements = context.matchElement();
+            List<ValueNode> elements = new List<ValueNode>();
+
+            // Visit each of the different elements to match against
+            foreach (var e in matchElements)
+            {
+                if (e.member() != null)
+                    elements.Add(new IdentifierValueNode(e.member().GetText()));
+
+                else if (e.gridPoint() != null)
+                    elements.Add(valueVisitor.Visit(e.gridPoint()));
+                
+                else if (e.expr() != null)
+                    elements.Add(exprVisitor.Visit(e.expr()));
+            }
 
             // Visit each CaseStatement
+            List<CaseStatementNode> caseStatements = new List<CaseStatementNode>();
             CoronaParser.CaseStatementContext[] cases = context.caseStatement();
             foreach (CoronaParser.CaseStatementContext c in cases)
-            {
-                if (Visit(c) is CaseStatementNode caseNode)
-                    caseStatements.Add(caseNode);
-                else
-                    throw new InvalidRuleStatementContentException();
-            }                
+                caseStatements.Add(Visit(c) as CaseStatementNode);
 
-            return new RuleStatementNode(caseStatements);
+            return new MatchStatementNode(elements, caseStatements);
         }
-
-        //public override StatementNode VisitAssignmentStatement([NotNull] CoronaParser.AssignmentStatementContext context)
-        //{
-            
-        //    MemberIDNode memberIDNode = null;
-        //    if (context.member() != null)
-        //        memberIDNode = new MemberIDNode(context.member().GetText());
-             
-
-        //    // Visit expression
-        //    if (context.expr() != null)
-        //        return new AssignmentStatementNode(
-        //            gridPointNode,
-        //            memberIDNode,
-        //            expressionVisitor.Visit(context.expr()));
-
-        //    // Visit string
-        //    else if (context.STRING() != null)
-        //        return new AssignmentStatementNode(
-        //            gridPointNode,
-        //            memberIDNode,
-        //            context.STRING().GetText());
-        //    else
-        //        throw new ArgumentNullException();
-        //}
 
         public override StatementNode VisitGridAssignStatement([NotNull] CoronaParser.GridAssignStatementContext context)
         {
+            //TODO: Handle expressions in grid assignment
             BuildExpressionAst expressionVisitor = new BuildExpressionAst();
+            BuildValueAst valueVisitor= new BuildValueAst();
 
-            GridPointNode gridPointNode = new GridPointNode(new List<ExpressionNode>());
-            string idLabel = context.ID().GetText();
-            
-            // Extract memberID, if it is used
-            MemberIDNode memberIDNode = null;
-            if (context.member() != null)
-                memberIDNode = new MemberIDNode(context.member().GetText());
+            IdentifierValueNode id = new IdentifierValueNode(context.ID().GetText());
+            GridValueNode gridpoint = (GridValueNode) valueVisitor.Visit(context.gridPoint());
 
-            // Extract gridPoint and visit it's expressions
-            CoronaParser.ExprContext[] exprValues = context.gridPoint().expr();
-            foreach (CoronaParser.ExprContext expr in exprValues)
-                gridPointNode.ExpressionNodes.Add(expressionVisitor.Visit(expr));
-
-            return new GridAssignmentStatementNode(gridPointNode, memberIDNode, idLabel);
+            return new GridAssignmentStatementNode(gridpoint, null, id);
         }
 
         public override StatementNode VisitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context)
         {
-            return base.VisitIdentifierAssignStatement(context);
+            BuildValueAst valueVisitor = new BuildValueAst();
+            BuildExpressionAst exprVisitor = new BuildExpressionAst();
+
+            IdentifierValueNode id = valueVisitor.Visit(context.identifierValue()) as IdentifierValueNode;
+            ExpressionNode expr = exprVisitor.Visit(context.expr());
+
+            return new IdentifierAssignmentStatementNode(id, expr);
         }
 
         /// <summary>

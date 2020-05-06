@@ -2,12 +2,12 @@
 {
     class NumberNode : ExpressionNode
     {
-        public double Value { get; set; }
+        public int Value { get; set; }
 
         public NumberNode()
             : this(0) { }
 
-        public NumberNode(double value)
+        public NumberNode(int value)
         {
             Value = value;
         }
