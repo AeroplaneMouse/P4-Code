@@ -22,8 +22,6 @@ namespace CellularCompiler
                 valueNodes.Add(valueNode);
             }
 
-            Stbl.st.InsertSymbol(new MemberSymbol(valueNodes[0], valueNodes, label));
-
             return new MemberNode(label, valueNodes);
         }
 

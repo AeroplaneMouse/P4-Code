@@ -10,8 +10,8 @@ namespace CellularCompiler.Models
 
         void CloseScope();
 
-        Symbol RetrieveSymbol(string name);
+        Symbol Retrieve(string name);
 
-        void InsertSymbol(Symbol symbol);
+        void Insert(Symbol symbol);
     }
 }

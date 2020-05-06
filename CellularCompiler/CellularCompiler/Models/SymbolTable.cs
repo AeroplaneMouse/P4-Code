@@ -19,16 +19,16 @@ namespace CellularCompiler.Models
             stack.Pop();
         }
 
-        public void InsertSymbol(Symbol symbol)
+        public void Insert(Symbol sym)
         {
-            stack.Peek().InsertSymbol(symbol);
+            stack.Peek().InsertSymbol(sym);
         }
 
-        public Symbol RetrieveSymbol(string name)
+        public Symbol Retrieve(string name)
         {
             Symbol symbol;
 
-            foreach(Scope scope in stack)
+            foreach (Scope scope in stack)
             {
                 symbol = scope.RetrieveSymbol(name);
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CellularCompiler.Nodes.Base;
 using CellularCompiler.Nodes.Statement;
+using CellularCompiler.Models;
 
 namespace CellularCompiler.Builders
 {
@@ -28,7 +29,17 @@ namespace CellularCompiler.Builders
             // Visit rules
             RulesNode rules = baseVisitor.Visit(context.rules()) as RulesNode;
 
-            Stbl.st.CloseScope();
+            //Add to SymTab
+            grid.Members.ForEach(m => Stbl.st.Insert(new MemberSymbol(m)));
+
+            List<MemberSymbol> mems;
+            foreach (StatesNode sts in states)
+            {
+                mems = new List<MemberSymbol>();
+                sts.Members.ForEach(m => mems.Add(new MemberSymbol(m)));
+
+                sts.Labels.ForEach(s => Stbl.st.Insert(new StateSymbol(s, mems)));
+            }
 
             return new MainNode(grid, states, initial, rules);
         }

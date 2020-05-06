@@ -4,13 +4,13 @@ using System.Text;
 
 namespace CellularCompiler.Models
 {
-    class StateSymbol : Symbol
+    public class StateSymbol : Symbol
     {
-        private List<MemberSymbol> members = new List<MemberSymbol>();
+        private List<MemberSymbol> members;
 
-        public StateSymbol(string name) : base(name)
+        public StateSymbol(string name, List<MemberSymbol> members) : base(name)
         {
-
+            this.members = members;
         }
 
         public void AddMember(MemberSymbol member)

@@ -2,19 +2,32 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Markup;
 
 namespace CellularCompiler.Models
 {
-    class MemberSymbol : Symbol
+    public class MemberSymbol : Symbol
     {
         private object value;
         private List<MemberValueNode> acceptedValues = new List<MemberValueNode>();
 
 
-        public MemberSymbol(MemberValueNode initial, List<MemberValueNode> values, string name) : base(name)
+        public MemberSymbol(MemberNode mem) : base(mem.Label)
         {
-            acceptedValues = values;
-            value = initial;
+            acceptedValues = mem.Values;
+            switch (acceptedValues[0])
+            {
+                case IntValueNode i:
+                    value = i.Value;
+                    break;
+                case ArrowValueNode a:
+                    value = a.LeftValue;
+                    break;
+                case StringValueNode s:
+                    value = s.Value;
+                    break;
+            }
+
         }
 
         public object GetValue()
