@@ -80,6 +80,8 @@ namespace CellularCompiler.Evaluators
 
             if (node.Expression is ComparisonNode)
                 exprResult = new ComparisonExpressionAstEvaluator().Visit(node.Expression);
+            else
+                exprResult = new MathExpressionAstEvaluator().Visit(node.Expression);
 
             Console.WriteLine($"Expression result: { exprResult }");
         }
