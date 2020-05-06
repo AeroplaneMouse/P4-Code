@@ -14,6 +14,7 @@ INITIAL
 	grid[1,1] = alive;
 	grid[2,2] = alive;
 	grid[3,3] = alive;
+	grid[5,5] = alive;
 
 	test = 2 != 3;
 }
@@ -26,15 +27,11 @@ INITIAL
 # .floor		#
 RULES
 {
-	match(.state, grid[.x-1, .y].state) # This is just a simple "Rule" #
+	match(.state, grid[0,0]) # This is just a simple "Rule" #
 	{
-		[dead, alive]
+		[dead, dead]
 			return alive;
-	}
-
-	match(.state, grid[.x+1, .y].state)
-	{
-		[alive, alive]
+		[alive, dead]
 			return dead;
 	}
 }

@@ -33,7 +33,7 @@ namespace CellularCompiler.Models
 
         public void ForAll(Action<Cell> action)
         {
-            ForAll(CellsNext, action);
+            ForAll(Cells, action);
         }
 
         private void ForAll(Cell[,] grid, Action<Cell> action)
@@ -55,7 +55,7 @@ namespace CellularCompiler.Models
 
         public Cell GetCell(int x, int y)
         {
-            return CellsNext[x, y];
+            return Cells[x, y];
         }
 
         public override string ToString()

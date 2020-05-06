@@ -7,6 +7,8 @@ namespace CellularCompiler.Evaluators
 {
     public interface ICoronaEvaluator
     {
+        bool ReturnStatementHasBeenHit { get; set; }
+
         void Initialize();
         State GetStateByLabel(string label);
         void PushNextGeneration();

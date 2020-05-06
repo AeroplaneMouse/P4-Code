@@ -18,6 +18,7 @@ namespace CellularCompiler.Evaluators
         MainNode ast;
 
         public int Generation { get; private set; } = 1;
+        public bool ReturnStatementHasBeenHit { get; set; } = false;
 
         public Evaluator(MainNode ast)
         {
@@ -71,6 +72,7 @@ namespace CellularCompiler.Evaluators
         {
             grid.ForAll((cell) =>
             {
+                ReturnStatementHasBeenHit = false;
                 ApplyRules(cell, rules);
             });
             Generation++;
@@ -105,16 +107,25 @@ namespace CellularCompiler.Evaluators
         }
 
         public void SetCell(Cell cell, State state)
-            => grid.SetCell(cell, state);
+        {
+            grid.SetCell(cell.Next, state);
+        }
 
         public Cell GetCell(int x, int y)
-            => grid.GetCell(x, y);
+        {
+            return grid.GetCell(x, y);
+        }
 
         private void ApplyRules(Cell cell, List<StatementNode> rules)
         {
-            StatementAstEvaluator statementVisitor = new StatementAstEvaluator(this, grid, cell);
+            StatementAstEvaluator statementVisitor = new StatementAstEvaluator(this, cell);
             foreach (StatementNode r in rules)
-                statementVisitor.Visit(r);
+            {
+                if (!ReturnStatementHasBeenHit)
+                    statementVisitor.Visit(r);
+                else
+                    break;
+            }
         }
 
         private Grid VisitGrid(GridNode node)
@@ -156,7 +167,7 @@ namespace CellularCompiler.Evaluators
         /// <param name="grid"></param>
         private void VisitInitial(InitialNode node, Grid grid)
         {
-            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(this, grid, null);
+            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(this, null);
             foreach (StatementNode s in node.Statements)
                 statementEvaluator.Visit(s);
         }
