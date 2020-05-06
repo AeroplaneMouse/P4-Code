@@ -3,7 +3,7 @@ using CellularCompiler.Nodes.Base;
 
 namespace CellularCompiler.Nodes.Values
 {
-    public class MemberNode
+    class MemberNode
     {
         public string Label { get; set; }
         public List<ValueNode> Values { get; set; }

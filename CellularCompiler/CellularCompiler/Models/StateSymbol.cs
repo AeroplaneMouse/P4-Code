@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CellularCompiler.Models
 {
-    public class StateSymbol : Symbol
+    class StateSymbol : Symbol
     {
         private List<MemberSymbol> members;
 

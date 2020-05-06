@@ -6,16 +6,15 @@ using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Models
 {
-    public class MemberSymbol : Symbol
+    class MemberSymbol : Symbol
     {
         private object value;
         private List<ValueNode> acceptedValues = new List<ValueNode>();
 
-
-        public MemberSymbol(ValueNode val) 
-            : base(val.Label)
+        public MemberSymbol(MemberNode mem) 
+            : base(mem.Label)
         {
-            acceptedValues = val.Values;
+            acceptedValues = mem.Values;
             switch (acceptedValues[0])
             {
                 case IntValueNode i:
