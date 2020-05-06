@@ -6,6 +6,7 @@ using CellularCompiler.Exceptions;
 using CellularCompiler.Nodes.Base;
 using CellularCompiler.Nodes.Statement;
 using CellularCompiler.Nodes.Values;
+using CellularCompiler.Builders;
 
 namespace CellularCompiler.Evaluators
 {
@@ -13,7 +14,7 @@ namespace CellularCompiler.Evaluators
     {
         Grid grid { get; set; }
         List<State> states { get; set; }
-        List<Rule> rules { get; set; }
+        List<StatementNode> rules { get; set; }
         MainNode ast;
 
         public int Generation { get; private set; } = 1;
@@ -46,6 +47,7 @@ namespace CellularCompiler.Evaluators
             PushNextGeneration();
 
             // Extract all rules
+            rules = node.RulesNode.Statements;
             //rules = VisitRules(node.RulesNode);
         }
 
@@ -108,12 +110,11 @@ namespace CellularCompiler.Evaluators
         public Cell GetCell(int x, int y)
             => grid.GetCell(x, y);
 
-        private void ApplyRules(Cell cell, List<Rule> rules)
+        private void ApplyRules(Cell cell, List<StatementNode> rules)
         {
-            throw new NotImplementedException();
-            //foreach (Rule r in rules)
-            //    if (r.Apply(this, grid, cell))
-            //        break;
+            StatementAstEvaluator statementVisitor = new StatementAstEvaluator(this, grid, cell);
+            foreach (StatementNode r in rules)
+                statementVisitor.Visit(r);
         }
 
         private Grid VisitGrid(GridNode node)
@@ -167,15 +168,7 @@ namespace CellularCompiler.Evaluators
         /// <returns>A list of the extracted rules</returns>
         private void VisitRules(RulesNode rulesNode)
         {
-            //List<Rule> rules = new List<Rule>();
-
-            //StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(null, null);
-            //foreach (MatchStatementNode rsNode in rulesNode.RuleStatements)
-            //    rules.AddRange(statementEvaluator.VisitRuleStatementNode(rsNode, this));
-
-            //return rules;
-
-            throw new NotImplementedException();
+            
         }
     }
 }

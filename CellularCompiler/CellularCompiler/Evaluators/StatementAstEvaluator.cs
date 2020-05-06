@@ -39,6 +39,11 @@ namespace CellularCompiler.Evaluators
 
         }
 
+        public void Visit(MatchStatementNode node)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Visit(CompoundStatementNode node)
         {
             foreach (StatementNode sNode in node.Statements)
