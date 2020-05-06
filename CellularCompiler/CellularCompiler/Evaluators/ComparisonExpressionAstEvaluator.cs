@@ -12,15 +12,18 @@ namespace CellularCompiler.Evaluators
             => Visit(node.Left) != Visit(node.Right);
 
         public override bool Visit(LessThanNode node)
-            => Visit(node.Left) < Visit(node.Right);
+            => Visit(node.Left as NumberNode) < Visit(node.Right as NumberNode);
 
         public override bool Visit(BiggerThanNode node)
-            => Visit(node.Left) > Visit(node.Right);
+            => Visit(node.Left as NumberNode) > Visit(node.Right as NumberNode);
 
         public override bool Visit(LessThanOrEqualNode node)
-            => Visit(node.Left) <= Visit(node.Right);
+            => Visit(node.Left as NumberNode) <= Visit(node.Right as NumberNode);
 
         public override bool Visit(BiggerThanOrEqualNode node)
-            => Visit(node.Left) >= Visit(node.Right);
+            => Visit(node.Left as NumberNode) >= Visit(node.Right as NumberNode);
+
+        public override int Visit(NumberNode node)
+            => (int)node.Value;
     }
 }

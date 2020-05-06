@@ -37,7 +37,7 @@ namespace CellularCompiler.Evaluators
             for (exprEvaluator.Visit(node.Initializer); compEvaluator.Visit(node.Conditioner); exprEvaluator.Visit(node.Iterator))
             {
                 Visit(node.Statement, sender);
-            }*
+            }
         }
 
         public void Visit(CompoundStatementNode node, ICoronaEvaluator sender)
