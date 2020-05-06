@@ -108,7 +108,8 @@ namespace CellularCompiler.Builders
             //}                
 
             //return new MatchStatementNode(caseStatements);
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new MatchStatementNode(null, null);
         }
 
         public override StatementNode VisitGridAssignStatement([NotNull] CoronaParser.GridAssignStatementContext context)
@@ -116,7 +117,7 @@ namespace CellularCompiler.Builders
             BuildExpressionAst expressionVisitor = new BuildExpressionAst();
             BuildGridPointAst gridpointVisitor = new BuildGridPointAst();
 
-            string idLabel = context.ID().GetText();
+            IdentifierValueNode id = new IdentifierValueNode(context.ID().GetText());
             
             // Extract memberID, if it is used
             MemberIDNode memberIDNode = null;
@@ -124,9 +125,9 @@ namespace CellularCompiler.Builders
                 memberIDNode = new MemberIDNode(context.member().GetText());
 
             // Visit GridPoint
-            GridPointNode gridpoint = gridpointVisitor.Visit(context.gridPoint());
+            GridValueNode gridpoint = gridpointVisitor.Visit(context.gridPoint());
 
-            return new GridAssignmentStatementNode(gridpoint, memberIDNode, idLabel);
+            return new GridAssignmentStatementNode(gridpoint, null, id);
         }
 
         public override StatementNode VisitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context)

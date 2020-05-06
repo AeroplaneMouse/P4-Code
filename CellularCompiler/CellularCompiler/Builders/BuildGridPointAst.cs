@@ -1,24 +1,25 @@
 ﻿using System;
-using CellularCompiler.Nodes;
 using System.Collections.Generic;
+using System.Linq;
 using CellularCompiler.Nodes.Math;
+using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Builders
 {
-    class BuildGridPointAst : CoronaBaseVisitor<GridPointNode>
+    class BuildGridPointAst : CoronaBaseVisitor<GridValueNode>
     {
-        public override GridPointNode VisitGridPoint(CoronaParser.GridPointContext context)
+        public override GridValueNode VisitGridPoint(CoronaParser.GridPointContext context)
         {
             BuildExpressionAst exprVisitor = new BuildExpressionAst();
             CoronaParser.ExprContext[] exprs = context.expr();
 
-            List<ExpressionNode> expressions = new List<ExpressionNode>();
+            if (exprs.Length != 2)
+                throw new ArgumentOutOfRangeException("There must be 2 and only 2 expressions in gridPoint");
 
-            // Visit each expression
-            foreach (var expr in exprs)
-                expressions.Add(exprVisitor.Visit(expr));
+            ExpressionNode first = exprVisitor.Visit(exprs[0]);
+            ExpressionNode second = exprVisitor.Visit(exprs[1]);
 
-            return new GridPointNode(expressions);
+            return new GridValueNode(first, second);
         }
 
     }

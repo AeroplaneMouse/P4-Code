@@ -46,7 +46,7 @@ namespace CellularCompiler.Evaluators
             PushNextGeneration();
 
             // Extract all rules
-            rules = VisitRules(node.RulesNode);
+            //rules = VisitRules(node.RulesNode);
         }
 
         public State GetStateByLabel(string label)
@@ -102,11 +102,18 @@ namespace CellularCompiler.Evaluators
             Console.WriteLine(grid);
         }
 
+        public void SetCell(Cell cell, State state)
+            => grid.SetCell(cell, state);
+
+        public Cell GetCell(int x, int y)
+            => grid.GetCell(x, y);
+
         private void ApplyRules(Cell cell, List<Rule> rules)
         {
-            foreach (Rule r in rules)
-                if (r.Apply(this, grid, cell))
-                    break;
+            throw new NotImplementedException();
+            //foreach (Rule r in rules)
+            //    if (r.Apply(this, grid, cell))
+            //        break;
         }
 
         private Grid VisitGrid(GridNode node)
@@ -148,9 +155,9 @@ namespace CellularCompiler.Evaluators
         /// <param name="grid"></param>
         private void VisitInitial(InitialNode node, Grid grid)
         {
-            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(grid, null);
+            StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(this, grid, null);
             foreach (StatementNode s in node.Statements)
-                statementEvaluator.Visit(s, this);
+                statementEvaluator.Visit(s);
         }
 
         /// <summary>
@@ -158,7 +165,7 @@ namespace CellularCompiler.Evaluators
         /// </summary>
         /// <param name="rulesNode"></param>
         /// <returns>A list of the extracted rules</returns>
-        private List<Rule> VisitRules(RulesNode rulesNode)
+        private void VisitRules(RulesNode rulesNode)
         {
             //List<Rule> rules = new List<Rule>();
 

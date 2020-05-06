@@ -2,21 +2,21 @@
 
 namespace CellularCompiler.Evaluators
 {
-    internal class MathExpressionAstEvaluator : MathAstVisitor<double>
+    class MathExpressionAstEvaluator : MathAstVisitor<int>
     {
-        public override double Visit(AdditionNode node) 
+        public override int Visit(AdditionNode node) 
             => Visit(node.Left) + Visit(node.Right);
 
-        public override double Visit(SubstractionNode node)
+        public override int Visit(SubstractionNode node)
             => Visit(node.Left) - Visit(node.Right);
 
-        public override double Visit(MultiplicationNode node)
+        public override int Visit(MultiplicationNode node)
             => Visit(node.Left) * Visit(node.Right);
 
-        public override double Visit(DivisionNode node)
+        public override int Visit(DivisionNode node)
             => Visit(node.Left) / Visit(node.Right);
 
-        public override double Visit(NumberNode node) 
+        public override int Visit(NumberNode node) 
             => node.Value;
     }
 }
