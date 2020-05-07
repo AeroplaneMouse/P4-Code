@@ -21,9 +21,9 @@ namespace CellularCompiler
             eval.Print();
 
             Console.ReadLine();
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 1000; i++)
             {
-                Thread.Sleep(200);
+                Thread.Sleep(10);
                 eval.GenerateNextGeneration();
                 eval.PushNextGeneration();
                 eval.Print();
