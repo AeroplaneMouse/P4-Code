@@ -85,26 +85,34 @@ namespace CellularCompiler.Evaluators
 
         public void Visit(IdentifierAssignmentStatementNode node)
         {
-            Symbol sym = Stbl.st.Retrieve(node.Identifier.Label);
-
-            if (sym != null)
-            {
-                //sym =....
-            }
-            else
-            {
-
-                //Stbl.st.Insert()
-            }
-
+            // Evaluate expression
             object exprResult = null;
-
             if (node.Expression is ComparisonNode)
                 exprResult = new ComparisonExpressionAstEvaluator().Visit(node.Expression);
             else
                 exprResult = new MathExpressionAstEvaluator(sender).Visit(node.Expression);
 
-            Console.WriteLine($"Expression result: { exprResult }");
+            // Insert into symbol table
+            Symbol sym = Stbl.st.Retrieve(node.Identifier.Label);
+            if (sym != null)
+            {
+                if (sym is VariableSymbol<int> intVar)
+                    intVar.Value = (int)exprResult;
+                else if (sym is VariableSymbol<bool> boolVar)
+                    boolVar.Value = (bool)exprResult;
+            }
+            else
+            {
+                switch (exprResult)
+                {
+                    case int t:
+                        Stbl.st.Insert(new VariableSymbol<int>(t, node.Identifier.Label));
+                        break;
+                    case bool t:
+                        Stbl.st.Insert(new VariableSymbol<bool>(t, node.Identifier.Label));
+                        break;
+                }
+            }
         }
 
 

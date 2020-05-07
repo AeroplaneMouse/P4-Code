@@ -30,13 +30,27 @@ namespace CellularCompiler.Evaluators
 
         public override int Visit(IdentifierNode node)
         {
-            Cell cell = sender.GetCurrentCell();
-            return node.Label switch
+            Symbol sym = Stbl.st.Retrieve(node.Label);
+
+            if (sym != null)
             {
-                ".x" => cell.Pos.X,
-                ".y" => cell.Pos.Y,
-                _ => throw new ArgumentOutOfRangeException($"Unknown cell position: { node.Label }")
-            };
+                if (sym is VariableSymbol<int> intVar)
+                    return intVar.Value;
+                else
+                    throw new Exception("Wrong type!");
+            }
+            else
+                throw new Exception("FUUCK");
+
+
+
+            //Cell cell = sender.GetCurrentCell();
+            //return node.Label switch
+            //{
+            //    ".x" => cell.Pos.X,
+            //    ".y" => cell.Pos.Y,
+            //    _ => throw new ArgumentOutOfRangeException($"Unknown cell position: { node.Label }")
+            //};
         }
     }
 }

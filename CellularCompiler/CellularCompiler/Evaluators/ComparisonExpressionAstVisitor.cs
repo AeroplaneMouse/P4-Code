@@ -11,6 +11,7 @@ namespace CellularCompiler.Evaluators
         public abstract U Visit(LessThanOrEqualNode node);
         public abstract U Visit(BiggerThanOrEqualNode node);
         public abstract T Visit(NumberNode node);
+        public abstract T Visit(IdentifierNode node);
 
         public virtual U Visit(ExpressionNode node)
         {
