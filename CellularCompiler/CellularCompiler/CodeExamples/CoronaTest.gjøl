@@ -1,7 +1,7 @@
 GRID
 {
-	x: 15;
-	y: 15;
+	x: 64;
+	y: 64;
 }
 
 STATES dead, alive
@@ -11,25 +11,23 @@ STATES dead, alive
 
 INITIAL
 {
-	grid[1,2] = alive;
-	grid[2,3] = alive;
-	grid[3,1] = alive;
-	grid[3,2] = alive;
-	grid[3,3] = alive;
+	
 }
 
 RULES
 {
-	count = -1;
+	count = 0;
 	r = -1;
 	while (r < 2)
 	{
 		c = -1;
 		while (c < 2)
 		{
-			match (grid[.x+r, .y+c])
+			match (grid[.x+r, .y+c], r, c)
 			{
-				[alive]
+				[alive, 0, 0]
+				{}
+				[alive, _, _]
 					count = count + 1;
 			}
 			c = c + 1;
