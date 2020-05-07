@@ -25,7 +25,7 @@ namespace CellularCompiler.Models
             // Initialize next
             for (int r = 0; r < XSize; r++)
                 for (int c = 0; c < YSize; c++)
-                    CellsNext[r, c] = new Cell(firstState);
+                    CellsNext[r, c] = new Cell(firstState, new Pos(r, c));
             
             // Push the initialized cells
             Push();

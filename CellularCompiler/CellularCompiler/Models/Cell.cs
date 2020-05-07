@@ -6,11 +6,13 @@ namespace CellularCompiler.Models
     {
         public State State { get; set; }
         public Cell Next { get; private set; }
+        public Pos Pos { get; }
 
-        public Cell(State state)
+        public Cell(State state, Cell next, Pos pos)
         {
             State = state;
-            Next = null;
+            Next = next;
+            Pos = pos;
         }
 
         /// <summary>
@@ -19,8 +21,7 @@ namespace CellularCompiler.Models
         /// <returns>A copy of the current cell, with a reference to the old</returns>
         public Cell Copy()
         {
-            Cell cell = new Cell(State);
-            cell.Next = this;
+            Cell cell = new Cell(State, this, Pos.Copy());
             return cell;
         }
 
