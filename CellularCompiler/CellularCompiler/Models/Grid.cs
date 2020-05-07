@@ -62,9 +62,9 @@ namespace CellularCompiler.Models
         {
             string result = String.Empty;
 
-            for(int r = 0; r < XSize; r++)
+            for(int c = 0; c < YSize; c++)
             {
-                for(int c = 0; c < YSize; c++)
+                for(int r = 0; r < XSize; r++)
                     result += $" { Cells[r, c] }";
                 result += Environment.NewLine;
             }
