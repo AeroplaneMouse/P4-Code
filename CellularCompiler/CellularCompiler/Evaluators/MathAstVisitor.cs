@@ -11,6 +11,8 @@ namespace CellularCompiler.Evaluators
 
         public abstract T Visit(NumberNode node);
 
+        public abstract T Visit(IdentifierNode node);
+
         public virtual T Visit(ExpressionNode node)
         {
             return Visit((dynamic)node);

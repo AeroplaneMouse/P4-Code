@@ -8,6 +8,8 @@ namespace CellularCompiler.Evaluators
     public interface ICoronaEvaluator
     {
         bool ReturnStatementHasBeenHit { get; set; }
+        int X_Max { get; }
+        int Y_Max { get; }
 
         void Initialize();
         State GetStateByLabel(string label);
@@ -19,6 +21,6 @@ namespace CellularCompiler.Evaluators
 
         void SetCell(Cell cell, State state);
         Cell GetCell(int x, int y);
-
+        Cell GetCurrentCell();
     }
 }

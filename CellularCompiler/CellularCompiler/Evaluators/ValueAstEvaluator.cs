@@ -17,10 +17,23 @@ namespace CellularCompiler.Evaluators
 
         public Cell Visit(GridValueNode node)
         {
-            MathExpressionAstEvaluator exprVisitor = new MathExpressionAstEvaluator();
+            MathExpressionAstEvaluator exprVisitor = new MathExpressionAstEvaluator(sender);
 
             int x = exprVisitor.Visit(node.FirstD);
             int y = exprVisitor.Visit(node.SecondD);
+
+            // Wrap around if out of bounds
+            while (x >= sender.X_Max)
+                x -= sender.X_Max;
+
+            while (x < 0)
+                x += sender.X_Max;
+
+            while (y >= sender.Y_Max)
+                y -= sender.Y_Max;
+
+            while (y < 0)
+                y += sender.Y_Max;
 
             return sender.GetCell(x, y);
         }

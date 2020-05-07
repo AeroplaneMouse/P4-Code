@@ -1,9 +1,18 @@
-﻿using CellularCompiler.Nodes.Math;
+﻿using CellularCompiler.Models;
+using CellularCompiler.Nodes.Math;
+using System;
 
 namespace CellularCompiler.Evaluators
 {
     class MathExpressionAstEvaluator : MathAstVisitor<int>
     {
+        private ICoronaEvaluator sender;
+
+        public MathExpressionAstEvaluator(ICoronaEvaluator sender)
+        {
+            this.sender = sender;
+        }
+
         public override int Visit(AdditionNode node) 
             => Visit(node.Left) + Visit(node.Right);
 
@@ -18,5 +27,16 @@ namespace CellularCompiler.Evaluators
 
         public override int Visit(NumberNode node) 
             => node.Value;
+
+        public override int Visit(IdentifierNode node)
+        {
+            Cell cell = sender.GetCurrentCell();
+            return node.Label switch
+            {
+                ".x" => cell.Pos.X,
+                ".y" => cell.Pos.Y,
+                _ => throw new ArgumentOutOfRangeException($"Unknown cell position: { node.Label }")
+            };
+        }
     }
 }

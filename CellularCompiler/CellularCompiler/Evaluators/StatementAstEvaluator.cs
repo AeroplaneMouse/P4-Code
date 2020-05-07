@@ -16,12 +16,10 @@ namespace CellularCompiler.Evaluators
     class StatementAstEvaluator
     {
         readonly ICoronaEvaluator sender;
-        Cell cell { get; }
 
-        public StatementAstEvaluator(ICoronaEvaluator sender, Cell cell)
+        public StatementAstEvaluator(ICoronaEvaluator sender)
         {
             this.sender = sender;
-            this.cell = cell;
         }
 
         public void Visit(StatementNode node)
@@ -32,7 +30,7 @@ namespace CellularCompiler.Evaluators
         public void Visit(IterationStatementNode node)
         {
             //node.Initializer
-            MathExpressionAstEvaluator exprEvaluator = new MathExpressionAstEvaluator();
+            MathExpressionAstEvaluator exprEvaluator = new MathExpressionAstEvaluator(sender);
             ComparisonExpressionAstEvaluator compEvaluator = new ComparisonExpressionAstEvaluator();
 
             // We have to convert node.Conditioner as ExpressionNode returns an int because of public virtual T Visit(ExpressionNode node) in ComparisonVisitor
@@ -57,6 +55,7 @@ namespace CellularCompiler.Evaluators
         {
             ValueAstEvaluator valueVisitor = new ValueAstEvaluator(sender);
             List<ValueNode> values = new List<ValueNode>();
+            Cell cell = sender.GetCurrentCell();
 
             // Evaluate elements
             int i = 0;
@@ -105,7 +104,7 @@ namespace CellularCompiler.Evaluators
 
                 switch (value)
                 {
-                    case IdentifierValueNode t1:
+                    case IdentifierValueNode t:
                         IdentifierValueNode idNode = (IdentifierValueNode)value;
                         if (IsState(idNode, out State state))
                         {
@@ -114,17 +113,20 @@ namespace CellularCompiler.Evaluators
                         }
                         break;
 
-                    case IntValueNode t2:
+                    case IntValueNode t:
                         IntValueNode intNode = (IntValueNode)value;
                         if (!elementValues[i].Equals(intNode))
                             return false;
                         break;
 
-                    case ArrowValueNode t2:
+                    case ArrowValueNode t:
                         ArrowValueNode arrowNode = (ArrowValueNode)value;
                         // Check if elementvalue falls inside arrow value span
                         if (!elementValues[i].Equals(arrowNode))
                             return false;
+                        break;
+
+                    case DefaultValueNode t:
                         break;
                     default:
                         throw new ArgumentOutOfRangeException($"Case matching has yet to be implemented for CaseValue: [{ i }] { value.GetType() }");
@@ -157,6 +159,7 @@ namespace CellularCompiler.Evaluators
 
         public void Visit(ReturnStatementNode node)
         {
+            Cell cell = sender.GetCurrentCell();
             State state = sender.GetStateByLabel(node.Identifier.Label);
             sender.SetCell(cell, state);
             sender.ReturnStatementHasBeenHit = true;
@@ -182,7 +185,7 @@ namespace CellularCompiler.Evaluators
             if (node.Expression is ComparisonNode)
                 exprResult = new ComparisonExpressionAstEvaluator().Visit(node.Expression);
             else
-                exprResult = new MathExpressionAstEvaluator().Visit(node.Expression);
+                exprResult = new MathExpressionAstEvaluator(sender).Visit(node.Expression);
 
             Console.WriteLine($"Expression result: { exprResult }");
         }
