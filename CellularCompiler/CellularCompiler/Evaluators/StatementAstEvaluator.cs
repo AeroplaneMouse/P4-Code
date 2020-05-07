@@ -37,10 +37,6 @@ namespace CellularCompiler.Evaluators
 
         public void Visit(MatchStatementNode node)
         {
-            Symbol c = Stbl.st.Retrieve("count");
-            if (sender.GetCurrentCell().Pos.Equals(new Pos(1, 1)))
-                Console.WriteLine();
-
             // Find the first caseStatement 
             CaseStatementNode caseNode = GetFirstMatchingCase(node);
 
