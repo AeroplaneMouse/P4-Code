@@ -10,8 +10,6 @@ namespace CellularCompiler.Builders
     {
         public override MainNode VisitMain(CoronaParser.MainContext context)
         {
-            Stbl.st.OpenScope();
-
             BuildBaseAst baseVisitor = new BuildBaseAst();
 
             // Visit grid
@@ -30,16 +28,6 @@ namespace CellularCompiler.Builders
             RulesNode rules = baseVisitor.Visit(context.rules()) as RulesNode;
 
             //Add to SymTab
-            grid.Members.ForEach(m => Stbl.st.Insert(new MemberSymbol(m)));
-
-            List<MemberSymbol> mems;
-            foreach (StatesNode sts in states)
-            {
-                mems = new List<MemberSymbol>();
-                sts.Members.ForEach(m => mems.Add(new MemberSymbol(m)));
-
-                sts.Labels.ForEach(s => Stbl.st.Insert(new StateSymbol(s, mems)));
-            }
 
             return new MainNode(grid, states, initial, rules);
         }
