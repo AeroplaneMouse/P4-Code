@@ -1,0 +1,56 @@
+GRID
+{
+	x: 20;
+	y: 20;
+}
+
+STATES dead, alive
+{
+	
+}
+
+INITIAL
+{
+	grid[9,10] = alive;
+
+	grid[10,9] = alive;
+	grid[10,10] = alive;
+	grid[10,11] = alive;
+
+	grid[11,9] = alive;
+	grid[11,11] = alive;
+
+	grid[12,10] = alive;
+}
+
+RULES
+{
+	count = 0;
+	r = -1;
+	while (r < 2)
+	{
+		c = -1;
+		while (c < 2)
+		{
+			match (grid[.x+r, .y+c], r, c)
+			{
+				[alive, 0, 0]
+				{}
+				[alive, _, _]
+					count = count + 1;
+			}
+			c = c + 1;
+		}
+		r = r + 1;
+	}
+
+	match (.state, count)
+	{
+		[alive, 2 -> 3]
+			return alive;
+		[dead, 3]
+			return alive;
+		[_, _]
+			return dead;
+	}
+}
