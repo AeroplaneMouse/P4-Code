@@ -85,6 +85,18 @@ namespace CellularCompiler.Evaluators
 
         public void Visit(IdentifierAssignmentStatementNode node)
         {
+            Symbol sym = Stbl.st.Retrieve(node.Identifier.Label);
+
+            if (sym != null)
+            {
+                //sym =....
+            }
+            else
+            {
+
+                //Stbl.st.Insert()
+            }
+
             object exprResult = null;
 
             if (node.Expression is ComparisonNode)
