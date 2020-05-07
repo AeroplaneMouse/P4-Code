@@ -152,9 +152,13 @@ namespace CellularCompiler.Evaluators
 
         public void Visit(CompoundStatementNode node)
         {
+            Stbl.st.OpenScope();
+
             foreach (StatementNode sNode in node.Statements)
                 if (!sender.ReturnStatementHasBeenHit)
                     Visit(sNode);
+
+            Stbl.st.CloseScope();
         }
 
         public void Visit(ReturnStatementNode node)
