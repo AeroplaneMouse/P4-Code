@@ -7,6 +7,7 @@ using CellularCompiler.Builders;
 using System.Collections.Generic;
 using CellularCompiler.Evaluators;
 using CellularCompiler.Nodes.Base;
+using System.Threading;
 
 namespace CellularCompiler
 {
@@ -19,10 +20,10 @@ namespace CellularCompiler
             ICoronaEvaluator eval = interpreter.InterpretCorona();
             eval.Print();
 
-
-            for (int i = 0; i < 20; i++)
+            Console.ReadLine();
+            for (int i = 0; i < 200; i++)
             {
-                Console.ReadLine();
+                Thread.Sleep(200);
                 eval.GenerateNextGeneration();
                 eval.PushNextGeneration();
                 eval.Print();
