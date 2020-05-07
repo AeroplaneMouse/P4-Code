@@ -6,13 +6,6 @@ namespace CellularCompiler.Evaluators
 {
     class MathExpressionAstEvaluator : MathAstVisitor<int>
     {
-        private ICoronaEvaluator sender;
-
-        public MathExpressionAstEvaluator(ICoronaEvaluator sender)
-        {
-            this.sender = sender;
-        }
-
         public override int Visit(AdditionNode node) 
             => Visit(node.Left) + Visit(node.Right);
 

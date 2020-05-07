@@ -17,7 +17,7 @@ namespace CellularCompiler.Evaluators
 
         public Cell Visit(GridValueNode node)
         {
-            MathExpressionAstEvaluator exprVisitor = new MathExpressionAstEvaluator(sender);
+            MathExpressionAstEvaluator exprVisitor = new MathExpressionAstEvaluator();
 
             int x = exprVisitor.Visit(node.FirstD);
             int y = exprVisitor.Visit(node.SecondD);

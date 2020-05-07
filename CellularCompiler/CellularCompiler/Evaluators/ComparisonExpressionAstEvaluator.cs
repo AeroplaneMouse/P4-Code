@@ -9,74 +9,128 @@ namespace CellularCompiler.Evaluators
     {
         public override bool Visit(EqualityNode node)
         {
-            if (node.Left is NumberNode && node.Right is NumberNode)
-                return Visit(node.Left as NumberNode) == Visit(node.Right as NumberNode);
-            else if (node.Left is IdentifierNode && node.Right is NumberNode)
-                return Visit(node.Left as IdentifierNode) == Visit(node.Right as NumberNode);
-            else if (node.Left is NumberNode && node.Right is IdentifierNode)
-                return Visit(node.Left as NumberNode) == Visit(node.Right as IdentifierNode);
+            int nodeLeft = 0;
+            int nodeRight = 0;
+            if (node.Left is NumberNode)
+                nodeLeft = Visit(node.Left as NumberNode);
+            else if (node.Left is IdentifierNode)
+                nodeLeft = Visit(node.Left as IdentifierNode);
             else
-                return Visit(node.Left as IdentifierNode) == Visit(node.Right as IdentifierNode);
+                nodeLeft = Visit(node.Left as InfixExpressionNode);
+
+            if (node.Right is NumberNode)
+                nodeRight = Visit(node.Right as NumberNode);
+            else if (node.Right is IdentifierNode)
+                nodeRight = Visit(node.Right as IdentifierNode);
+            else
+                nodeRight = Visit(node.Right as InfixExpressionNode);
+
+            return nodeLeft == nodeRight;
         }
 
         public override bool Visit(NotEqualNode node)
         {
-            if (node.Left is NumberNode && node.Right is NumberNode)
-                return Visit(node.Left as NumberNode) != Visit(node.Right as NumberNode);
-            else if (node.Left is IdentifierNode && node.Right is NumberNode)
-                return Visit(node.Left as IdentifierNode) != Visit(node.Right as NumberNode);
-            else if (node.Left is NumberNode && node.Right is IdentifierNode)
-                return Visit(node.Left as NumberNode) != Visit(node.Right as IdentifierNode);
+            int nodeLeft = 0;
+            int nodeRight = 0;
+            if (node.Left is NumberNode)
+                nodeLeft = Visit(node.Left as NumberNode);
+            else if (node.Left is IdentifierNode)
+                nodeLeft = Visit(node.Left as IdentifierNode);
             else
-                return Visit(node.Left as IdentifierNode) != Visit(node.Right as IdentifierNode);
+                nodeLeft = Visit(node.Left as InfixExpressionNode);
+
+            if (node.Right is NumberNode)
+                nodeRight = Visit(node.Right as NumberNode);
+            else if (node.Right is IdentifierNode)
+                nodeRight = Visit(node.Right as IdentifierNode);
+            else
+                nodeRight = Visit(node.Right as InfixExpressionNode);
+
+            return nodeLeft != nodeRight;
         }
 
         public override bool Visit(LessThanNode node)
         {
-            if (node.Left is NumberNode && node.Right is NumberNode)
-                return Visit(node.Left as NumberNode) < Visit(node.Right as NumberNode);
-            else if (node.Left is IdentifierNode && node.Right is NumberNode)
-                return Visit(node.Left as IdentifierNode) < Visit(node.Right as NumberNode);
-            else if (node.Left is NumberNode && node.Right is IdentifierNode)
-                return Visit(node.Left as NumberNode) < Visit(node.Right as IdentifierNode);
+            int nodeLeft = 0;
+            int nodeRight = 0;
+            if (node.Left is NumberNode)
+                nodeLeft = Visit(node.Left as NumberNode);
+            else if (node.Left is IdentifierNode)
+                nodeLeft = Visit(node.Left as IdentifierNode);
             else
-                return Visit(node.Left as IdentifierNode) < Visit(node.Right as IdentifierNode);
+                nodeLeft = Visit(node.Left as InfixExpressionNode);
+
+            if (node.Right is NumberNode)
+                nodeRight = Visit(node.Right as NumberNode);
+            else if (node.Right is IdentifierNode)
+                nodeRight = Visit(node.Right as IdentifierNode);
+            else
+                nodeRight = Visit(node.Right as InfixExpressionNode);
+
+            return nodeLeft < nodeRight;
         }
 
         public override bool Visit(BiggerThanNode node)
         {
-            if (node.Left is NumberNode && node.Right is NumberNode)
-                return Visit(node.Left as NumberNode) > Visit(node.Right as NumberNode);
-            else if (node.Left is IdentifierNode && node.Right is NumberNode)
-                return Visit(node.Left as IdentifierNode) > Visit(node.Right as NumberNode);
-            else if (node.Left is NumberNode && node.Right is IdentifierNode)
-                return Visit(node.Left as NumberNode) > Visit(node.Right as IdentifierNode);
+            int nodeLeft = 0;
+            int nodeRight = 0;
+            if (node.Left is NumberNode)
+                nodeLeft = Visit(node.Left as NumberNode);
+            else if (node.Left is IdentifierNode)
+                nodeLeft = Visit(node.Left as IdentifierNode);
             else
-                return Visit(node.Left as IdentifierNode) > Visit(node.Right as IdentifierNode);
+                nodeLeft = Visit(node.Left as InfixExpressionNode);
+
+            if (node.Right is NumberNode)
+                nodeRight = Visit(node.Right as NumberNode);
+            else if (node.Right is IdentifierNode)
+                nodeRight = Visit(node.Right as IdentifierNode);
+            else
+                nodeRight = Visit(node.Right as InfixExpressionNode);
+
+            return nodeLeft > nodeRight;
         }
 
         public override bool Visit(LessThanOrEqualNode node)
         {
-            if (node.Left is NumberNode && node.Right is NumberNode)
-                return Visit(node.Left as NumberNode) <= Visit(node.Right as NumberNode);
-            else if (node.Left is IdentifierNode && node.Right is NumberNode)
-                return Visit(node.Left as IdentifierNode) <= Visit(node.Right as NumberNode);
-            else if (node.Left is NumberNode && node.Right is IdentifierNode)
-                return Visit(node.Left as NumberNode) <= Visit(node.Right as IdentifierNode);
+            int nodeLeft = 0;
+            int nodeRight = 0;
+            if (node.Left is NumberNode)
+                nodeLeft = Visit(node.Left as NumberNode);
+            else if (node.Left is IdentifierNode)
+                nodeLeft = Visit(node.Left as IdentifierNode);
             else
-                return Visit(node.Left as IdentifierNode) <= Visit(node.Right as IdentifierNode);
+                nodeLeft = Visit(node.Left as InfixExpressionNode);
+
+            if (node.Right is NumberNode)
+                nodeRight = Visit(node.Right as NumberNode);
+            else if (node.Right is IdentifierNode)
+                nodeRight = Visit(node.Right as IdentifierNode);
+            else
+                nodeRight = Visit(node.Right as InfixExpressionNode);
+
+            return nodeLeft <= nodeRight;
         }
 
         public override bool Visit(BiggerThanOrEqualNode node)
         {
-            if (node.Left is NumberNode && node.Right is NumberNode)
-                return Visit(node.Left as NumberNode) >= Visit(node.Right as NumberNode);
-            else if (node.Left is IdentifierNode && node.Right is NumberNode)
-                return Visit(node.Left as IdentifierNode) >= Visit(node.Right as NumberNode);
-            else if (node.Left is NumberNode && node.Right is IdentifierNode)
-                return Visit(node.Left as NumberNode) >= Visit(node.Right as IdentifierNode);
+            int nodeLeft = 0;
+            int nodeRight = 0;
+            if (node.Left is NumberNode)
+                nodeLeft = Visit(node.Left as NumberNode);
+            else if (node.Left is IdentifierNode)
+                nodeLeft = Visit(node.Left as IdentifierNode);
             else
-                return Visit(node.Left as IdentifierNode) >= Visit(node.Right as IdentifierNode);
+                nodeLeft = Visit(node.Left as InfixExpressionNode);
+
+            if (node.Right is NumberNode)
+                nodeRight = Visit(node.Right as NumberNode);
+            else if (node.Right is IdentifierNode)
+                nodeRight = Visit(node.Right as IdentifierNode);
+            else
+                nodeRight = Visit(node.Right as InfixExpressionNode);
+
+            return nodeLeft >= nodeRight;
         }
 
         public override int Visit(IdentifierNode node)
@@ -92,6 +146,12 @@ namespace CellularCompiler.Evaluators
             }
             else
                 throw new Exception("FUUCK");
+        }
+
+        public override int Visit(InfixExpressionNode node)
+        {
+            MathExpressionAstEvaluator expressionAstEvaluator = new MathExpressionAstEvaluator();
+            return expressionAstEvaluator.Visit(node);
         }
 
         public override int Visit(NumberNode node)

@@ -30,7 +30,7 @@ namespace CellularCompiler.Evaluators
         public void Visit(IterationStatementNode node)
         {
             //node.Initializer
-            MathExpressionAstEvaluator exprEvaluator = new MathExpressionAstEvaluator(sender);
+            MathExpressionAstEvaluator exprEvaluator = new MathExpressionAstEvaluator();
             ComparisonExpressionAstEvaluator compEvaluator = new ComparisonExpressionAstEvaluator();
 
             // We have to convert node.Conditioner as ExpressionNode returns an int because of public virtual T Visit(ExpressionNode node) in ComparisonVisitor'
@@ -90,7 +90,7 @@ namespace CellularCompiler.Evaluators
             if (node.Expression is ComparisonNode)
                 exprResult = new ComparisonExpressionAstEvaluator().Visit(node.Expression);
             else
-                exprResult = new MathExpressionAstEvaluator(sender).Visit(node.Expression);
+                exprResult = new MathExpressionAstEvaluator().Visit(node.Expression);
 
             // Insert into symbol table
             Symbol sym = Stbl.st.Retrieve(node.Identifier.Label);
