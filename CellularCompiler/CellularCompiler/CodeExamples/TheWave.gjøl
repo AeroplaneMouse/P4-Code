@@ -1,0 +1,40 @@
+GRID
+{
+	x: 15;
+	y: 15;
+}
+
+STATES dead, dying, alive
+{
+	
+}
+
+INITIAL
+{
+	grid[6,6] = alive;
+}
+
+RULES
+{
+	match(.state) # This is just a simple "Rule" #
+	{
+		[dead]
+		{
+			match(grid[.x-1,.y], grid[.x+1,.y], grid[.x, .y-1], grid[.x, .y+1])
+			{
+				[alive, _, _, _]
+					return alive;
+				[_, alive, _, _]
+					return alive;
+				[_, _, alive, _]
+					return alive;
+				[_, _, _, alive]
+					return alive;
+			} 
+		}
+		[dying]
+			return dead;
+		[alive]
+			return dying;
+	}
+}
