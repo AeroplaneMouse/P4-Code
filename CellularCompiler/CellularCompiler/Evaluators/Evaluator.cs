@@ -185,8 +185,7 @@ namespace CellularCompiler.Evaluators
         private void VisitInitial(InitialNode node)
         {
             StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(this);
-            foreach (StatementNode s in node.Statements)
-                statementEvaluator.Visit(s);
+            statementEvaluator.Visit(node.Statement);
         }
     }
 }

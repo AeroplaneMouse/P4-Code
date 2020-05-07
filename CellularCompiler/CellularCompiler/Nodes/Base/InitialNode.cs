@@ -7,11 +7,11 @@ namespace CellularCompiler.Nodes.Base
 {
     class InitialNode : BaseNode
     {
-        public List<StatementNode> Statements { get; set; }
+        public StatementNode Statement { get; set; }
 
-        public InitialNode(List<StatementNode> statements)
+        public InitialNode(StatementNode statement)
         {
-            Statements = statements;
+            Statement = statement;
         }
     }
 }
