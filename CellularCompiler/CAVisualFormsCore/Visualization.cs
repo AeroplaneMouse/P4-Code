@@ -16,12 +16,6 @@ namespace CAVisualFormsCore
     {
         ICoronaEvaluator evaluator;
 
-
-        //Cell[,] array = null;
-        State black = new State("black");
-        State white = new State("white");
-
-
         public Visualization(ICoronaEvaluator evaluator)
         {
             InitializeComponent();
@@ -42,23 +36,17 @@ namespace CAVisualFormsCore
 
         private async void main()
         {
-            await Task.Delay(1000);
-            RequestAnimationFrame(0);
-            await Task.Delay(1000);
-            RequestAnimationFrame(10);
-            await Task.Delay(1000);
-            RequestAnimationFrame(20);
-            await Task.Delay(1000);
-            RequestAnimationFrame(30);
+            for (int i = 0; i < 2000; i++)
+            {
+                await Task.Delay(10);
+                RequestAnimationFrame();
+            }
         }
 
-        public void RequestAnimationFrame(int test)
+        public void RequestAnimationFrame()
         {
             evaluator.GenerateNextGeneration();
             evaluator.PushNextGeneration();
-
-            //array[test, test] = new Cell(black);
-            Task.Delay(5000);
             Refresh();
         }
 
@@ -66,18 +54,18 @@ namespace CAVisualFormsCore
         {
             Cell[,] array = evaluator.GetCurrentGeneration();
 
-            int box = 10;
+            int box = 5;
             int firstDimensionLength = array.GetLength(0);
             int secondDimensionLength = array.GetLength(1);
             e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(0, 0, box*firstDimensionLength, box*secondDimensionLength));
 
-            for (int i = 0; i < firstDimensionLength; ++i)
+            for (int j = 0; j < firstDimensionLength; ++j)
             {
-                for (int j = 0; j < secondDimensionLength; ++j)
+                for (int i = 0; i < secondDimensionLength; ++i)
                 {
-                    if (array[i, j].State.Label == "black")
+                    if (array[j, i].State.Label == "dead")
                         e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(box * j, box * i, box, box));
-                    else if (array[i, j].State.Label == "white")
+                    else if (array[j, i].State.Label == "alive")
                         e.Graphics.FillRectangle(new SolidBrush(Color.White), new Rectangle(box * j, box * i, box, box));
                 }
             }
