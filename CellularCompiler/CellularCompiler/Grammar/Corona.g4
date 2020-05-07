@@ -47,7 +47,8 @@ matchElement
 	;
 
 iterationStatement
-	: 'for' '(' initializer=expr ';' condition=expr ';' iterator=expr ')' statement
+	//: 'for' '(' initializer=expr ';' condition=expr ';' iterator=expr ')' statement
+	: 'while' '(' conditioner=expr ')' statement
 	;
 
 assignmentStatement

@@ -33,9 +33,9 @@ namespace CellularCompiler.Evaluators
             MathExpressionAstEvaluator exprEvaluator = new MathExpressionAstEvaluator(sender);
             ComparisonExpressionAstEvaluator compEvaluator = new ComparisonExpressionAstEvaluator();
 
-            // We have to convert node.Conditioner as ExpressionNode returns an int because of public virtual T Visit(ExpressionNode node) in ComparisonVisitor
-
-            for (exprEvaluator.Visit(node.Initializer); compEvaluator.Visit(node.Conditioner); exprEvaluator.Visit(node.Iterator))
+            // We have to convert node.Conditioner as ExpressionNode returns an int because of public virtual T Visit(ExpressionNode node) in ComparisonVisitor'
+            int i = 0;
+            while (compEvaluator.Visit(node.Conditioner))
             {
                 Visit(node.Statement);
             }
