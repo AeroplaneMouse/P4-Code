@@ -27,7 +27,10 @@ namespace CellularCompiler.Models
 
         public override string ToString()
         {
-            return State.ID.ToString();
+            if (State.ID == 0)
+                return " ";
+            else
+                return State.ID.ToString();
         }
     }
 }
