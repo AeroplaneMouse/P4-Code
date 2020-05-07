@@ -51,6 +51,51 @@ namespace CellularCompiler.Evaluators
                 Visit(caseNode.Statement);
         }
 
+        public void Visit(CompoundStatementNode node)
+        {
+            Stbl.st.OpenScope();
+
+            foreach (StatementNode sNode in node.Statements)
+                if (!sender.ReturnStatementHasBeenHit)
+                    Visit(sNode);
+
+            Stbl.st.CloseScope();
+        }
+
+        public void Visit(ReturnStatementNode node)
+        {
+            Cell cell = sender.GetCurrentCell();
+            State state = sender.GetStateByLabel(node.Identifier.Label);
+            sender.SetCell(cell, state);
+            sender.ReturnStatementHasBeenHit = true;
+        }
+
+        public void Visit(GridAssignmentStatementNode node)
+        {
+            ValueAstEvaluator valueVisitor = new ValueAstEvaluator(sender);
+
+            Cell c = valueVisitor.Visit(node.GridPoint);
+
+            // Extract result
+            State state = sender.GetStateByLabel(node.Identifier.Label);
+
+            // Set specified cells nextState
+            sender.SetCell(c, state);
+        }
+
+        public void Visit(IdentifierAssignmentStatementNode node)
+        {
+            object exprResult = null;
+
+            if (node.Expression is ComparisonNode)
+                exprResult = new ComparisonExpressionAstEvaluator().Visit(node.Expression);
+            else
+                exprResult = new MathExpressionAstEvaluator(sender).Visit(node.Expression);
+
+            Console.WriteLine($"Expression result: { exprResult }");
+        }
+
+
         private CaseStatementNode GetFirstMatchingCase(MatchStatementNode node)
         {
             ValueAstEvaluator valueVisitor = new ValueAstEvaluator(sender);
@@ -134,7 +179,7 @@ namespace CellularCompiler.Evaluators
 
                 i++;
             }
-            
+
             return true;
         }
 
@@ -148,50 +193,6 @@ namespace CellularCompiler.Evaluators
         {
             state = sender.GetStateByLabel(node.Label);
             return state != null;
-        }
-
-        public void Visit(CompoundStatementNode node)
-        {
-            Stbl.st.OpenScope();
-
-            foreach (StatementNode sNode in node.Statements)
-                if (!sender.ReturnStatementHasBeenHit)
-                    Visit(sNode);
-
-            Stbl.st.CloseScope();
-        }
-
-        public void Visit(ReturnStatementNode node)
-        {
-            Cell cell = sender.GetCurrentCell();
-            State state = sender.GetStateByLabel(node.Identifier.Label);
-            sender.SetCell(cell, state);
-            sender.ReturnStatementHasBeenHit = true;
-        }
-
-        public void Visit(GridAssignmentStatementNode node)
-        {
-            ValueAstEvaluator valueVisitor = new ValueAstEvaluator(sender);
-
-            Cell c = valueVisitor.Visit(node.GridPoint);
-
-            // Extract result
-            State state = sender.GetStateByLabel(node.Identifier.Label);
-
-            // Set specified cells nextState
-            sender.SetCell(c, state);
-        }
-
-        public void Visit(IdentifierAssignmentStatementNode node)
-        {
-            object exprResult = null;
-
-            if (node.Expression is ComparisonNode)
-                exprResult = new ComparisonExpressionAstEvaluator().Visit(node.Expression);
-            else
-                exprResult = new MathExpressionAstEvaluator(sender).Visit(node.Expression);
-
-            Console.WriteLine($"Expression result: { exprResult }");
         }
     } 
 }
