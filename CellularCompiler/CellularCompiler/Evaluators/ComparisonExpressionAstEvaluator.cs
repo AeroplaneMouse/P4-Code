@@ -9,34 +9,75 @@ namespace CellularCompiler.Evaluators
     {
         public override bool Visit(EqualityNode node)
         {
-            if (node.Left is NumberNode nNode)
-                return Visit(nNode) == Visit(node.Right as NumberNode);
-            else
-            {
+            if (node.Left is NumberNode && node.Right is NumberNode)
+                return Visit(node.Left as NumberNode) == Visit(node.Right as NumberNode);
+            else if (node.Left is IdentifierNode && node.Right is NumberNode)
                 return Visit(node.Left as IdentifierNode) == Visit(node.Right as NumberNode);
-            }
-
+            else if (node.Left is NumberNode && node.Right is IdentifierNode)
+                return Visit(node.Left as NumberNode) == Visit(node.Right as IdentifierNode);
+            else
+                return Visit(node.Left as IdentifierNode) == Visit(node.Right as IdentifierNode);
         }
 
         public override bool Visit(NotEqualNode node)
-            => Visit(node.Left as NumberNode) != Visit(node.Right as NumberNode);
+        {
+            if (node.Left is NumberNode && node.Right is NumberNode)
+                return Visit(node.Left as NumberNode) != Visit(node.Right as NumberNode);
+            else if (node.Left is IdentifierNode && node.Right is NumberNode)
+                return Visit(node.Left as IdentifierNode) != Visit(node.Right as NumberNode);
+            else if (node.Left is NumberNode && node.Right is IdentifierNode)
+                return Visit(node.Left as NumberNode) != Visit(node.Right as IdentifierNode);
+            else
+                return Visit(node.Left as IdentifierNode) != Visit(node.Right as IdentifierNode);
+        }
 
         public override bool Visit(LessThanNode node)
         {
-            if (node.Left is NumberNode nNode)
+            if (node.Left is NumberNode && node.Right is NumberNode)
                 return Visit(node.Left as NumberNode) < Visit(node.Right as NumberNode);
-            else
+            else if (node.Left is IdentifierNode && node.Right is NumberNode)
                 return Visit(node.Left as IdentifierNode) < Visit(node.Right as NumberNode);
+            else if (node.Left is NumberNode && node.Right is IdentifierNode)
+                return Visit(node.Left as NumberNode) < Visit(node.Right as IdentifierNode);
+            else
+                return Visit(node.Left as IdentifierNode) < Visit(node.Right as IdentifierNode);
         }
 
         public override bool Visit(BiggerThanNode node)
-            => Visit(node.Left as NumberNode) > Visit(node.Right as NumberNode);
+        {
+            if (node.Left is NumberNode && node.Right is NumberNode)
+                return Visit(node.Left as NumberNode) > Visit(node.Right as NumberNode);
+            else if (node.Left is IdentifierNode && node.Right is NumberNode)
+                return Visit(node.Left as IdentifierNode) > Visit(node.Right as NumberNode);
+            else if (node.Left is NumberNode && node.Right is IdentifierNode)
+                return Visit(node.Left as NumberNode) > Visit(node.Right as IdentifierNode);
+            else
+                return Visit(node.Left as IdentifierNode) > Visit(node.Right as IdentifierNode);
+        }
 
         public override bool Visit(LessThanOrEqualNode node)
-            => Visit(node.Left as NumberNode) <= Visit(node.Right as NumberNode);
+        {
+            if (node.Left is NumberNode && node.Right is NumberNode)
+                return Visit(node.Left as NumberNode) <= Visit(node.Right as NumberNode);
+            else if (node.Left is IdentifierNode && node.Right is NumberNode)
+                return Visit(node.Left as IdentifierNode) <= Visit(node.Right as NumberNode);
+            else if (node.Left is NumberNode && node.Right is IdentifierNode)
+                return Visit(node.Left as NumberNode) <= Visit(node.Right as IdentifierNode);
+            else
+                return Visit(node.Left as IdentifierNode) <= Visit(node.Right as IdentifierNode);
+        }
 
         public override bool Visit(BiggerThanOrEqualNode node)
-            => Visit(node.Left as NumberNode) >= Visit(node.Right as NumberNode);
+        {
+            if (node.Left is NumberNode && node.Right is NumberNode)
+                return Visit(node.Left as NumberNode) >= Visit(node.Right as NumberNode);
+            else if (node.Left is IdentifierNode && node.Right is NumberNode)
+                return Visit(node.Left as IdentifierNode) >= Visit(node.Right as NumberNode);
+            else if (node.Left is NumberNode && node.Right is IdentifierNode)
+                return Visit(node.Left as NumberNode) >= Visit(node.Right as IdentifierNode);
+            else
+                return Visit(node.Left as IdentifierNode) >= Visit(node.Right as IdentifierNode);
+        }
 
         public override int Visit(IdentifierNode node)
         {
