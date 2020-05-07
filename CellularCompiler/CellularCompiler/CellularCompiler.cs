@@ -27,8 +27,6 @@ namespace CellularCompiler
                 eval.PushNextGeneration();
                 eval.Print();
             }
-
-            //Console.WriteLine(grid);
         }
 
         /// <summary>

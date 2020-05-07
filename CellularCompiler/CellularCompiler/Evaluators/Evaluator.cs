@@ -15,7 +15,8 @@ namespace CellularCompiler.Evaluators
         Grid grid { get; set; }
         List<State> states { get; set; }
         List<StatementNode> rules { get; set; }
-        MainNode ast;
+
+        readonly MainNode ast;
 
         public int Generation { get; private set; } = 1;
         public bool ReturnStatementHasBeenHit { get; set; } = false;
@@ -44,7 +45,7 @@ namespace CellularCompiler.Evaluators
             grid = VisitGrid(node.GridNode);
 
             // Evaluate each statement in the initialNode, on the grid
-            VisitInitial(node.InitialNode, grid);
+            VisitInitial(node.InitialNode);
             PushNextGeneration();
 
             // Extract all rules
@@ -165,21 +166,11 @@ namespace CellularCompiler.Evaluators
         /// </summary>
         /// <param name="node"></param>
         /// <param name="grid"></param>
-        private void VisitInitial(InitialNode node, Grid grid)
+        private void VisitInitial(InitialNode node)
         {
             StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(this, null);
             foreach (StatementNode s in node.Statements)
                 statementEvaluator.Visit(s);
-        }
-
-        /// <summary>
-        /// Extracts rules..
-        /// </summary>
-        /// <param name="rulesNode"></param>
-        /// <returns>A list of the extracted rules</returns>
-        private void VisitRules(RulesNode rulesNode)
-        {
-            
         }
     }
 }

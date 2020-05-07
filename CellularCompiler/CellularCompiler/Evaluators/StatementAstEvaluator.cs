@@ -9,12 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text;
+using System.Threading;
 
 namespace CellularCompiler.Evaluators
 {
     class StatementAstEvaluator
     {
-        ICoronaEvaluator sender;
+        readonly ICoronaEvaluator sender;
         Cell cell { get; }
 
         public StatementAstEvaluator(ICoronaEvaluator sender, Cell cell)
@@ -54,63 +55,97 @@ namespace CellularCompiler.Evaluators
 
         private CaseStatementNode GetFirstMatchingCase(MatchStatementNode node)
         {
+            ValueAstEvaluator valueVisitor = new ValueAstEvaluator(sender);
+            List<ValueNode> values = new List<ValueNode>();
+
+            // Evaluate elements
+            int i = 0;
+            foreach (var element in node.Elements)
+            {
+                switch (element)
+                {
+                    case IdentifierValueNode t1:
+                        IdentifierValueNode idNode = (IdentifierValueNode)element;
+                        values.Add(idNode.Label switch
+                        {
+                            ".state" => new StateValueNode(cell.State),
+                            ".x" => new IntValueNode(cell.Pos.X),
+                            ".y" => new IntValueNode(cell.Pos.Y),
+                            _ => throw new ArgumentException("Unknown identifier")
+                        });
+                        break;
+                    case GridValueNode t2:
+                        GridValueNode gridNode = (GridValueNode)element;
+                        Cell otherCell = valueVisitor.Visit(gridNode);
+                        values.Add(new StateValueNode(otherCell.State));
+                        break;
+                    default:
+                        throw new Exception($"Case matching has yet to be implemented for MatchElement: [{ i }] { element.GetType() }");
+                }
+
+                i++;
+            }
+
+            // Find first matching case
             foreach (CaseStatementNode c in node.CaseStatementNodes)
-                if (IsCaseMatching(c, node.Elements))
+                if (IsCaseMatching(c, values))
                     return c;
 
             return null;
         }
 
-        private bool IsCaseMatching(CaseStatementNode c, List<ValueNode> elements)
+        private bool IsCaseMatching(CaseStatementNode c, List<ValueNode> elementValues)
         {
             ValueAstEvaluator valueVisitor = new ValueAstEvaluator(sender);
 
+            // Match each value in case
             int i = 0;
-            foreach(ValueNode e in elements)
+            foreach (ValueNode value in c.Values)
             {
-                switch (e)
+
+                switch (value)
                 {
                     case IdentifierValueNode t1:
-                        IdentifierValueNode iden = (IdentifierValueNode)e;
-                        if (iden.Label == ".state")
+                        IdentifierValueNode idNode = (IdentifierValueNode)value;
+                        if (IsState(idNode, out State state))
                         {
-                            // Check if case has valid state in i'th place
-                            if (c.Values[i] is IdentifierValueNode idState)
-                            {
-                                State state = sender.GetStateByLabel(idState.Label);
-                                if (state == null || cell.State != state)
-                                    return false;
-                            }
+                            if (!elementValues[i].Equals(state))
+                                return false;
                         }
-
-                        // Handle variables
                         break;
-                    case GridValueNode t2:
-                        GridValueNode node = (GridValueNode)e;
-                        Cell otherCell = valueVisitor.Visit(node);
 
-                        if (node.Member == null || node.Member.Label == ".state")
-                        {
-                            // Check if case has valid state in i'th place
-                            if (c.Values[i] is IdentifierValueNode idState)
-                            {
-                                State state = sender.GetStateByLabel(idState.Label);
-                                if (state == null || otherCell.State != state)
-                                    return false;
-                            }    
-                        }
+                    case IntValueNode t2:
+                        IntValueNode intNode = (IntValueNode)value;
+                        if (!elementValues[i].Equals(intNode))
+                            return false;
+                        break;
 
-
+                    case ArrowValueNode t2:
+                        ArrowValueNode arrowNode = (ArrowValueNode)value;
+                        // Check if elementvalue falls inside arrow value span
+                        if (!elementValues[i].Equals(arrowNode))
+                            return false;
                         break;
                     default:
-                        //Console.WriteLine($"Case matching has yet to be implemented for: { e.GetType() }");
-                        //Console.WriteLine($"Case value position: { i }");
-                        throw new Exception($"Case matching has yet to be implemented for: { e.GetType() }  pos: { i }");
+                        throw new ArgumentOutOfRangeException($"Case matching has yet to be implemented for CaseValue: [{ i }] { value.GetType() }");
                 }
 
                 i++;
             }
+            
             return true;
+        }
+
+        /// <summary>
+        /// Check wheter or not an IdentifierNode, could be representing a state
+        /// </summary>
+        /// <param name="node">IdentifierValueNode to be checked</param>
+        /// <param name="state">If a state was found, this would have the resulting state</param>
+        /// <returns>True if a state could be extracted from the giving IdentifierValueNode</returns>
+        private bool IsState(IdentifierValueNode node, out State state)
+        {
+            state = sender.GetStateByLabel(node.Label);
+            return state != null;
         }
 
         public void Visit(CompoundStatementNode node)
