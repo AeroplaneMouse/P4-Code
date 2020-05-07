@@ -127,6 +127,10 @@ identifierValue
 fragment DIGIT :   [0-9];
 fragment Nondigit :   [a-zA-Z_];
 
+DEFAULT
+	: '_'
+	;
+
 ID
 	: Nondigit (Nondigit | DIGIT)*
    ;
@@ -140,9 +144,7 @@ STRING
 	: '"' .*? '"' 
 	;
 
-DEFAULT
-	: '_'
-	;
+
 
 COMMENT
 	: '#' .*? '#' -> skip
