@@ -111,6 +111,7 @@ arrowValue
 
 intValue
 	: INT
+	| '-'INT
 	;
 
 stringValue
