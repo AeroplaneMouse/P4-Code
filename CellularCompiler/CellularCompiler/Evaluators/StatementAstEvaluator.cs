@@ -43,6 +43,10 @@ namespace CellularCompiler.Evaluators
 
         public void Visit(MatchStatementNode node)
         {
+            Symbol c = Stbl.st.Retrieve("count");
+            if (sender.GetCurrentCell().Pos.Equals(new Pos(1, 1)))
+                Console.WriteLine();
+
             // Find the first caseStatement 
             CaseStatementNode caseNode = GetFirstMatchingCase(node);
 
@@ -128,20 +132,54 @@ namespace CellularCompiler.Evaluators
             {
                 switch (element)
                 {
-                    case IdentifierValueNode t1:
-                        IdentifierValueNode idNode = (IdentifierValueNode)element;
-                        values.Add(idNode.Label switch
+                    case IdentifierValueNode t:
+                        if (t.Label == ".state")
+                            values.Add(new StateValueNode(cell.State));
+                        else
                         {
-                            ".state" => new StateValueNode(cell.State),
-                            ".x" => new IntValueNode(cell.Pos.X),
-                            ".y" => new IntValueNode(cell.Pos.Y),
-                            _ => throw new ArgumentException("Unknown identifier")
-                        });
+                            Symbol sym1 = Stbl.st.Retrieve(t.Label);
+
+                            if (sym1 != null)
+                            {
+                                switch (sym1)
+                                {
+                                    case VariableSymbol<int> v: values.Add(new IntValueNode(v.Value)); break;
+                                    default: throw new ArgumentOutOfRangeException();
+                                }
+                            }
+                            else
+                                throw new NotImplementedException("StatementAstEvaluator GetFirstMatchingCase");
+
+                        }
+
+
+                        //IdentifierValueNode idNode = (IdentifierValueNode)element;
+                        //values.Add(idNode.Label switch
+                        //{
+                        //    ".state" => new StateValueNode(cell.State),
+                        //    ".x" => new IntValueNode(cell.Pos.X),
+                        //    ".y" => new IntValueNode(cell.Pos.Y),
+                        //    _ => throw new ArgumentException("Unknown identifier")
+                        //});
                         break;
                     case GridValueNode t2:
                         GridValueNode gridNode = (GridValueNode)element;
                         Cell otherCell = valueVisitor.Visit(gridNode);
                         values.Add(new StateValueNode(otherCell.State));
+                        break;
+                    case IdentifierNode t:
+                        Symbol sym2 = Stbl.st.Retrieve(t.Label);
+
+                        if (sym2 != null)
+                        {
+                            switch (sym2)
+                            {
+                                case VariableSymbol<int> v: values.Add(new IntValueNode(v.Value)); break;
+                                default: throw new ArgumentOutOfRangeException();
+                            }
+                        }
+                        else
+                            throw new NotImplementedException("StatementAstEvaluator GetFirstMatchingCase");
                         break;
                     default:
                         throw new Exception($"Case matching has yet to be implemented for MatchElement: [{ i }] { element.GetType() }");

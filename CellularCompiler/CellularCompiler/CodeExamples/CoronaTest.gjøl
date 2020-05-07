@@ -11,33 +11,39 @@ STATES dead, alive
 
 INITIAL
 {
-	grid[1,1] = alive;
-	grid[2,2] = alive;
+	grid[1,2] = alive;
+	grid[2,3] = alive;
+	grid[3,1] = alive;
+	grid[3,2] = alive;
 	grid[3,3] = alive;
-	grid[8,8] = alive;
-
-	test = 1;
-	while(test < 5 + 2)
-	{
-		test = test + 1;
-	}
 }
 
 RULES
 {
-	match(.state, .x, .y) # This is just a simple "Rule" #
+	count = -1;
+	r = -1;
+	while (r < 2)
 	{
-		[dead, 5 -> 10, 5 -> 10]
-			return alive;
-		[alive, 5 -> 10, 5 -> 10]
-			return dead;
+		c = -1;
+		while (c < 2)
+		{
+			match (grid[.x+r, .y+c])
+			{
+				[alive]
+					count = count + 1;
+			}
+			c = c + 1;
+		}
+		r = r + 1;
 	}
 
-	match (.state, grid[7, 7])
+	match (.state, count)
 	{
-		[dead, alive]
+		[alive, 2 -> 3]
 			return alive;
-		[alive, dead]
+		[dead, 3]
+			return alive;
+		[_, _]
 			return dead;
 	}
 }

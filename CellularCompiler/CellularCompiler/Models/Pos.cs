@@ -19,5 +19,13 @@ namespace CellularCompiler.Models
         {
             return new Pos(X, Y);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Pos p)
+                return X == p.X && Y == p.Y;
+            else
+                return false;
+        }
     }
 }

@@ -128,6 +128,12 @@ namespace CellularCompiler.Evaluators
 
         private void ApplyRules(Cell cell, List<StatementNode> rules)
         {
+            Stbl.st.OpenScope();
+            // Add cell variables
+            //Stbl.st.Insert(new StateSymbol(cell.State.Label, null));
+            Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.X, ".x"));
+            Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.Y, ".y"));
+
             StatementAstEvaluator statementVisitor = new StatementAstEvaluator(this);
             foreach (StatementNode r in rules)
             {
@@ -136,6 +142,7 @@ namespace CellularCompiler.Evaluators
                 else
                     break;
             }
+            Stbl.st.CloseScope();
         }
 
         private Grid VisitGrid(GridNode node)
