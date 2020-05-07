@@ -18,10 +18,10 @@ namespace CellularCompiler.Builders
             BuildExpressionAst exprVisitor = new BuildExpressionAst();
             IterationStatementNode node = new IterationStatementNode();
 
+            BuildGridPointAst gridpointVisitor = new BuildGridPointAst();
+
             // Visit expressions
-            node.Initializer = exprVisitor.Visit(context.initializer);
-            node.Conditioner = exprVisitor.Visit(context.condition);
-            node.Iterator = exprVisitor.Visit(context.iterator);
+            node.Conditioner = exprVisitor.Visit(context.conditioner);
 
             // Visit statement
             node.Statement = Visit(context.statement());
