@@ -145,7 +145,7 @@ namespace CellularCompiler.Evaluators
                     throw new Exception("Wrong type!");
             }
             else
-                throw new Exception("FUUCK");
+                throw new Exception($"Undeclared variable { node.Label }");
         }
 
         public override int Visit(InfixExpressionNode node)
