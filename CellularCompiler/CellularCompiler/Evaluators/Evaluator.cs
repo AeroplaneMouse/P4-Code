@@ -133,8 +133,8 @@ namespace CellularCompiler.Evaluators
             Stbl.st.OpenScope();
             // Add cell variables
             //Stbl.st.Insert(new StateSymbol(cell.State.Label, null));
-            Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.X, grid.AxisLabels[0]));
-            Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.Y, grid.AxisLabels[1]));
+            Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.X, "." + grid.AxisLabels[0]));
+            Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.Y, "." + grid.AxisLabels[1]));
 
             StatementAstEvaluator statementVisitor = new StatementAstEvaluator(this);
             foreach (StatementNode r in rules)
