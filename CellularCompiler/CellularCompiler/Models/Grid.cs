@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection.Emit;
 
 namespace CellularCompiler.Models
 {
@@ -6,14 +8,16 @@ namespace CellularCompiler.Models
     {
         public int XSize { get; }
         public int YSize { get; }
+        public List<string> AxisLabels { get; }
 
         private Cell[,] Cells { get; set; }
         private Cell[,] CellsNext { get; set; }
 
-        public Grid(int xSize, int ySize, State firstState)
+        public Grid(int xSize, int ySize, State firstState, List<string> axisLabels )
         {
             XSize = xSize;
             YSize = ySize;
+            AxisLabels = axisLabels;
             InitializeCells(firstState);
         }
 

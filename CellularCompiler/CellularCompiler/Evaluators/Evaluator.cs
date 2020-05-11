@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using CellularCompiler.Models;
 using System.Collections.Generic;
@@ -31,6 +31,8 @@ namespace CellularCompiler.Evaluators
 
         public void Initialize()
         {
+            // Create global scope
+            Stbl.st.OpenScope();
             Visit(ast);
         }
 
@@ -131,8 +133,8 @@ namespace CellularCompiler.Evaluators
             Stbl.st.OpenScope();
             // Add cell variables
             //Stbl.st.Insert(new StateSymbol(cell.State.Label, null));
-            Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.X, ".x"));
-            Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.Y, ".y"));
+            Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.X, grid.AxisLabels[0]));
+            Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.Y, grid.AxisLabels[1]));
 
             StatementAstEvaluator statementVisitor = new StatementAstEvaluator(this);
             foreach (StatementNode r in rules)
@@ -155,7 +157,12 @@ namespace CellularCompiler.Evaluators
             int x = (node.Members[0].Values[0] as IntValueNode).Value;
             int y = (node.Members[1].Values[0] as IntValueNode).Value;
 
-            return new Grid(x, y, states.First());
+            // Extract axis label
+            List<string> labels = new List<string>();
+            foreach (MemberNode m in node.Members)
+                labels.Add(m.Label);
+
+            return new Grid(x, y, states.First(), labels);
         }
 
         /// <summary>
