@@ -5,7 +5,7 @@ main
 	;
 
 grid
-	: 'GRID' '{' gridDeclaration+ '}'
+	: 'GRID' '{' gridDeclaration gridDeclaration '}'
 	;
 
 states
