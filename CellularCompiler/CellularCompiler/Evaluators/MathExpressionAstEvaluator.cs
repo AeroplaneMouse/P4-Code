@@ -33,17 +33,7 @@ namespace CellularCompiler.Evaluators
                     throw new Exception("Wrong type!");
             }
             else
-                throw new Exception("FUUCK");
-
-
-
-            //Cell cell = sender.GetCurrentCell();
-            //return node.Label switch
-            //{
-            //    ".x" => cell.Pos.X,
-            //    ".y" => cell.Pos.Y,
-            //    _ => throw new ArgumentOutOfRangeException($"Unknown cell position: { node.Label }")
-            //};
+                throw new Exception($"Undeclared variable { node.Label }");
         }
     }
 }
