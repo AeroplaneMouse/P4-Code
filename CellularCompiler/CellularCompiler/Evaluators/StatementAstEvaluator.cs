@@ -141,16 +141,6 @@ namespace CellularCompiler.Evaluators
                                 throw new NotImplementedException("StatementAstEvaluator GetFirstMatchingCase");
 
                         }
-
-
-                        //IdentifierValueNode idNode = (IdentifierValueNode)element;
-                        //values.Add(idNode.Label switch
-                        //{
-                        //    ".state" => new StateValueNode(cell.State),
-                        //    ".x" => new IntValueNode(cell.Pos.X),
-                        //    ".y" => new IntValueNode(cell.Pos.Y),
-                        //    _ => throw new ArgumentException("Unknown identifier")
-                        //});
                         break;
                     case GridValueNode t2:
                         GridValueNode gridNode = (GridValueNode)element;
