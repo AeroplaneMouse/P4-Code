@@ -34,6 +34,10 @@ namespace CellularCompiler.Builders
             int left = Int32.Parse(context.INT()[0].GetText());
             int right = Int32.Parse(context.INT()[1].GetText());
 
+            // Range check
+            if (left > right)
+                throw new ArgumentOutOfRangeException("Left value must be lower or equal to the right value");
+
             return new ArrowValueNode(left, right);
         }
 
