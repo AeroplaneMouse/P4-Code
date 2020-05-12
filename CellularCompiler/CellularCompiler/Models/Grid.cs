@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace CellularCompiler.Models
 {
@@ -13,7 +14,7 @@ namespace CellularCompiler.Models
         private Cell[,] Cells { get; set; }
         private Cell[,] CellsNext { get; set; }
 
-        public Grid(int xSize, int ySize, State firstState, List<string> axisLabels )
+        public Grid(int xSize, int ySize, StateSymbol firstState, List<string> axisLabels)
         {
             XSize = xSize;
             YSize = ySize;
@@ -21,7 +22,7 @@ namespace CellularCompiler.Models
             InitializeCells(firstState);
         }
 
-        private void InitializeCells(State firstState)
+        private void InitializeCells(StateSymbol firstState)
         {
             Cells = new Cell[XSize, YSize];
             CellsNext = new Cell[XSize, YSize];
@@ -30,7 +31,7 @@ namespace CellularCompiler.Models
             for (int r = 0; r < XSize; r++)
                 for (int c = 0; c < YSize; c++)
                     CellsNext[r, c] = new Cell(firstState, null, new Pos(r, c));
-            
+
             // Push the initialized cells
             Push();
         }
@@ -47,12 +48,17 @@ namespace CellularCompiler.Models
                     action(grid[r, c]);
         }
 
-        public void SetCell(int x, int y, State state)
+        public void SetCell(int x, int y, StateSymbol state)
         {
             CellsNext[x, y].State = state;
         }
 
-        public void SetCell(Cell cell, State state)
+        public void SetCell(Pos pos, StateSymbol state)
+        {
+            CellsNext[pos.X, pos.Y].State = state;
+        }
+
+        public void SetCell(Cell cell, StateSymbol state)
         {
             cell.State = state;
         }
@@ -62,32 +68,29 @@ namespace CellularCompiler.Models
             return Cells[x, y];
         }
 
+        public Cell GetCell(Pos pos)
+        {
+            return Cells[pos.X, pos.Y];
+        }
+
         public override string ToString()
         {
             string result = String.Empty;
 
-            for(int c = 0; c < YSize; c++)
+            for (int c = 0; c < YSize; c++)
             {
-                for(int r = 0; r < XSize; r++)
+                for (int r = 0; r < XSize; r++)
+                {
                     result += $" { Cells[r, c] }";
+
+                }
                 result += Environment.NewLine;
             }
 
             return result;
         }
 
-        public virtual void SetInitial()
-        {
-            // skal overrides af kode genereret af compiler.
-        }
-
-        public void Tick()
-        {
-            ApplyRules();
-            Push();
-        }
-
-        internal Cell[,] GetCells()
+        public Cell[,] GetCells()
         {
             return Cells;
         }
@@ -100,55 +103,6 @@ namespace CellularCompiler.Models
             for (int r = 0; r < XSize; r++)
                 for (int c = 0; c < YSize; c++)
                     Cells[r, c] = CellsNext[r, c].Copy();
-
-
-            //ForAll((cell) =>
-            //{
-            //    cell = CellsNext[r, c];
-            //});
         }
-
-        public virtual void ApplyRules()
-        {
-            // Skal overrides af kode genereret af compiler.
-            // Bare et eksempel på hvordan den kan have været overridet(Conway)
-            //ForAll((r, c) =>
-            //{
-            //    // IF DEAD
-            //    if (Cells[r, c] == 0)
-            //    {
-            //        if(Neighbors(1, r, c) == 3)
-            //            CellsNext[r,c] = 1;
-            //    }
-            //    // IF ALIVE
-            //    if (Cells[r, c] == 1)
-            //    {
-            //        if (Neighbors(1, r, c) != 3 && Neighbors(1, r, c) != 4)
-            //            CellsNext[r, c] = 0;
-            //    }
-            //});
-
-        }
-
-        public int Neighbors(int state, int x, int y)
-        {
-            //int count = 0;
-            //for (int r = x-1; r <= x+1; r++)
-            //{
-            //    for (int c = y-1; c <= y+1; c++)
-            //    {
-            //        if(!(r == x && c == y))
-            //        {
-            //            if (Cells[r, c] == state)
-            //            {
-            //                count++;
-            //            }
-            //        }
-            //    }
-            //}
-            //return count;
-            throw new NotImplementedException();
-        }
-
     }
 }

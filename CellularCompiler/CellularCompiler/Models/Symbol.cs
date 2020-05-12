@@ -6,13 +6,11 @@ namespace CellularCompiler.Models
 {
     abstract public class Symbol 
     {
-        public string Name { get; set; }
+        public string Label { get; set; }
 
         public Symbol(string name)
         {
-            Name = name;
+            Label = name;
         }
-
-
     }
 }

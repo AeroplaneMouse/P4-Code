@@ -5,21 +5,25 @@ namespace CellularCompiler.Nodes.Values
 {
     class StateValueNode : ValueNode
     {
-        public State State { get; set; }
+        public StateSymbol State { get; set; }
 
-        public StateValueNode(State state)
+        public StateValueNode(StateSymbol state)
         {
             State = state;
         }
 
         public override bool Equals(object obj)
         {
-            if (obj is State state)
-                return State == state;
-            else if (obj is StateValueNode node)
-                return State == node.State;
-            else
-                return false;
+            bool result;
+
+            result = obj switch
+            {
+                StateSymbol s => State.Label == s.Label,
+                StateValueNode s => State.Label == s.State.Label,
+                _ => false,
+            };
+
+            return result && base.Equals(obj);
         }
     }
 }

@@ -10,5 +10,16 @@
             LeftValue = left;
             RightValue = right;
         }
+
+        public override bool Equals(object obj)
+        {
+            bool result;
+            if (obj is ArrowValueNode otherNode)
+                result = LeftValue == otherNode.LeftValue && RightValue == otherNode.RightValue;
+            else
+                result = false;
+
+            return result && base.Equals(obj);
+        }
     }
 }

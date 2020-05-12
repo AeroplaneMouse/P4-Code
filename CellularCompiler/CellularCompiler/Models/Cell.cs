@@ -4,11 +4,11 @@ namespace CellularCompiler.Models
 {
     public class Cell
     {
-        public State State { get; set; }
+        public StateSymbol State { get; set; }
         public Cell Next { get; private set; }
         public Pos Pos { get; }
 
-        public Cell(State state, Cell next, Pos pos)
+        public Cell(StateSymbol state, Cell next, Pos pos)
         {
             State = state;
             Next = next;

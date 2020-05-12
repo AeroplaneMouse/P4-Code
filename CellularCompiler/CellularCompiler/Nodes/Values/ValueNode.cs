@@ -1,6 +1,10 @@
 ﻿namespace CellularCompiler.Nodes.Values
 {
-    abstract class ValueNode
+    public abstract class ValueNode
     {
+        public override bool Equals(object obj)
+        {
+            return true;
+        }
     }
 }

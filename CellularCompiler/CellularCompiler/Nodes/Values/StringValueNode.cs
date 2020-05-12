@@ -12,5 +12,17 @@ namespace CellularCompiler.Nodes.Values
         {
             Value = value;
         }
+
+        public override bool Equals(object obj)
+        {
+            bool result;
+
+            if (obj is string s)
+                result = Value == s;
+            else
+                result = false;
+
+            return result && base.Equals(obj);
+        }
     }
 }

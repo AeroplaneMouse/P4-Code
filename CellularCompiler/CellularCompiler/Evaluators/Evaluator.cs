@@ -1,12 +1,12 @@
-using System;
+﻿using System;
 using System.Linq;
 using CellularCompiler.Models;
 using System.Collections.Generic;
 using CellularCompiler.Exceptions;
 using CellularCompiler.Nodes.Base;
-using CellularCompiler.Nodes.Statement;
 using CellularCompiler.Nodes.Values;
-using CellularCompiler.Builders;
+using CellularCompiler.Nodes.Statement;
+using System.Runtime.ExceptionServices;
 
 namespace CellularCompiler.Evaluators
 {
@@ -43,11 +43,10 @@ namespace CellularCompiler.Evaluators
                 states = new List<State>();
 
             // Extract all states
-            foreach (StatesNode s in node.StatesNodes)
-                states.AddRange(VisitState(s));
+            StateSymbol firstState = VisitStates(node.StatesNodes);
             
             // Generate grid. Must be done after extraction of states
-            grid = VisitGrid(node.GridNode);
+            grid = VisitGrid(node.GridNode, firstState);
 
             // Evaluate each statement in the initialNode, on the grid
             VisitInitial(node.InitialNode);
@@ -55,7 +54,6 @@ namespace CellularCompiler.Evaluators
 
             // Extract all rules
             rules = node.RulesNode.Statements;
-            //rules = VisitRules(node.RulesNode);
         }
 
         public State GetStateByLabel(string label)
@@ -113,7 +111,7 @@ namespace CellularCompiler.Evaluators
             Console.WriteLine(grid);
         }
 
-        public void SetCell(Cell cell, State state)
+        public void SetCell(Cell cell, StateSymbol state)
         {
             grid.SetCell(cell.Next, state);
         }
@@ -132,7 +130,19 @@ namespace CellularCompiler.Evaluators
         {
             Stbl.st.OpenScope();
             // Add cell variables
-            //Stbl.st.Insert(new StateSymbol(cell.State.Label, null));
+            Stbl.st.Insert(new VariableSymbol<StateSymbol>(cell.State, ".state"));
+
+            // State member variables
+            foreach(MemberSymbol member in cell.State.Members)
+            {
+                Stbl.st.Insert(member.GetValue() switch
+                {   
+                    int value => new VariableSymbol<int>(value, "." + member.Label),
+                    string value => new VariableSymbol<string>(value, "." + member.Label),
+                    _ => throw new Exception("Unknown cell member type"),
+                });
+            }
+
             Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.X, "." + grid.AxisLabels[0]));
             Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.Y, "." + grid.AxisLabels[1]));
 
@@ -147,7 +157,7 @@ namespace CellularCompiler.Evaluators
             Stbl.st.CloseScope();
         }
 
-        private Grid VisitGrid(GridNode node)
+        private Grid VisitGrid(GridNode node, StateSymbol firstState)
         {
             // Just a check
             if (node.Members.Count != 2)
@@ -162,33 +172,46 @@ namespace CellularCompiler.Evaluators
             foreach (MemberNode m in node.Members)
                 labels.Add(m.Label);
 
-            return new Grid(x, y, states.First(), labels);
+            return new Grid(x, y, firstState, labels);
         }
 
         /// <summary>
         /// Extracts states from a StatesNode and creates a state foreach label in it.
         /// </summary>
         /// <param name="node">The StatesNode from which the new states should be generated from.</param>
-        /// <param name="stateList">A reference to the list, of which the extracted states should be added to.</param>
-        private List<State> VisitState(StatesNode node)
+        private StateSymbol VisitStates(List<StatesNode> nodes)
         {
-            List<State> states = new List<State>();
+            StateSymbol first = null;
 
-            // Generete x new states, equal to the number of labels
-            // TODO: Later, its members should also be saved
-            foreach (string l in node.Labels)
+            foreach(StatesNode node in nodes)
             {
-                states.Add(new State(l));
+                // Create states with a single label
+                foreach (string label in node.Labels)
+                {
+                    List<MemberSymbol> members = new List<MemberSymbol>();
+
+                    // Create member symbols
+                    foreach (MemberNode m in node.Members)
+                        members.Add(new MemberSymbol(m));
+
+                    StateSymbol state = new StateSymbol(label, members);
+
+                    // Save first
+                    if (first == null)
+                        first = state;
+
+                    // Insert state into symbol table
+                    Stbl.st.Insert(state);
+                }
             }
 
-            return states;
+            return first;
         }
 
         /// <summary>
         /// Evaluates each statement in the given InitialNode and executes them on grid
         /// </summary>
         /// <param name="node"></param>
-        /// <param name="grid"></param>
         private void VisitInitial(InitialNode node)
         {
             StatementAstEvaluator statementEvaluator = new StatementAstEvaluator(this);

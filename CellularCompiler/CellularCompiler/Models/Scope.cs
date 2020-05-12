@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
+using System.Collections.Generic;
 
 namespace CellularCompiler.Models
 {
@@ -12,7 +12,7 @@ namespace CellularCompiler.Models
         {
             try
             {
-                return symbols.Find(s => s.Name.Equals(name));
+                return symbols.Find(s => s.Label.Equals(name));
             }
             catch(ArgumentNullException)
             {
@@ -22,16 +22,14 @@ namespace CellularCompiler.Models
 
         public void InsertSymbol(Symbol symbol)
         {
-            if(RetrieveSymbol(symbol.Name) == null)
+            if(RetrieveSymbol(symbol.Label) == null)
             {
                 symbols.Add(symbol);
             }
             else
             {
-                throw new Exception($"A symbol by name \"{symbol.Name}\" already exists in the symbol table!");
+                throw new Exception($"A symbol by name \"{symbol.Label}\" already exists in the symbol table!");
             }
         }
-
-
     }
 }
