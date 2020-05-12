@@ -131,6 +131,18 @@ namespace CellularCompiler.Evaluators
             Stbl.st.OpenScope();
             // Add cell variables
             Stbl.st.Insert(new VariableSymbol<StateSymbol>(cell.State, ".state"));
+
+            // State member variables
+            foreach(MemberSymbol member in cell.State.Members)
+            {
+                Stbl.st.Insert(member.GetValue() switch
+                {   
+                    int value => new VariableSymbol<int>(value, "." + member.Label),
+                    string value => new VariableSymbol<string>(value, "." + member.Label),
+                    _ => throw new Exception("Unknown cell member type"),
+                });
+            }
+
             Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.X, "." + grid.AxisLabels[0]));
             Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.Y, "." + grid.AxisLabels[1]));
 

@@ -7,7 +7,7 @@ namespace CellularCompiler.Models
     public class StateSymbol : Symbol
     {
         private static int _id = 0;
-        private List<MemberSymbol> members;
+        public List<MemberSymbol> Members;
 
         public int ID { get; }
 
@@ -15,17 +15,17 @@ namespace CellularCompiler.Models
             : base(label)
         {
             ID = _id++;
-            this.members = members;
+            this.Members = members;
         }
 
         public void AddMember(MemberSymbol member)
         {
-            members.Add(member);
+            Members.Add(member);
         }
 
         public MemberSymbol RetrieveMember(string label)
         {
-            return members.Find(s => s.Label.Equals(label));
+            return Members.Find(s => s.Label.Equals(label));
         }
     }
 }

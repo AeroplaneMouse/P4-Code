@@ -132,19 +132,12 @@ namespace CellularCompiler.Evaluators
                 {
                     case IdentifierValueNode t:
                         AddIdentifierElement(t, values);
-                        //if (t.Label == ".state")
-                        //    values.Add(new StateValueNode(cell.State));
-                        //else
-                        //{
-
-                        //}
                         break;
                     case IdentifierNode t:
                         AddIdentifierElement(new IdentifierValueNode(t.Label), values);
                         break;
-                    case GridValueNode t2:
-                        GridValueNode gridNode = (GridValueNode)element;
-                        Cell otherCell = valueVisitor.Visit(gridNode);
+                    case GridValueNode t:
+                        Cell otherCell = valueVisitor.Visit(t);
                         values.Add(new StateValueNode(otherCell.State));
                         break;
                     
