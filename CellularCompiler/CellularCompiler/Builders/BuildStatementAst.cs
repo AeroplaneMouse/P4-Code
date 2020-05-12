@@ -9,6 +9,7 @@ using CellularCompiler.Nodes.Math;
 using CellularCompiler.Nodes.Statement;
 using CellularCompiler.Nodes.Values;
 using CellularCompiler.Evaluators;
+using System.Linq.Expressions;
 
 namespace CellularCompiler.Builders
 {
@@ -93,14 +94,12 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitGridAssignStatement([NotNull] CoronaParser.GridAssignStatementContext context)
         {
-            //TODO: Handle expressions in grid assignment
-            BuildExpressionAst expressionVisitor = new BuildExpressionAst();
             BuildValueAst valueVisitor= new BuildValueAst();
 
             IdentifierValueNode id = new IdentifierValueNode(context.ID().GetText());
             GridValueNode gridpoint = (GridValueNode) valueVisitor.Visit(context.gridPoint());
 
-            return new GridAssignmentStatementNode(gridpoint, null, id);
+            return new GridAssignmentStatementNode(gridpoint, id);
         }
 
         public override StatementNode VisitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context)
@@ -112,6 +111,25 @@ namespace CellularCompiler.Builders
             ExpressionNode expr = exprVisitor.Visit(context.expr());
 
             return new IdentifierAssignmentStatementNode(id, expr);
+        }
+
+        public override StatementNode VisitMemberAssignStatement([NotNull] CoronaParser.MemberAssignStatementContext context)
+        {
+            BuildValueAst valueVisitor = new BuildValueAst();
+            BuildExpressionAst exprVisitor = new BuildExpressionAst();
+
+            // Get GridPoint
+            GridValueNode gridPoint = null;
+            if (context.gridPoint() != null)
+                gridPoint = (GridValueNode)valueVisitor.Visit(context.gridPoint());
+
+            // Get Member 
+            IdentifierValueNode memberID = new IdentifierValueNode("." + context.identifierValue().GetText());
+
+            // Get expression
+            ExpressionNode expr = exprVisitor.Visit(context.expr());
+
+            return new MemberAssignmentStatementNode(gridPoint, memberID, expr);
         }
 
         /// <summary>
