@@ -19,5 +19,17 @@ namespace CellularCompiler.Nodes.Values
             SecondD = second;
             Member = member;
         }
+
+        public override bool Equals(object obj)
+        {
+            bool result;
+
+            if (obj is GridValueNode node)
+                throw new NotImplementedException();
+            else
+                result = false;
+
+            return result && base.Equals(obj);
+        }
     }
 }

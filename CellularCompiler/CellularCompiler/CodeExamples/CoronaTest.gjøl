@@ -6,7 +6,7 @@ GRID
 
 STATES dead, alive
 {
-   
+   test: 1 -> 10, "n";
 }
 
 INITIAL
@@ -48,4 +48,12 @@ RULES
       [_, _]
          return dead;
    }
+}
+
+# .out #
+FUNC #NAME#(#ARGS#)
+{
+   # Do some computations #
+
+   .out = result_of_computation;
 }

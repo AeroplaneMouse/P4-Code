@@ -12,14 +12,18 @@ namespace CellularCompiler.Nodes.Values
             State = state;
         }
 
-        //public override bool Equals(object obj)
-        //{
-        //    if (obj is State state)
-        //        return State == state;
-        //    else if (obj is StateValueNode node)
-        //        return State == node.State;
-        //    else
-        //        return false;
-        //}
+        public override bool Equals(object obj)
+        {
+            bool result;
+
+            result = obj switch
+            {
+                StateSymbol s => State == s,
+                StateValueNode s => State == s.State,
+                _ => false,
+            };
+
+            return result && base.Equals(obj);
+        }
     }
 }

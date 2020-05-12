@@ -130,7 +130,7 @@ namespace CellularCompiler.Evaluators
         {
             Stbl.st.OpenScope();
             // Add cell variables
-            Stbl.st.Insert(cell.State);
+            Stbl.st.Insert(new VariableSymbol<StateSymbol>(cell.State, ".state"));
             Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.X, "." + grid.AxisLabels[0]));
             Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.Y, "." + grid.AxisLabels[1]));
 

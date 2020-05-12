@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text;
 using System.Threading;
+using System.Windows.Markup;
 
 namespace CellularCompiler.Evaluators
 {
@@ -131,19 +132,7 @@ namespace CellularCompiler.Evaluators
                 switch (element)
                 {
                     case IdentifierValueNode t:
-                        Symbol sym1 = Stbl.st.Retrieve(t.Label);
-
-                        if (sym1 != null)
-                        {
-                            switch (sym1)
-                            {
-                                case VariableSymbol<int> v: values.Add(new IntValueNode(v.Value)); break;
-                                case StateSymbol s: values.Add(new StateValueNode(s)); break;
-                                default: throw new ArgumentOutOfRangeException();
-                            }
-                        }
-                        else
-                            throw new NotImplementedException("StatementAstEvaluator GetFirstMatchingCase");
+                        AddIdentifierElement(t, values);
                         //if (t.Label == ".state")
                         //    values.Add(new StateValueNode(cell.State));
                         //else
@@ -151,25 +140,15 @@ namespace CellularCompiler.Evaluators
 
                         //}
                         break;
+                    case IdentifierNode t:
+                        AddIdentifierElement(new IdentifierValueNode(t.Label), values);
+                        break;
                     case GridValueNode t2:
                         GridValueNode gridNode = (GridValueNode)element;
                         Cell otherCell = valueVisitor.Visit(gridNode);
                         values.Add(new StateValueNode(otherCell.State));
                         break;
-                    case IdentifierNode t:
-                        Symbol sym2 = Stbl.st.Retrieve(t.Label);
-
-                        if (sym2 != null)
-                        {
-                            switch (sym2)
-                            {
-                                case VariableSymbol<int> v: values.Add(new IntValueNode(v.Value)); break;
-                                default: throw new ArgumentOutOfRangeException();
-                            }
-                        }
-                        else
-                            throw new NotImplementedException("StatementAstEvaluator GetFirstMatchingCase");
-                        break;
+                    
                     default:
                         throw new Exception($"Case matching has yet to be implemented for MatchElement: [{ i }] { element.GetType() }");
                 }
@@ -185,6 +164,24 @@ namespace CellularCompiler.Evaluators
             return null;
         }
 
+        private void AddIdentifierElement(IdentifierValueNode node, List<ValueNode> values)
+        {
+            Symbol sym = Stbl.st.Retrieve(node.Label);
+
+            if (sym != null)
+            {
+                values.Add(sym switch
+                {
+                    VariableSymbol<int> v => new IntValueNode(v.Value),
+                    VariableSymbol<StateSymbol> v => new StateValueNode(v.Value),
+                    StateSymbol s => new StateValueNode(s),
+                    _ => throw new ArgumentOutOfRangeException($"Unknown symbol type \"{ sym.GetType() }\""),
+                });
+            }
+            else
+                throw new Exception($"Undeclared variable { node.Label }");
+        }
+
         private bool IsCaseMatching(CaseStatementNode c, List<ValueNode> elementValues)
         {
             ValueAstEvaluator valueVisitor = new ValueAstEvaluator(sender);
@@ -197,12 +194,23 @@ namespace CellularCompiler.Evaluators
                 switch (value)
                 {
                     case IdentifierValueNode t:
-                        IdentifierValueNode idNode = (IdentifierValueNode)value;
-                        if (IsState(idNode, out State state))
+                        Symbol sym = Stbl.st.Retrieve(t.Label);
+
+                        if (sym != null)
                         {
-                            if (!elementValues[i].Equals(state))
+                            if (!elementValues[i].Equals(sym))
                                 return false;
                         }
+                        else
+                            throw new Exception($"Undeclared variable { t.Label }");
+
+                        //IdentifierValueNode idNode = (IdentifierValueNode)value;
+                        //if (IsState(idNode, out State state))
+                        //{
+                        //    if (!elementValues[i].Equals(state))
+                        //        return false;
+                        //}
+
                         break;
 
                     case IntValueNode t:
