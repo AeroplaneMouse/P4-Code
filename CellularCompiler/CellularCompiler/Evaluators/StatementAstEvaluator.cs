@@ -8,6 +8,7 @@ using CellularCompiler.Visitor.Math;
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading;
 using System.Windows.Markup;
@@ -115,6 +116,42 @@ namespace CellularCompiler.Evaluators
                         Stbl.st.Insert(new VariableSymbol<bool>(t, node.Identifier.Label));
                         break;
                 }
+            }
+        }
+
+        public void Visit(MemberAssignmentStatementNode node)
+        {
+            ValueAstEvaluator valueEvaluator = new ValueAstEvaluator(sender);
+            Cell cell = null;
+
+            // Get cell
+            if (node.GridPoint != null)
+                cell = valueEvaluator.Visit(node.GridPoint);
+            else
+                cell = sender.GetCurrentCell();
+
+            // Check if member exists
+            if (cell == null)
+                throw new ArgumentNullException("No cell found");
+            //else if (cell.State.Members.Find(m => m.Label == node.MemberID.Label) == null)
+
+            // Expression
+            object expr;
+            if (node.Expr is ComparisonNode exprNode)
+                expr = new ComparisonExpressionAstEvaluator().Visit(exprNode);
+            else
+                expr = new MathExpressionAstEvaluator().Visit(node.Expr);
+
+            // Retrieve state member for the next cell
+            // TODO: Check if retrieve member throw exception on not found.
+            MemberSymbol member = cell.Next.State.RetrieveMember(node.MemberID.Label);
+            
+            // Set new value
+            switch(expr)
+            {
+                case int i: member.SetValue(i); break;
+                case string s: member.SetValue(s); break;
+                default: throw new Exception($"State member \'{ member.Label }\' cannot be assign value of type \'{ expr.GetType() }\'");
             }
         }
 
