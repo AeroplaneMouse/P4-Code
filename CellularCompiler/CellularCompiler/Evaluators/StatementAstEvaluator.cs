@@ -122,7 +122,7 @@ namespace CellularCompiler.Evaluators
         public void Visit(MemberAssignmentStatementNode node)
         {
             ValueAstEvaluator valueEvaluator = new ValueAstEvaluator(sender);
-            Cell cell = null;
+            Cell cell;
 
             // Get cell
             if (node.GridPoint != null)
@@ -230,27 +230,22 @@ namespace CellularCompiler.Evaluators
                         }
                         else
                             throw new Exception($"Undeclared variable { t.Label }");
-
-                        //IdentifierValueNode idNode = (IdentifierValueNode)value;
-                        //if (IsState(idNode, out State state))
-                        //{
-                        //    if (!elementValues[i].Equals(state))
-                        //        return false;
-                        //}
-
                         break;
 
                     case IntValueNode t:
-                        IntValueNode intNode = (IntValueNode)value;
-                        if (!elementValues[i].Equals(intNode))
+                        if (!elementValues[i].Equals(t))
                             return false;
                         break;
 
                     case ArrowValueNode t:
-                        ArrowValueNode arrowNode = (ArrowValueNode)value;
                         // Check if elementvalue falls inside arrow value span
-                        if (!elementValues[i].Equals(arrowNode))
-                            return false;
+                        if (elementValues[i] is IntValueNode element)
+                        {
+                            if (element.Value < t.LeftValue || element.Value > t.RightValue)
+                                return false;
+                        }
+                        else
+                            throw new Exception($"Cannot match arrowValue in caseStatement with element of type \'{ elementValues[i].GetType() }");
                         break;
 
                     case DefaultValueNode t:
