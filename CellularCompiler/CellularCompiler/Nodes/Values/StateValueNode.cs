@@ -18,8 +18,8 @@ namespace CellularCompiler.Nodes.Values
 
             result = obj switch
             {
-                StateSymbol s => State == s,
-                StateValueNode s => State == s.State,
+                StateSymbol s => State.Label == s.Label,
+                StateValueNode s => State.Label == s.State.Label,
                 _ => false,
             };
 

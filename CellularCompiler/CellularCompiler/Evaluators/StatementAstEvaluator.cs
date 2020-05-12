@@ -1,4 +1,4 @@
-﻿using CellularCompiler.Exceptions;
+using CellularCompiler.Exceptions;
 using CellularCompiler.Models;
 using CellularCompiler.Nodes.Base;
 using CellularCompiler.Nodes.Math;
@@ -66,7 +66,7 @@ namespace CellularCompiler.Evaluators
             if (state is StateSymbol s)
                 sender.SetCell(cell, s);
             else
-                throw new Exception("Type mismatch");
+                throw new Exception("Unexpected type in return statement. Must be of type STATE");
 
             sender.ReturnStatementHasBeenHit = true;
         }
@@ -123,7 +123,6 @@ namespace CellularCompiler.Evaluators
         {
             ValueAstEvaluator valueVisitor = new ValueAstEvaluator(sender);
             List<ValueNode> values = new List<ValueNode>();
-            Cell cell = sender.GetCurrentCell();
 
             // Evaluate elements
             int i = 0;
@@ -184,8 +183,6 @@ namespace CellularCompiler.Evaluators
 
         private bool IsCaseMatching(CaseStatementNode c, List<ValueNode> elementValues)
         {
-            ValueAstEvaluator valueVisitor = new ValueAstEvaluator(sender);
-
             // Match each value in case
             int i = 0;
             foreach (ValueNode value in c.Values)
