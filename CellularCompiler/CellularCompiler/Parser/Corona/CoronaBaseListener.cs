@@ -195,6 +195,20 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>MemberAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMemberAssignStatement([NotNull] CoronaParser.MemberAssignStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>MemberAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMemberAssignStatement([NotNull] CoronaParser.MemberAssignStatementContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.compoundStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

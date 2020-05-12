@@ -165,6 +165,18 @@ public interface ICoronaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>MemberAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMemberAssignStatement([NotNull] CoronaParser.MemberAssignStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>MemberAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMemberAssignStatement([NotNull] CoronaParser.MemberAssignStatementContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.compoundStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

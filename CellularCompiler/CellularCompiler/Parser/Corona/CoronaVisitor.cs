@@ -112,6 +112,13 @@ public interface ICoronaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>MemberAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMemberAssignStatement([NotNull] CoronaParser.MemberAssignStatementContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoronaParser.compoundStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
