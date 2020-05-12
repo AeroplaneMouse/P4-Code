@@ -6,7 +6,7 @@ using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Models
 {
-    class MemberSymbol : Symbol
+    public class MemberSymbol : Symbol
     {
         private object value;
         private List<ValueNode> acceptedValues = new List<ValueNode>();
@@ -15,19 +15,18 @@ namespace CellularCompiler.Models
             : base(mem.Label)
         {
             acceptedValues = mem.Values;
-            switch (acceptedValues[0])
-            {
-                case IntValueNode i:
-                    value = i.Value;
-                    break;
-                case ArrowValueNode a:
-                    value = a.LeftValue;
-                    break;
-                case StringValueNode s:
-                    value = s.Value;
-                    break;
-            }
 
+            // Check if there is any values, then use the first as current
+            if (acceptedValues.Count > 0)
+            {
+                value = acceptedValues[0] switch
+                {
+                    IntValueNode t => t.Value,
+                    ArrowValueNode t => t.LeftValue,
+                    StringValueNode t => t.Value,
+                    _ => throw new ArgumentOutOfRangeException("Unknown value type")
+                };
+            }
         }
 
         public object GetValue()
@@ -40,14 +39,15 @@ namespace CellularCompiler.Models
             if (IsAccepted(value))
                 this.value = value;
             else
-                throw new Exception($"Invalid value assigned to {Name}");
+                throw new Exception($"Invalid value assigned to {Label}");
         }
+
         public void SetValue(int value)
         {
             if (IsAccepted(value))
                 this.value = value;
             else
-                throw new Exception($"Invalid value assigned to {Name}");
+                throw new Exception($"Invalid value assigned to {Label}");
         }
 
         private bool IsAccepted(int value)

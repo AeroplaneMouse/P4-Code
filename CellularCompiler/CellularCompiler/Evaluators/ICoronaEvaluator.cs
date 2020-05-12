@@ -19,7 +19,7 @@ namespace CellularCompiler.Evaluators
         Cell[,] GetCurrentGeneration();
         List<State> GetStates();
 
-        void SetCell(Cell cell, State state);
+        void SetCell(Cell cell, StateSymbol state);
         Cell GetCell(int x, int y);
         Cell GetCurrentCell();
     }

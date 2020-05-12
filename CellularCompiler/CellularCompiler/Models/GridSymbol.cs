@@ -17,8 +17,8 @@ namespace CellularCompiler.Models
         {
             foreach(MemberSymbol m in members)
             {
-                if (m.Name.Equals(member.Name))
-                    throw new Exception($"{member.Name} Already exists in the grid!");
+                if (m.Label.Equals(member.Label))
+                    throw new Exception($"{member.Label} Already exists in the grid!");
             }
 
             members.Add(member);

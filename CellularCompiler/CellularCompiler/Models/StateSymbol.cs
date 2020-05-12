@@ -1,15 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
+using System.Collections.Generic;
 
 namespace CellularCompiler.Models
 {
-    class StateSymbol : Symbol
+    public class StateSymbol : Symbol
     {
+        private static int _id = 0;
         private List<MemberSymbol> members;
 
-        public StateSymbol(string name, List<MemberSymbol> members) : base(name)
+        public int ID { get; }
+
+        public StateSymbol(string label, List<MemberSymbol> members) 
+            : base(label)
         {
+            ID = _id++;
             this.members = members;
         }
 
@@ -18,11 +23,9 @@ namespace CellularCompiler.Models
             members.Add(member);
         }
 
-        public MemberSymbol RetrieveMember(string name)
+        public MemberSymbol RetrieveMember(string label)
         {
-            return members.Find(s => s.Name.Equals(name));
+            return members.Find(s => s.Label.Equals(label));
         }
-
-
     }
 }

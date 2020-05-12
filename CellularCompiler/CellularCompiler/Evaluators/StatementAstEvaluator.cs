@@ -49,6 +49,7 @@ namespace CellularCompiler.Evaluators
         {
             Stbl.st.OpenScope();
 
+            // Evaluate each statement inside the compoundStatement
             foreach (StatementNode sNode in node.Statements)
                 if (!sender.ReturnStatementHasBeenHit)
                     Visit(sNode);
@@ -59,8 +60,13 @@ namespace CellularCompiler.Evaluators
         public void Visit(ReturnStatementNode node)
         {
             Cell cell = sender.GetCurrentCell();
-            State state = sender.GetStateByLabel(node.Identifier.Label);
-            sender.SetCell(cell, state);
+            Symbol state = Stbl.st.Retrieve(node.Identifier.Label);
+
+            if (state is StateSymbol s)
+                sender.SetCell(cell, s);
+            else
+                throw new Exception("Type mismatch");
+
             sender.ReturnStatementHasBeenHit = true;
         }
 
@@ -71,10 +77,12 @@ namespace CellularCompiler.Evaluators
             Cell c = valueVisitor.Visit(node.GridPoint);
 
             // Extract result
-            State state = sender.GetStateByLabel(node.Identifier.Label);
+            Symbol state = Stbl.st.Retrieve(node.Identifier.Label);
 
-            // Set specified cells nextState
-            sender.SetCell(c, state);
+            if (state is StateSymbol s)
+                sender.SetCell(c, s);
+            else
+                throw new Exception("Type mismatch");
         }
 
         public void Visit(IdentifierAssignmentStatementNode node)
@@ -123,24 +131,25 @@ namespace CellularCompiler.Evaluators
                 switch (element)
                 {
                     case IdentifierValueNode t:
-                        if (t.Label == ".state")
-                            values.Add(new StateValueNode(cell.State));
-                        else
+                        Symbol sym1 = Stbl.st.Retrieve(t.Label);
+
+                        if (sym1 != null)
                         {
-                            Symbol sym1 = Stbl.st.Retrieve(t.Label);
-
-                            if (sym1 != null)
+                            switch (sym1)
                             {
-                                switch (sym1)
-                                {
-                                    case VariableSymbol<int> v: values.Add(new IntValueNode(v.Value)); break;
-                                    default: throw new ArgumentOutOfRangeException();
-                                }
+                                case VariableSymbol<int> v: values.Add(new IntValueNode(v.Value)); break;
+                                case StateSymbol s: values.Add(new StateValueNode(s)); break;
+                                default: throw new ArgumentOutOfRangeException();
                             }
-                            else
-                                throw new NotImplementedException("StatementAstEvaluator GetFirstMatchingCase");
-
                         }
+                        else
+                            throw new NotImplementedException("StatementAstEvaluator GetFirstMatchingCase");
+                        //if (t.Label == ".state")
+                        //    values.Add(new StateValueNode(cell.State));
+                        //else
+                        //{
+
+                        //}
                         break;
                     case GridValueNode t2:
                         GridValueNode gridNode = (GridValueNode)element;
