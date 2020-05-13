@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using CellularCompiler.Models;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using CellularCompiler.Nodes.Base;
 using CellularCompiler.Nodes.Values;
 using CellularCompiler.Nodes.Statement;
 using System.Runtime.ExceptionServices;
+using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Evaluators
 {

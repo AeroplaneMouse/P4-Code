@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Windows.Markup;
 using System.Collections.Generic;
 using CellularCompiler.Nodes.Values;
+using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Models
 {

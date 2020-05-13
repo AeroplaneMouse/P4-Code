@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using CellularCompiler.Nodes.Base;
+using CellularCompiler.Nodes.Values;
 
-namespace CellularCompiler.Nodes.Values
+namespace CellularCompiler.Nodes.Members
 {
     public class MemberNode
     {
