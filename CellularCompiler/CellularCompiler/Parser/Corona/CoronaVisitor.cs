@@ -125,11 +125,25 @@ public interface ICoronaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCompoundStatement([NotNull] CoronaParser.CompoundStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="CoronaParser.returnStatement"/>.
+	/// Visit a parse tree produced by the <c>SimpleReturn</c>
+	/// labeled alternative in <see cref="CoronaParser.returnStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitReturnStatement([NotNull] CoronaParser.ReturnStatementContext context);
+	Result VisitSimpleReturn([NotNull] CoronaParser.SimpleReturnContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>AdvancedReturn</c>
+	/// labeled alternative in <see cref="CoronaParser.returnStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAdvancedReturn([NotNull] CoronaParser.AdvancedReturnContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="CoronaParser.returnMember"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitReturnMember([NotNull] CoronaParser.ReturnMemberContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="CoronaParser.caseStatement"/>.
 	/// </summary>

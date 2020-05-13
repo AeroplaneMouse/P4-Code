@@ -187,15 +187,39 @@ public interface ICoronaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCompoundStatement([NotNull] CoronaParser.CompoundStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.returnStatement"/>.
+	/// Enter a parse tree produced by the <c>SimpleReturn</c>
+	/// labeled alternative in <see cref="CoronaParser.returnStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterReturnStatement([NotNull] CoronaParser.ReturnStatementContext context);
+	void EnterSimpleReturn([NotNull] CoronaParser.SimpleReturnContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.returnStatement"/>.
+	/// Exit a parse tree produced by the <c>SimpleReturn</c>
+	/// labeled alternative in <see cref="CoronaParser.returnStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitReturnStatement([NotNull] CoronaParser.ReturnStatementContext context);
+	void ExitSimpleReturn([NotNull] CoronaParser.SimpleReturnContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AdvancedReturn</c>
+	/// labeled alternative in <see cref="CoronaParser.returnStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAdvancedReturn([NotNull] CoronaParser.AdvancedReturnContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AdvancedReturn</c>
+	/// labeled alternative in <see cref="CoronaParser.returnStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAdvancedReturn([NotNull] CoronaParser.AdvancedReturnContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.returnMember"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterReturnMember([NotNull] CoronaParser.ReturnMemberContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.returnMember"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitReturnMember([NotNull] CoronaParser.ReturnMemberContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.caseStatement"/>.
 	/// </summary>
