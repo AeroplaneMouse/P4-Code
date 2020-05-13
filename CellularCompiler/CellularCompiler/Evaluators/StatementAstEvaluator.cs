@@ -72,6 +72,19 @@ namespace CellularCompiler.Evaluators
             sender.ReturnStatementHasBeenHit = true;
         }
 
+        public void Visit(AdvancedReturnStatementNode node)
+        {
+            Cell cell = sender.GetCurrentCell();
+            Symbol sym = Stbl.st.Retrieve(node.Identifier.Label);
+
+            if (sym is StateSymbol state)
+            {
+
+            }
+            else
+                throw new Exception("Unexpected type in return statement. Must be of type STATE");
+        }
+
         public void Visit(GridAssignmentStatementNode node)
         {
             ValueAstEvaluator valueVisitor = new ValueAstEvaluator(sender);

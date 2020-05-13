@@ -10,6 +10,7 @@ using CellularCompiler.Nodes.Statement;
 using CellularCompiler.Nodes.Values;
 using CellularCompiler.Evaluators;
 using System.Linq.Expressions;
+using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Builders
 {
@@ -41,12 +42,39 @@ namespace CellularCompiler.Builders
             return node;
         }
 
-        public override StatementNode VisitReturnStatement([NotNull] CoronaParser.ReturnStatementContext context)
+        public override StatementNode VisitSimpleReturn([NotNull] CoronaParser.SimpleReturnContext context)
         {
             if (new BuildValueAst().Visit(context.identifierValue()) is IdentifierValueNode node)
                 return new ReturnStatementNode(node);
             else
                 throw new Exception("ReturnStatement does not contain an identifier");
+        }
+
+        public override StatementNode VisitAdvancedReturn([NotNull] CoronaParser.AdvancedReturnContext context)
+        {
+            BuildValueAst valueVisitor = new BuildValueAst();
+
+            IdentifierValueNode id = (IdentifierValueNode)valueVisitor.Visit(context.identifierValue());
+
+            // Get returnMembers
+            List<ReturnMemberNode> returnMembers = new List<ReturnMemberNode>();
+            foreach(var rMember in context.returnMember())
+            {
+                // Get ReturnMember value
+                ValueNode value;
+                if (rMember.expr() != null)
+                    value = new BuildExpressionAst().Visit(rMember.expr());
+                else
+                    value = new StringValueNode(rMember.STRING().GetText());
+
+                // Add new ReturnMember to list
+                returnMembers.Add(new ReturnMemberNode(
+                    (IdentifierValueNode)valueVisitor.Visit(rMember.identifierValue()),
+                    value)
+                );
+            }
+
+            return new AdvancedReturnStatementNode(id, returnMembers);
         }
 
         public override StatementNode VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context)
