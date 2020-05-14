@@ -37,7 +37,7 @@ namespace CellularCompiler.Models
 
         public override string ToString()
         {
-            return base.ToString() + $"[{ ID }] { Label }";
+            return $"[{ ID }] { Label }";
         }
     }
 }
