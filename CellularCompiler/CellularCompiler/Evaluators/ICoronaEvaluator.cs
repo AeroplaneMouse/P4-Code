@@ -21,6 +21,7 @@ namespace CellularCompiler.Evaluators
 
         void SetCell(Cell cell, StateSymbol state);
         Cell GetCell(int x, int y);
+        Grid GetGrid();
         Cell GetCurrentCell();
     }
 }

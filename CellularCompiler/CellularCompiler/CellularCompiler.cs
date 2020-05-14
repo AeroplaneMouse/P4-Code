@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using CellularCompiler.Evaluators;
 using CellularCompiler.Nodes.Base;
 using System.Threading;
+using CellularCompiler.ImageGeneration;
 
 namespace CellularCompiler
 {
@@ -18,6 +19,7 @@ namespace CellularCompiler
         {
             CellularCompiler interpreter = new CellularCompiler();
             ICoronaEvaluator eval = interpreter.InterpretCorona();
+            ImageGenerator ig = new ImageGenerator(eval.GetGrid().XSize, eval.GetGrid().YSize);
             eval.Print();
 
             Console.ReadLine();
@@ -27,6 +29,7 @@ namespace CellularCompiler
                 eval.GenerateNextGeneration();
                 eval.PushNextGeneration();
                 eval.Print();
+                ig.GenerateFrame(eval.GetGrid());
             }
         }
 

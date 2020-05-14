@@ -81,6 +81,7 @@ namespace CellularCompiler.Evaluators
                 ApplyRules(cell, rules);
             });
             Generation++;
+
         }
 
         public Cell[,] GetCurrentGeneration()
@@ -91,6 +92,11 @@ namespace CellularCompiler.Evaluators
         public List<State> GetStates()
         {
             return states;
+        }
+
+        public Grid GetGrid()
+        {
+            return this.grid;
         }
 
         public void Print()
