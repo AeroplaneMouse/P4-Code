@@ -9,6 +9,8 @@ using CellularCompiler.Nodes.Math;
 using CellularCompiler.Nodes.Statement;
 using CellularCompiler.Nodes.Values;
 using CellularCompiler.Evaluators;
+using System.Linq.Expressions;
+using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Builders
 {
@@ -40,12 +42,39 @@ namespace CellularCompiler.Builders
             return node;
         }
 
-        public override StatementNode VisitReturnStatement([NotNull] CoronaParser.ReturnStatementContext context)
+        public override StatementNode VisitSimpleReturn([NotNull] CoronaParser.SimpleReturnContext context)
         {
             if (new BuildValueAst().Visit(context.identifierValue()) is IdentifierValueNode node)
                 return new ReturnStatementNode(node);
             else
                 throw new Exception("ReturnStatement does not contain an identifier");
+        }
+
+        public override StatementNode VisitAdvancedReturn([NotNull] CoronaParser.AdvancedReturnContext context)
+        {
+            BuildValueAst valueVisitor = new BuildValueAst();
+
+            IdentifierValueNode id = (IdentifierValueNode)valueVisitor.Visit(context.identifierValue());
+
+            // Get returnMembers
+            List<ReturnMemberNode> returnMembers = new List<ReturnMemberNode>();
+            foreach(var rMember in context.returnMember())
+            {
+                // Get ReturnMember value
+                ValueNode value;
+                if (rMember.expr() != null)
+                    value = new BuildExpressionAst().Visit(rMember.expr());
+                else
+                    value = new StringValueNode(rMember.STRING().GetText());
+
+                // Add new ReturnMember to list
+                returnMembers.Add(new ReturnMemberNode(
+                    (IdentifierValueNode)valueVisitor.Visit(rMember.identifierValue()),
+                    value)
+                );
+            }
+
+            return new AdvancedReturnStatementNode(id, returnMembers);
         }
 
         public override StatementNode VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context)
@@ -93,14 +122,12 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitGridAssignStatement([NotNull] CoronaParser.GridAssignStatementContext context)
         {
-            //TODO: Handle expressions in grid assignment
-            BuildExpressionAst expressionVisitor = new BuildExpressionAst();
             BuildValueAst valueVisitor= new BuildValueAst();
 
             IdentifierValueNode id = new IdentifierValueNode(context.ID().GetText());
             GridValueNode gridpoint = (GridValueNode) valueVisitor.Visit(context.gridPoint());
 
-            return new GridAssignmentStatementNode(gridpoint, null, id);
+            return new GridAssignmentStatementNode(gridpoint, id);
         }
 
         public override StatementNode VisitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context)
@@ -112,6 +139,25 @@ namespace CellularCompiler.Builders
             ExpressionNode expr = exprVisitor.Visit(context.expr());
 
             return new IdentifierAssignmentStatementNode(id, expr);
+        }
+
+        public override StatementNode VisitMemberAssignStatement([NotNull] CoronaParser.MemberAssignStatementContext context)
+        {
+            BuildValueAst valueVisitor = new BuildValueAst();
+            BuildExpressionAst exprVisitor = new BuildExpressionAst();
+
+            // Get GridPoint
+            GridValueNode gridPoint = null;
+            if (context.gridPoint() != null)
+                gridPoint = (GridValueNode)valueVisitor.Visit(context.gridPoint());
+
+            // Get Member 
+            IdentifierValueNode memberID = new IdentifierValueNode(context.identifierValue().GetText());
+
+            // Get expression
+            ExpressionNode expr = exprVisitor.Visit(context.expr());
+
+            return new MemberAssignmentStatementNode(gridPoint, memberID, expr);
         }
 
         /// <summary>

@@ -52,8 +52,9 @@ iterationStatement
 	;
 
 assignmentStatement
-	: gridPoint '=' ID ';' 	# GridAssignStatement
-	| identifierValue '=' (expr | STRING) ';'   	# IdentifierAssignStatement
+	: gridPoint '=' ID ';' 	                                  # GridAssignStatement
+	| identifierValue '=' (expr | STRING) ';'   	             # IdentifierAssignStatement
+	| gridPoint? '.' identifierValue '=' (expr | STRING) ';'  # MemberAssignStatement
 	; 
 
 compoundStatement
@@ -61,7 +62,12 @@ compoundStatement
 	;
 
 returnStatement
-	: 'return' identifierValue ';'
+	: 'return' identifierValue ';'                                        # SimpleReturn
+	| 'return' identifierValue '{' returnMember (',' returnMember )* '}'  # AdvancedReturn
+	;
+
+returnMember
+	: identifierValue ':' (expr | STRING)
 	;
 
 caseStatement
@@ -76,8 +82,7 @@ caseValue
 
 expr
 	: intValue 											   # NumberExpr
-	| identifierValue										# IdentifierExpr
-	| '.' identifierValue                        # IdentifierExpr
+	| '.'? identifierValue                       # IdentifierExpr
 	| left=expr op=operator right=expr 				# InfixExpr
 	| left=expr op=comparisonOperator right=expr	# ComparisonExpr
 	;
@@ -97,8 +102,8 @@ memberValue
 	;
 
 member
-	: '.'ID
-	| '.state'
+	: '.state'
+	| '.' identifierValue
 	;
 
 gridPoint

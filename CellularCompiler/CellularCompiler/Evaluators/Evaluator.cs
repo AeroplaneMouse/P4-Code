@@ -7,13 +7,14 @@ using CellularCompiler.Nodes.Base;
 using CellularCompiler.Nodes.Values;
 using CellularCompiler.Nodes.Statement;
 using System.Runtime.ExceptionServices;
+using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Evaluators
 {
     internal class Evaluator : ICoronaEvaluator
     {
         Grid grid { get; set; }
-        List<State> states { get; set; }
+        List<StateSymbol> states { get; set; } = new List<StateSymbol>();
         List<StatementNode> rules { get; set; }
         readonly MainNode ast;
         Cell currentCell = null;
@@ -38,10 +39,6 @@ namespace CellularCompiler.Evaluators
 
         public void Visit(MainNode node)
         {
-            // Create new list of states, if null
-            if (states == null)
-                states = new List<State>();
-
             // Extract all states
             StateSymbol firstState = VisitStates(node.StatesNodes);
             
@@ -54,17 +51,6 @@ namespace CellularCompiler.Evaluators
 
             // Extract all rules
             rules = node.RulesNode.Statements;
-        }
-
-        public State GetStateByLabel(string label)
-        {
-            foreach (State s in states)
-            {
-                if (s.Label == label)
-                    return s;
-            }
-
-            throw new UnknownStateLabelException($"No State with label \'{ label }\' exists in the evaluator");
         }
 
         public void PushNextGeneration()
@@ -89,7 +75,7 @@ namespace CellularCompiler.Evaluators
             return grid.GetCells() ;
         }
 
-        public List<State> GetStates()
+        public List<StateSymbol> GetStates()
         {
             return states;
         }
@@ -105,7 +91,7 @@ namespace CellularCompiler.Evaluators
             Console.Clear();
 
             // Print all states
-            foreach (State state in states)
+            foreach (StateSymbol state in states)
                 Console.WriteLine(state);
 
             // Print generation number
@@ -188,6 +174,7 @@ namespace CellularCompiler.Evaluators
         private StateSymbol VisitStates(List<StatesNode> nodes)
         {
             StateSymbol first = null;
+            int stateID = 0;
 
             foreach(StatesNode node in nodes)
             {
@@ -200,14 +187,17 @@ namespace CellularCompiler.Evaluators
                     foreach (MemberNode m in node.Members)
                         members.Add(new MemberSymbol(m));
 
-                    StateSymbol state = new StateSymbol(label, members);
+                    StateSymbol state = new StateSymbol(label, stateID, members);
 
                     // Save first
                     if (first == null)
                         first = state;
 
-                    // Insert state into symbol table
+                    // Insert state into symbol table and other list
                     Stbl.st.Insert(state);
+                    states.Add(state);
+
+                    stateID++;
                 }
             }
 

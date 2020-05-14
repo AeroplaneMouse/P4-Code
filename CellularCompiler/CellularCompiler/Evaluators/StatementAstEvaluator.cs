@@ -2,12 +2,14 @@ using CellularCompiler.Exceptions;
 using CellularCompiler.Models;
 using CellularCompiler.Nodes.Base;
 using CellularCompiler.Nodes.Math;
+using CellularCompiler.Nodes.Members;
 using CellularCompiler.Nodes.Statement;
 using CellularCompiler.Nodes.Values;
 using CellularCompiler.Visitor.Math;
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading;
 using System.Windows.Markup;
@@ -64,11 +66,41 @@ namespace CellularCompiler.Evaluators
             Symbol state = Stbl.st.Retrieve(node.Identifier.Label);
 
             if (state is StateSymbol s)
-                sender.SetCell(cell, s);
+                sender.SetCell(cell, s.Copy());
             else
                 throw new Exception("Unexpected type in return statement. Must be of type STATE");
 
             sender.ReturnStatementHasBeenHit = true;
+        }
+
+        public void Visit(AdvancedReturnStatementNode node)
+        {
+            if(sender.GetCurrentCell().Pos.Equals(new Pos(6,4)))
+                Console.WriteLine();
+
+            ValueAstEvaluator valueEvaluator = new ValueAstEvaluator(sender);
+            MathExpressionAstEvaluator exprEvaluator = new MathExpressionAstEvaluator();
+            Cell cell = sender.GetCurrentCell();
+            Symbol sym = Stbl.st.Retrieve(node.Identifier.Label);
+
+            if (sym is StateSymbol s)
+            {
+                // Set state members
+                StateSymbol state = s.Copy();
+                foreach(ReturnMemberNode rNode in node.ReturnMembers)
+                {
+                    MemberSymbol member = state.RetrieveMember(rNode.ID.Label);
+                    switch(rNode.Value)
+                    {
+                        case ExpressionNode valueNode: member.SetValue(exprEvaluator.Visit(valueNode)); break;
+                        case StringValueNode valueNode: member.SetValue(valueNode.Value); break;
+                        default: throw new Exception($"ReturnMember value cannot be of type \'{ rNode.Value.GetType() }\'");
+                    }
+                }
+                sender.SetCell(cell, state);
+            }
+            else
+                throw new Exception("Unexpected type in return statement. Must be of type STATE");
         }
 
         public void Visit(GridAssignmentStatementNode node)
@@ -116,6 +148,42 @@ namespace CellularCompiler.Evaluators
                         break;
                 }
             }
+        }
+
+        public void Visit(MemberAssignmentStatementNode node)
+        {
+            ValueAstEvaluator valueEvaluator = new ValueAstEvaluator(sender);
+            Cell cell;
+
+            // Get cell
+            if (node.GridPoint != null)
+                cell = valueEvaluator.Visit(node.GridPoint);
+            else
+                cell = sender.GetCurrentCell();
+
+            // Expression
+            object expr;
+            if (node.Expr is ComparisonNode exprNode)
+                expr = new ComparisonExpressionAstEvaluator().Visit(exprNode);
+            else
+                expr = new MathExpressionAstEvaluator().Visit(node.Expr);
+
+            // Retrieve state member for the next cell
+            // TODO: Check if retrieve member throw exception on not found.
+            MemberSymbol member = cell.Next.State.RetrieveMember(node.MemberID.Label);
+
+            if (member != null)
+            {
+                // Set new value
+                switch (expr)
+                {
+                    case int i: member.SetValue(i); break;
+                    case string s: member.SetValue(s); break;
+                    default: throw new Exception($"State member \'{ member.Label }\' cannot be assign value of type \'{ expr.GetType() }\'");
+                }
+            }
+            else
+                throw new Exception($"Unknown state member \'{ node.MemberID.Label }\'");
         }
 
 
@@ -193,27 +261,22 @@ namespace CellularCompiler.Evaluators
                         }
                         else
                             throw new Exception($"Undeclared variable { t.Label }");
-
-                        //IdentifierValueNode idNode = (IdentifierValueNode)value;
-                        //if (IsState(idNode, out State state))
-                        //{
-                        //    if (!elementValues[i].Equals(state))
-                        //        return false;
-                        //}
-
                         break;
 
                     case IntValueNode t:
-                        IntValueNode intNode = (IntValueNode)value;
-                        if (!elementValues[i].Equals(intNode))
+                        if (!elementValues[i].Equals(t))
                             return false;
                         break;
 
                     case ArrowValueNode t:
-                        ArrowValueNode arrowNode = (ArrowValueNode)value;
                         // Check if elementvalue falls inside arrow value span
-                        if (!elementValues[i].Equals(arrowNode))
-                            return false;
+                        if (elementValues[i] is IntValueNode element)
+                        {
+                            if (element.Value < t.LeftValue || element.Value > t.RightValue)
+                                return false;
+                        }
+                        else
+                            throw new Exception($"Cannot match arrowValue in caseStatement with element of type \'{ elementValues[i].GetType() }");
                         break;
 
                     case DefaultValueNode t:
@@ -226,18 +289,6 @@ namespace CellularCompiler.Evaluators
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Check wheter or not an IdentifierNode, could be representing a state
-        /// </summary>
-        /// <param name="node">IdentifierValueNode to be checked</param>
-        /// <param name="state">If a state was found, this would have the resulting state</param>
-        /// <returns>True if a state could be extracted from the giving IdentifierValueNode</returns>
-        private bool IsState(IdentifierValueNode node, out State state)
-        {
-            state = sender.GetStateByLabel(node.Label);
-            return state != null;
         }
     } 
 }

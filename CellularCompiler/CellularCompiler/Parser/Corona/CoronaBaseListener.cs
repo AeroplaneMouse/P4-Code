@@ -195,6 +195,20 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>MemberAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMemberAssignStatement([NotNull] CoronaParser.MemberAssignStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>MemberAssignStatement</c>
+	/// labeled alternative in <see cref="CoronaParser.assignmentStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMemberAssignStatement([NotNull] CoronaParser.MemberAssignStatementContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.compoundStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -207,17 +221,45 @@ public partial class CoronaBaseListener : ICoronaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCompoundStatement([NotNull] CoronaParser.CompoundStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="CoronaParser.returnStatement"/>.
+	/// Enter a parse tree produced by the <c>SimpleReturn</c>
+	/// labeled alternative in <see cref="CoronaParser.returnStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterReturnStatement([NotNull] CoronaParser.ReturnStatementContext context) { }
+	public virtual void EnterSimpleReturn([NotNull] CoronaParser.SimpleReturnContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="CoronaParser.returnStatement"/>.
+	/// Exit a parse tree produced by the <c>SimpleReturn</c>
+	/// labeled alternative in <see cref="CoronaParser.returnStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitReturnStatement([NotNull] CoronaParser.ReturnStatementContext context) { }
+	public virtual void ExitSimpleReturn([NotNull] CoronaParser.SimpleReturnContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AdvancedReturn</c>
+	/// labeled alternative in <see cref="CoronaParser.returnStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAdvancedReturn([NotNull] CoronaParser.AdvancedReturnContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AdvancedReturn</c>
+	/// labeled alternative in <see cref="CoronaParser.returnStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAdvancedReturn([NotNull] CoronaParser.AdvancedReturnContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="CoronaParser.returnMember"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterReturnMember([NotNull] CoronaParser.ReturnMemberContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="CoronaParser.returnMember"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitReturnMember([NotNull] CoronaParser.ReturnMemberContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="CoronaParser.caseStatement"/>.
 	/// <para>The default implementation does nothing.</para>

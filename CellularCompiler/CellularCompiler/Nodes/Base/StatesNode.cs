@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using CellularCompiler.Nodes.Values;
+using CellularCompiler.Nodes.Members;
 
 namespace CellularCompiler.Nodes.Base
 {
