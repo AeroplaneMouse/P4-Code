@@ -2,6 +2,7 @@ using CellularCompiler.Exceptions;
 using CellularCompiler.Models;
 using CellularCompiler.Nodes.Base;
 using CellularCompiler.Nodes.Math;
+using CellularCompiler.Nodes.Members;
 using CellularCompiler.Nodes.Statement;
 using CellularCompiler.Nodes.Values;
 using CellularCompiler.Visitor.Math;
@@ -65,7 +66,7 @@ namespace CellularCompiler.Evaluators
             Symbol state = Stbl.st.Retrieve(node.Identifier.Label);
 
             if (state is StateSymbol s)
-                sender.SetCell(cell, s);
+                sender.SetCell(cell, s.Copy());
             else
                 throw new Exception("Unexpected type in return statement. Must be of type STATE");
 
@@ -74,12 +75,29 @@ namespace CellularCompiler.Evaluators
 
         public void Visit(AdvancedReturnStatementNode node)
         {
+            if(sender.GetCurrentCell().Pos.Equals(new Pos(6,4)))
+                Console.WriteLine();
+
+            ValueAstEvaluator valueEvaluator = new ValueAstEvaluator(sender);
+            MathExpressionAstEvaluator exprEvaluator = new MathExpressionAstEvaluator();
             Cell cell = sender.GetCurrentCell();
             Symbol sym = Stbl.st.Retrieve(node.Identifier.Label);
 
-            if (sym is StateSymbol state)
+            if (sym is StateSymbol s)
             {
-
+                // Set state members
+                StateSymbol state = s.Copy();
+                foreach(ReturnMemberNode rNode in node.ReturnMembers)
+                {
+                    MemberSymbol member = state.RetrieveMember(rNode.ID.Label);
+                    switch(rNode.Value)
+                    {
+                        case ExpressionNode valueNode: member.SetValue(exprEvaluator.Visit(valueNode)); break;
+                        case StringValueNode valueNode: member.SetValue(valueNode.Value); break;
+                        default: throw new Exception($"ReturnMember value cannot be of type \'{ rNode.Value.GetType() }\'");
+                    }
+                }
+                sender.SetCell(cell, state);
             }
             else
                 throw new Exception("Unexpected type in return statement. Must be of type STATE");
@@ -143,11 +161,6 @@ namespace CellularCompiler.Evaluators
             else
                 cell = sender.GetCurrentCell();
 
-            // Check if member exists
-            if (cell == null)
-                throw new ArgumentNullException("No cell found");
-            //else if (cell.State.Members.Find(m => m.Label == node.MemberID.Label) == null)
-
             // Expression
             object expr;
             if (node.Expr is ComparisonNode exprNode)
@@ -158,14 +171,19 @@ namespace CellularCompiler.Evaluators
             // Retrieve state member for the next cell
             // TODO: Check if retrieve member throw exception on not found.
             MemberSymbol member = cell.Next.State.RetrieveMember(node.MemberID.Label);
-            
-            // Set new value
-            switch(expr)
+
+            if (member != null)
             {
-                case int i: member.SetValue(i); break;
-                case string s: member.SetValue(s); break;
-                default: throw new Exception($"State member \'{ member.Label }\' cannot be assign value of type \'{ expr.GetType() }\'");
+                // Set new value
+                switch (expr)
+                {
+                    case int i: member.SetValue(i); break;
+                    case string s: member.SetValue(s); break;
+                    default: throw new Exception($"State member \'{ member.Label }\' cannot be assign value of type \'{ expr.GetType() }\'");
+                }
             }
+            else
+                throw new Exception($"Unknown state member \'{ node.MemberID.Label }\'");
         }
 
 
@@ -271,18 +289,6 @@ namespace CellularCompiler.Evaluators
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Check wheter or not an IdentifierNode, could be representing a state
-        /// </summary>
-        /// <param name="node">IdentifierValueNode to be checked</param>
-        /// <param name="state">If a state was found, this would have the resulting state</param>
-        /// <returns>True if a state could be extracted from the giving IdentifierValueNode</returns>
-        private bool IsState(IdentifierValueNode node, out State state)
-        {
-            state = sender.GetStateByLabel(node.Label);
-            return state != null;
         }
     } 
 }

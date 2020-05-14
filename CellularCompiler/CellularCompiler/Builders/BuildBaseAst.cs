@@ -1,12 +1,7 @@
-﻿using System;
-using System.Linq;
-using Antlr4.Runtime.Tree;
-using CellularCompiler.Models;
-using System.Collections.Generic;
-using CellularCompiler.Exceptions;
+﻿using System.Collections.Generic;
 using CellularCompiler.Nodes.Base;
+using CellularCompiler.Nodes.Members;
 using CellularCompiler.Nodes.Statement;
-using CellularCompiler.Nodes.Values;
 
 namespace CellularCompiler.Builders
 {

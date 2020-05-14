@@ -30,7 +30,7 @@ namespace CellularCompiler.Models
             // Initialize next
             for (int r = 0; r < XSize; r++)
                 for (int c = 0; c < YSize; c++)
-                    CellsNext[r, c] = new Cell(firstState, null, new Pos(r, c));
+                    CellsNext[r, c] = new Cell(firstState.Copy(), null, new Pos(r, c));
 
             // Push the initialized cells
             Push();

@@ -12,12 +12,11 @@ namespace CellularCompiler.Evaluators
         int Y_Max { get; }
 
         void Initialize();
-        State GetStateByLabel(string label);
         void PushNextGeneration();
         void GenerateNextGeneration();
         void Print();
         Cell[,] GetCurrentGeneration();
-        List<State> GetStates();
+        List<StateSymbol> GetStates();
 
         void SetCell(Cell cell, StateSymbol state);
         Cell GetCell(int x, int y);

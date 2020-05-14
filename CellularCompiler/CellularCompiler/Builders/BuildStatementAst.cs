@@ -152,7 +152,7 @@ namespace CellularCompiler.Builders
                 gridPoint = (GridValueNode)valueVisitor.Visit(context.gridPoint());
 
             // Get Member 
-            IdentifierValueNode memberID = new IdentifierValueNode("." + context.identifierValue().GetText());
+            IdentifierValueNode memberID = new IdentifierValueNode(context.identifierValue().GetText());
 
             // Get expression
             ExpressionNode expr = exprVisitor.Visit(context.expr());

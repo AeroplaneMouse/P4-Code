@@ -1,11 +1,11 @@
-﻿using System.Dynamic;
+using System.Dynamic;
 
 namespace CellularCompiler.Models
 {
     public class Cell
     {
         public StateSymbol State { get; set; }
-        public Cell Next { get; private set; }
+        public Cell Next { get; private set; } = null;
         public Pos Pos { get; }
 
         public Cell(StateSymbol state, Cell next, Pos pos)
@@ -21,7 +21,7 @@ namespace CellularCompiler.Models
         /// <returns>A copy of the current cell, with a reference to the old</returns>
         public Cell Copy()
         {
-            Cell cell = new Cell(State, this, Pos.Copy());
+            Cell cell = new Cell(State.Copy(), this, Pos.Copy());
             return cell;
         }
 
