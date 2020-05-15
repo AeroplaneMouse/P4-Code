@@ -13,3 +13,6 @@ Antlr/target
 CellularCompiler/.vs/
 CellularCompiler/CellularCompiler/bin/
 CellularCompiler/CellularCompiler/obj/
+
+CellularCompiler/CAVisualFormsCore/bin/
+CellularCompiler/CAVisualFormsCore/obj/

@@ -1,0 +1,22 @@
+GRID
+{
+	x: 15;
+	y: 15;
+}
+
+STATES white, black
+{}
+
+INITIAL
+{}
+
+RULES
+{
+	match(.state)
+	{
+		[white]
+			return black;
+		[black]
+			return white;
+	}
+}

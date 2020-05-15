@@ -1,0 +1,40 @@
+GRID
+{
+   x: 15;
+   y: 15;
+}
+
+STATES dead, alive
+{
+   direction: 1 -> 10;
+}
+
+INITIAL
+{
+   
+}
+
+RULES
+{
+   match(.direction)
+   {
+      [1]
+         return dead
+         {
+            direction: 2
+         }
+      [2]
+         return dead
+         {
+            direction: 3
+         }
+   }
+}
+
+# .out #
+FUNC #NAME#(#ARGS#)
+{
+   # Do some computations #
+
+   .out = result_of_computation;
+}
