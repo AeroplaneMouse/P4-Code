@@ -13,19 +13,19 @@ namespace CellularCompiler.Builders
             BuildBaseAst baseVisitor = new BuildBaseAst();
 
             // Visit grid
-            GridNode grid = baseVisitor.Visit(context.grid()) as GridNode;
+            GridNode grid = (GridNode)baseVisitor.Visit(context.grid());
 
             // Visit all states
             List<StatesNode> states = new List<StatesNode>();
             CoronaParser.StatesContext[] statesContext = context.states();
             foreach(CoronaParser.StatesContext s in statesContext)
-                states.Add(baseVisitor.Visit(s) as StatesNode);
+                states.Add((StatesNode)baseVisitor.Visit(s));
 
             // Visit initial
-            InitialNode initial = baseVisitor.Visit(context.initial()) as InitialNode;
+            InitialNode initial = (InitialNode)baseVisitor.Visit(context.initial());
 
             // Visit rules
-            RulesNode rules = baseVisitor.Visit(context.rules()) as RulesNode;
+            RulesNode rules = (RulesNode)baseVisitor.Visit(context.rules());
 
             //Add to SymTab
 
