@@ -14,9 +14,8 @@ namespace CellularCompiler.Builders
 
             // Extract and visit gridnode children
             BuildMemberAst memberVisitor = new BuildMemberAst();
-            CoronaParser.GridDeclarationContext[] gDeclarations = context.gridDeclaration();
-            foreach (CoronaParser.GridDeclarationContext t in gDeclarations)
-                node.Members.Add(memberVisitor.Visit(t));
+            foreach (CoronaParser.GridDeclarationContext d in context.gridDeclaration())
+                node.Members.Add(memberVisitor.Visit(d));
 
             return node;
         }
@@ -31,12 +30,8 @@ namespace CellularCompiler.Builders
 
             // Extract and visit StateNode children
             BuildMemberAst memberVisitor = new BuildMemberAst();
-            CoronaParser.MemberDeclarationContext[] memberDeclarations = context.memberDeclaration();
-            foreach (CoronaParser.MemberDeclarationContext member in memberDeclarations)
-            {
-                MemberNode n = memberVisitor.Visit(member);
-                node.Members.Add(n);
-            }
+            foreach (CoronaParser.MemberDeclarationContext member in context.memberDeclaration())
+                node.Members.Add(memberVisitor.Visit(member););
 
             return node;
         }
@@ -55,8 +50,7 @@ namespace CellularCompiler.Builders
             RulesNode node = new RulesNode(new List<StatementNode>());
 
             // Visit each statement in rules
-            CoronaParser.StatementContext[] statements = context.compoundStatement().statement();
-            foreach (var s in statements)
+            foreach (CoronaParser.StatementContext s in context.compoundStatement().statement())
                 node.Statements.Add(statementVisitor.Visit(s));
 
             return node;

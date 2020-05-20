@@ -17,8 +17,7 @@ namespace CellularCompiler.Builders
 
             // Visit all states
             List<StatesNode> states = new List<StatesNode>();
-            CoronaParser.StatesContext[] statesContext = context.states();
-            foreach(CoronaParser.StatesContext s in statesContext)
+            foreach(CoronaParser.StatesContext s in context.states())
                 states.Add((StatesNode)baseVisitor.Visit(s));
 
             // Visit initial
