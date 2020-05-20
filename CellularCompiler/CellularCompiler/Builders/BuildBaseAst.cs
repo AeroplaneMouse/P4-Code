@@ -31,7 +31,7 @@ namespace CellularCompiler.Builders
             // Extract and visit StateNode children
             BuildMemberAst memberVisitor = new BuildMemberAst();
             foreach (CoronaParser.MemberDeclarationContext member in context.memberDeclaration())
-                node.Members.Add(memberVisitor.Visit(member););
+                node.Members.Add(memberVisitor.Visit(member));
 
             return node;
         }
