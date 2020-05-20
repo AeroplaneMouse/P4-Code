@@ -159,48 +159,6 @@ namespace CellularCompiler.Builders
 
             return new MemberAssignmentStatementNode(gridPoint, memberID, expr);
         }
-
-        /// <summary>
-        /// Extracts MemberIDNodes from matchStatement context
-        /// </summary>
-        /// <param name="context">Children of context</param>
-        /// <returns>A list of MemberIDNodes</returns>
-        private List<MemberIDNode> ExtractMemberIDNodes(IList<IParseTree> context)
-        {
-            int startIndex = -1;
-            int endIndex = -1;
-            int currentIndex = 0;
-
-            // Find start and end
-            foreach (IParseTree c in context)
-            {
-                switch (c.GetText())
-                {
-                    case "(":
-                        startIndex = currentIndex; break;
-                    case ")":
-                        endIndex = currentIndex; break;
-                }
-                
-                // Break, when the end of match values has been found
-                if (endIndex == currentIndex)
-                    break;
-                currentIndex++;
-            }
-
-            // Construct nodes
-            List<MemberIDNode> nodes = new List<MemberIDNode>();
-            for(currentIndex = startIndex + 1; currentIndex < endIndex; currentIndex++)
-            {
-                string label = context[currentIndex].GetText();
-                if (label == "state")
-                    continue;
-                else
-                    nodes.Add(new MemberIDNode(label));
-            }
-
-            return nodes;
-        }
     }
 }
 
