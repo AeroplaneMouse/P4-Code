@@ -88,7 +88,7 @@ namespace CellularCompiler.Evaluators
         public void Print()
         {
             // Clear terminal
-            Console.Clear();
+            //Console.Clear();
 
             // Print all states
             foreach (StateSymbol state in states)
@@ -99,8 +99,8 @@ namespace CellularCompiler.Evaluators
             Console.WriteLine($" Generation: { Generation }");
 
             // Print grid
-            Console.WriteLine();
-            Console.WriteLine(grid);
+            //Console.WriteLine();
+            //Console.WriteLine(grid);
         }
 
         public void SetCell(Cell cell, StateSymbol state)

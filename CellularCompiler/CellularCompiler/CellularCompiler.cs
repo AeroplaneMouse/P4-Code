@@ -9,6 +9,7 @@ using CellularCompiler.Evaluators;
 using CellularCompiler.Nodes.Base;
 using System.Threading;
 using CellularCompiler.ImageGeneration;
+using System.Diagnostics;
 
 namespace CellularCompiler
 {
@@ -17,20 +18,50 @@ namespace CellularCompiler
 
         private static void Main()
         {
+            const int maxGenerations = 250;
             CellularCompiler interpreter = new CellularCompiler();
             ICoronaEvaluator eval = interpreter.InterpretCorona();
             ImageGenerator ig = new ImageGenerator(eval.GetGrid().XSize, eval.GetGrid().YSize);
             eval.Print();
+            
+            ig.GenerateFrame(eval.GetGrid());
 
             Console.ReadLine();
-            for (int i = 0; i < 1000; i++)
+            Stopwatch total = new Stopwatch();
+            Stopwatch gen = new Stopwatch();
+            Stopwatch push = new Stopwatch();
+            Stopwatch image = new Stopwatch();
+            total.Start();
+            for (int i = 2; i <= maxGenerations; i++)
             {
-                Thread.Sleep(10);
+                //Thread.Sleep(10);
+                //Console.Clear();
+                gen.Start();
                 eval.GenerateNextGeneration();
+                gen.Stop();
+                //Console.WriteLine($"Generation time:    { s.ElapsedMilliseconds } ms");
+
+                push.Start();
                 eval.PushNextGeneration();
-                eval.Print();
+                push.Stop();
+                //Console.WriteLine($"Push time:          { s.ElapsedMilliseconds } ms");
+                //Console.WriteLine($"Total elapsed time: { total.ElapsedMilliseconds / 1000 } s");
+                //eval.Print();
+                image.Start();
                 ig.GenerateFrame(eval.GetGrid());
+                image.Stop();
+
+                if (i % 20 == 0)
+                    Console.WriteLine($" Generation: { i }");
             }
+            total.Stop();
+
+            Console.WriteLine();
+            Console.WriteLine($"Average gen time:   { gen.ElapsedMilliseconds / (maxGenerations - 1) } ms");
+            Console.WriteLine($"Average push time:  { push.ElapsedMilliseconds / (maxGenerations - 1) } ms");
+            Console.WriteLine($"Average image time: { image.ElapsedMilliseconds / (maxGenerations - 1) } ms");
+            Console.WriteLine($"Total time:         { total.ElapsedMilliseconds / 1000 } s");
+
         }
 
         /// <summary>
