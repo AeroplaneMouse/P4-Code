@@ -35,8 +35,7 @@ namespace CellularCompiler.Builders
             CompoundStatementNode node = new CompoundStatementNode(new List<StatementNode>());
             
             // Visit each statement in the compound statement
-            CoronaParser.StatementContext[] statements = context.statement();
-            foreach (CoronaParser.StatementContext statement in statements)
+            foreach (CoronaParser.StatementContext statement in context.statement())
                 node.Statements.Add(Visit(statement));
 
             return node;
@@ -44,10 +43,9 @@ namespace CellularCompiler.Builders
 
         public override StatementNode VisitSimpleReturn([NotNull] CoronaParser.SimpleReturnContext context)
         {
-            if (new BuildValueAst().Visit(context.identifierValue()) is IdentifierValueNode node)
-                return new ReturnStatementNode(node);
-            else
-                throw new Exception("ReturnStatement does not contain an identifier");
+            IdentifierValueNode id = (IdentifierValueNode)new BuildValueAst().Visit(context.identifierValue());
+
+            return new ReturnStatementNode(id);
         }
 
         public override StatementNode VisitAdvancedReturn([NotNull] CoronaParser.AdvancedReturnContext context)
@@ -94,12 +92,10 @@ namespace CellularCompiler.Builders
         {
             BuildValueAst valueVisitor = new BuildValueAst();
             BuildExpressionAst exprVisitor = new BuildExpressionAst();
-
-            CoronaParser.MatchElementContext[] matchElements = context.matchElement();
-            List<ValueNode> elements = new List<ValueNode>();
-
+            
             // Visit each of the different elements to match against
-            foreach (var e in matchElements)
+            List<ValueNode> elements = new List<ValueNode>();
+            foreach (var e in context.matchElement())
             {
                 if (e.member() != null)
                     elements.Add(new IdentifierValueNode(e.member().GetText()));
@@ -113,9 +109,8 @@ namespace CellularCompiler.Builders
 
             // Visit each CaseStatement
             List<CaseStatementNode> caseStatements = new List<CaseStatementNode>();
-            CoronaParser.CaseStatementContext[] cases = context.caseStatement();
-            foreach (CoronaParser.CaseStatementContext c in cases)
-                caseStatements.Add(Visit(c) as CaseStatementNode);
+            foreach (CoronaParser.CaseStatementContext c in context.caseStatement())
+                caseStatements.Add((CaseStatementNode)Visit(c));
 
             return new MatchStatementNode(elements, caseStatements);
         }
