@@ -18,11 +18,6 @@ namespace CellularCompiler.Models
             this.Members = members;
         }
 
-        public void AddMember(MemberSymbol member)
-        {
-            Members.Add(member);
-        }
-
         public MemberSymbol RetrieveMember(string label)
         {
             return Members.Find(s => s.Label.Equals(label));
