@@ -75,9 +75,6 @@ namespace CellularCompiler.Evaluators
 
         public void Visit(AdvancedReturnStatementNode node)
         {
-            if(sender.GetCurrentCell().Pos.Equals(new Pos(6,4)))
-                Console.WriteLine();
-
             ValueAstEvaluator valueEvaluator = new ValueAstEvaluator(sender);
             MathExpressionAstEvaluator exprEvaluator = new MathExpressionAstEvaluator();
             Cell cell = sender.GetCurrentCell();
