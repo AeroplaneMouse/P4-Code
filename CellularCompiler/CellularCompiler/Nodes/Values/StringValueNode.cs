@@ -19,6 +19,8 @@ namespace CellularCompiler.Nodes.Values
 
             if (obj is string s)
                 result = Value == s;
+            else if (obj is StringValueNode sNode)
+                result = Value == sNode.Value;
             else
                 result = false;
 

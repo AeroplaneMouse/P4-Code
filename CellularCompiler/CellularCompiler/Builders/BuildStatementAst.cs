@@ -131,9 +131,15 @@ namespace CellularCompiler.Builders
             BuildExpressionAst exprVisitor = new BuildExpressionAst();
 
             IdentifierValueNode id = valueVisitor.Visit(context.identifierValue()) as IdentifierValueNode;
-            ExpressionNode expr = exprVisitor.Visit(context.expr());
 
-            return new IdentifierAssignmentStatementNode(id, expr);
+            // Get value
+            ValueNode value;
+            if (context.expr() != null)
+                value = exprVisitor.Visit(context.expr());
+            else
+                value = new StringValueNode(context.STRING().GetText());
+
+            return new IdentifierAssignmentStatementNode(id, value);
         }
 
         public override StatementNode VisitMemberAssignStatement([NotNull] CoronaParser.MemberAssignStatementContext context)
@@ -149,10 +155,14 @@ namespace CellularCompiler.Builders
             // Get Member 
             IdentifierValueNode memberID = new IdentifierValueNode(context.identifierValue().GetText());
 
-            // Get expression
-            ExpressionNode expr = exprVisitor.Visit(context.expr());
+            // Get value
+            ValueNode value;
+            if (context.expr() != null)
+                value = exprVisitor.Visit(context.expr());
+            else
+                value = new StringValueNode(context.STRING().GetText());
 
-            return new MemberAssignmentStatementNode(gridPoint, memberID, expr);
+            return new MemberAssignmentStatementNode(gridPoint, memberID, value);
         }
     }
 }

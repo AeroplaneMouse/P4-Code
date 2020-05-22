@@ -10,17 +10,15 @@ namespace CellularCompiler.Builders
     {
         public override MemberNode VisitMemberDeclaration(CoronaParser.MemberDeclarationContext context)
         {
+            BuildValueAst memberValueVisitor = new BuildValueAst();
+
             // Extract label
             string label = context.ID().GetText();
 
-            //// Extract and call visit on all memberValues
-            BuildValueAst memberValueVisitor = new BuildValueAst();
+            // Extract and call visit on all memberValues
             List<ValueNode> valueNodes = new List<ValueNode>();
-            foreach(CoronaParser.MemberValueContext value in context.memberValue())
-            {
-                ValueNode valueNode = memberValueVisitor.Visit(value);
-                valueNodes.Add(valueNode);
-            }
+            foreach(CoronaParser.MemberValueContext member in context.memberValue())
+                valueNodes.Add(memberValueVisitor.Visit(member));
 
             return new MemberNode(label, valueNodes);
         }
@@ -32,9 +30,8 @@ namespace CellularCompiler.Builders
             int value = Int32.Parse(context.INT().GetText());
 
             // Create valuenode and list
-            IntValueNode valueNode = new IntValueNode(value);
             List<ValueNode> values = new List<ValueNode>();
-            values.Add(valueNode);
+            values.Add(new IntValueNode(value));
 
             return new MemberNode(id, values);
         }

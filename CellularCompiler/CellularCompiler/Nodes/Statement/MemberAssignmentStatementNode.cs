@@ -9,13 +9,13 @@ namespace CellularCompiler.Nodes.Statement
     {
         public GridValueNode GridPoint { get; set; }
         public IdentifierValueNode MemberID { get; set; }
-        public ExpressionNode Expr { get; set; }
+        public ValueNode Value { get; set; }
 
-        public MemberAssignmentStatementNode(GridValueNode gridPoint, IdentifierValueNode memberID, ExpressionNode expr)
+        public MemberAssignmentStatementNode(GridValueNode gridPoint, IdentifierValueNode memberID, ValueNode value)
         {
             GridPoint = gridPoint;
             MemberID = memberID;
-            Expr = expr;
+            Value = value;
         }
     }
 }

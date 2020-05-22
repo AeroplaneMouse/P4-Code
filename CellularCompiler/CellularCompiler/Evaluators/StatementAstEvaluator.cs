@@ -1,18 +1,10 @@
-using CellularCompiler.Exceptions;
+using System;
 using CellularCompiler.Models;
-using CellularCompiler.Nodes.Base;
+using System.Collections.Generic;
 using CellularCompiler.Nodes.Math;
+using CellularCompiler.Nodes.Values;
 using CellularCompiler.Nodes.Members;
 using CellularCompiler.Nodes.Statement;
-using CellularCompiler.Nodes.Values;
-using CellularCompiler.Visitor.Math;
-using System;
-using System.Collections.Generic;
-using System.Net.Mail;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading;
-using System.Windows.Markup;
 
 namespace CellularCompiler.Evaluators
 {
@@ -119,31 +111,41 @@ namespace CellularCompiler.Evaluators
 
         public void Visit(IdentifierAssignmentStatementNode node)
         {
-            // Evaluate expression
-            object exprResult = null;
-            if (node.Expression is ComparisonNode)
-                exprResult = new ComparisonExpressionAstEvaluator().Visit(node.Expression);
+            // Evaluate expression or string
+            object result;
+            if (node.Value is ExpressionNode exprNode)
+            {
+                if (node.Value is ComparisonNode)
+                    result = new ComparisonExpressionAstEvaluator().Visit(exprNode);
+                else
+                    result = new MathExpressionAstEvaluator().Visit(exprNode);
+            }
             else
-                exprResult = new MathExpressionAstEvaluator().Visit(node.Expression);
+                result = ((StringValueNode)node.Value).Value;
 
             // Insert into symbol table
             Symbol sym = Stbl.st.Retrieve(node.Identifier.Label);
             if (sym != null)
             {
                 if (sym is VariableSymbol<int> intVar)
-                    intVar.Value = (int)exprResult;
+                    intVar.Value = (int)result;
                 else if (sym is VariableSymbol<bool> boolVar)
-                    boolVar.Value = (bool)exprResult;
+                    boolVar.Value = (bool)result;
+                else if (sym is VariableSymbol<string> stringVar)
+                    stringVar.Value = (string)result;
             }
             else
             {
-                switch (exprResult)
+                switch (result)
                 {
                     case int t:
                         Stbl.st.Insert(new VariableSymbol<int>(t, node.Identifier.Label));
                         break;
                     case bool t:
                         Stbl.st.Insert(new VariableSymbol<bool>(t, node.Identifier.Label));
+                        break;
+                    case string t:
+                        Stbl.st.Insert(new VariableSymbol<string>(t, node.Identifier.Label));
                         break;
                 }
             }
@@ -160,12 +162,17 @@ namespace CellularCompiler.Evaluators
             else
                 cell = sender.GetCurrentCell();
 
-            // Expression
-            object expr;
-            if (node.Expr is ComparisonNode exprNode)
-                expr = new ComparisonExpressionAstEvaluator().Visit(exprNode);
+            // Evaluate expression or string
+            object result;
+            if (node.Value is ExpressionNode exprNode)
+            {
+                if (exprNode is ComparisonNode)
+                    result = new ComparisonExpressionAstEvaluator().Visit(exprNode);
+                else
+                    result = new MathExpressionAstEvaluator().Visit(exprNode);
+            }
             else
-                expr = new MathExpressionAstEvaluator().Visit(node.Expr);
+                result = ((StringValueNode)node.Value).Value;
 
             // Retrieve state member for the next cell
             // TODO: Check if retrieve member throw exception on not found.
@@ -174,11 +181,11 @@ namespace CellularCompiler.Evaluators
             if (member != null)
             {
                 // Set new value
-                switch (expr)
+                switch (result)
                 {
                     case int i: member.SetValue(i); break;
                     case string s: member.SetValue(s); break;
-                    default: throw new Exception($"State member \'{ member.Label }\' cannot be assign value of type \'{ expr.GetType() }\'");
+                    default: throw new Exception($"State member \'{ member.Label }\' cannot be assign value of type \'{ result.GetType() }\'");
                 }
             }
             else
@@ -207,7 +214,15 @@ namespace CellularCompiler.Evaluators
                         Cell otherCell = valueVisitor.Visit(t);
                         values.Add(new StateValueNode(otherCell.State));
                         break;
-                    
+                    case StringValueNode t:
+                        values.Add(t);
+                        break;
+                    case IntValueNode t:
+                        values.Add(t);
+                        break;
+                    case NumberNode t:
+                        values.Add(new IntValueNode(t.Value));
+                        break;
                     default:
                         throw new Exception($"Case matching has yet to be implemented for MatchElement: [{ i }] { element.GetType() }");
                 }
@@ -232,6 +247,7 @@ namespace CellularCompiler.Evaluators
                 values.Add(sym switch
                 {
                     VariableSymbol<int> v => new IntValueNode(v.Value),
+                    VariableSymbol<string> v => new StringValueNode(v.Value),
                     VariableSymbol<StateSymbol> v => new StateValueNode(v.Value),
                     StateSymbol s => new StateValueNode(s),
                     _ => throw new ArgumentOutOfRangeException($"Unknown symbol type \"{ sym.GetType() }\""),
@@ -247,7 +263,6 @@ namespace CellularCompiler.Evaluators
             int i = 0;
             foreach (ValueNode value in c.Values)
             {
-
                 switch (value)
                 {
                     case IdentifierValueNode t:
@@ -263,6 +278,11 @@ namespace CellularCompiler.Evaluators
                         break;
 
                     case IntValueNode t:
+                        if (!elementValues[i].Equals(t))
+                            return false;
+                        break;
+
+                    case StringValueNode t:
                         if (!elementValues[i].Equals(t))
                             return false;
                         break;

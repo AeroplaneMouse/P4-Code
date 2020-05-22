@@ -7,12 +7,12 @@ namespace CellularCompiler.Nodes.Statement
     class IdentifierAssignmentStatementNode : AssignmentStatementNode
     {
         public IdentifierValueNode Identifier { get; set; }
-        public ExpressionNode Expression { get; set; }
+        public ValueNode Value { get; set; }
 
-        public IdentifierAssignmentStatementNode(IdentifierValueNode id, ExpressionNode expr)
+        public IdentifierAssignmentStatementNode(IdentifierValueNode id, ValueNode value)
         {
             Identifier = id;
-            Expression = expr;
+            Value = value;
         }
     }
 }
