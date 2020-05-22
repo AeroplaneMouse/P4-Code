@@ -98,6 +98,8 @@ namespace CellularCompiler.Evaluators
             }
             else
                 throw new Exception("Unexpected type in return statement. Must be of type STATE");
+            
+            sender.ReturnStatementHasBeenHit = true;
         }
 
         public void Visit(GridAssignmentStatementNode node)
