@@ -1,0 +1,59 @@
+#Langton's Ant#
+
+GRID
+{
+	x: 50;
+	y: 50;
+}
+
+#Define states, white and black in this case#
+STATES white, black
+{
+	Direction: "null", n", "s", "e", "w";
+}
+
+#Set initial state, all cells are white#
+INITIAL
+{
+	grid[25, 25].Direction = "n";
+}
+
+#Define rules#
+RULES
+{
+	match(.state)
+	{
+		[black]
+		{
+			match(.Direction){
+				["n"]
+					grid[.x-1, .y].Direction = "w";
+				["s"]
+					grid[.x+1, .y].Direction = "e";
+				["e"]
+				{
+					grid[.x, .y+1].Direction = "n";
+				}
+				["w"]
+				{
+					grid[.x, .y-1].Direction = "s";
+				}
+			}
+			return white;
+		}
+		[white]
+		{
+			match(.Direction){
+				["n"]
+					grid[.x+1, .y].Direction = "e";
+				["s"]
+					grid[.x-1, .y].Direction = "w";
+				["e"]
+					grid[.x, .y-1].Direction = "s";
+				["w"]
+					grid[.x, .y+1].Direction = "n";
+			}
+			return black;
+		}
+	}
+}
