@@ -10,6 +10,7 @@ namespace CellularCompiler.Evaluators
         bool ReturnStatementHasBeenHit { get; set; }
         int X_Max { get; }
         int Y_Max { get; }
+        int Generation { get; }
 
         void Initialize();
         void PushNextGeneration();
