@@ -26,6 +26,7 @@ namespace CellularCompiler
             
             ig.GenerateFrame(eval.GetGrid());
 
+            Console.WriteLine("Press 'enter' to start generating...");
             Console.ReadLine();
             Stopwatch total = new Stopwatch();
             Stopwatch gen = new Stopwatch();
