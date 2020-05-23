@@ -10,9 +10,6 @@ Antlr/dist-grammar
 Antlr/target
 
 # Visual Studio Stuff
-CellularCompiler/.vs/
-CellularCompiler/CellularCompiler/bin/
-CellularCompiler/CellularCompiler/obj/
-
-CellularCompiler/CAVisualFormsCore/bin/
-CellularCompiler/CAVisualFormsCore/obj/
+CellularInterpreter/.vs/
+CellularInterpreter/CellularInterpreter/bin/
+CellularInterpreter/CellularInterpreter/obj/
