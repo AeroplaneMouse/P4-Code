@@ -26,14 +26,14 @@ namespace CI.Builders
         public override MemberNode VisitGridDeclaration(CoronaParser.GridDeclarationContext context)
         {
             // Extract label and value
-            string id = context.ID().GetText();
+            string label = context.ID().GetText();
             int value = Int32.Parse(context.INT().GetText());
 
             // Create valuenode and list
             List<ValueNode> values = new List<ValueNode>();
             values.Add(new IntValueNode(value));
 
-            return new MemberNode(id, values);
+            return new MemberNode(label, values);
         }
     }
 }

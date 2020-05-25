@@ -1,13 +1,10 @@
 using System;
 using System.IO;
 using System.Linq;
-using Antlr4.Runtime;
-using CI.Models;
 using CI.Builders;
-using System.Collections.Generic;
 using CI.Evaluators;
 using CI.Nodes.Base;
-using System.Threading;
+using Antlr4.Runtime;
 using CI.ImageGeneration;
 using System.Diagnostics;
 
@@ -17,51 +14,67 @@ namespace CI
     {
         private static void Main()
         {
-            const int maxGenerations = 250;
             CellularInterpreter interpreter = new CellularInterpreter();
-            ICoronaEvaluator eval = interpreter.InterpretCorona();
+            ICoronaEvaluator eval;
+            try
+            {
+                eval = interpreter.InterpretCorona();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine($"You made a misstake! { e.Message } ");
+                return;
+            }
+
             ImageGenerator ig = new ImageGenerator(eval.GetGrid().XSize, eval.GetGrid().YSize);
             eval.Print();
             
             ig.GenerateFrame(eval.GetGrid());
 
-            Console.WriteLine("Press 'enter' to start generating...");
-            Console.ReadLine();
+            // Get number of total generations
+            Console.Write("Enter number of generations: ");
+            if (!int.TryParse(Console.ReadLine(), out int maxGenerations))
+            {
+                Console.WriteLine("Invalid amount of generations");
+                return;
+            }
+
+            Console.WriteLine("Generating... this might take a while");
             Stopwatch total = new Stopwatch();
-            Stopwatch gen = new Stopwatch();
-            Stopwatch push = new Stopwatch();
-            Stopwatch image = new Stopwatch();
+
+            bool hit = false;
             total.Start();
             for (int i = 2; i <= maxGenerations; i++)
             {
-                //Thread.Sleep(10);
-                //Console.Clear();
-                gen.Start();
-                eval.GenerateNextGeneration();
-                gen.Stop();
-                //Console.WriteLine($"Generation time:    { s.ElapsedMilliseconds } ms");
+                // Generate the next generation of cell states, but catch any error that might occur
+                try
+                {
+                    eval.GenerateNextGeneration();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"You made a misstake! { e.Message } ");
+                    return;
+                }
 
-                push.Start();
+                // Push the next generation state to the current
                 eval.PushNextGeneration();
-                push.Stop();
-                //Console.WriteLine($"Push time:          { s.ElapsedMilliseconds } ms");
-                //Console.WriteLine($"Total elapsed time: { total.ElapsedMilliseconds / 1000 } s");
-                //eval.Print();
-                image.Start();
-                ig.GenerateFrame(eval.GetGrid());
-                image.Stop();
 
-                if (i % 20 == 0)
-                    Console.WriteLine($" Generation: { i }");
+                // Generate image representation of the new cell states
+                ig.GenerateFrame(eval.GetGrid());
+
+                // Show an estimate remaining time, when 1% of final generations has been hit
+                if (!hit && eval.Generation % (maxGenerations/100) == 0)
+                {
+                    hit = true;
+                    Console.WriteLine($"Current generation: { eval.Generation }");
+                    Console.WriteLine($"Estimated completion time in: { total.ElapsedMilliseconds / 10 } s");
+                }
             }
             total.Stop();
 
             Console.WriteLine();
-            Console.WriteLine($"Average gen time:   { gen.ElapsedMilliseconds / (maxGenerations - 1) } ms");
-            Console.WriteLine($"Average push time:  { push.ElapsedMilliseconds / (maxGenerations - 1) } ms");
-            Console.WriteLine($"Average image time: { image.ElapsedMilliseconds / (maxGenerations - 1) } ms");
             Console.WriteLine($"Total time:         { total.ElapsedMilliseconds / 1000 } s");
-
         }
 
         /// <summary>
