@@ -63,10 +63,9 @@ namespace CI
                 // Generate image representation of the new cell states
                 ig.GenerateFrame(eval.GetGrid());
 
-                // Show an estimate remaining time, when 1% of final generations has been hit
-                if (!hit && eval.Generation % (maxGenerations/100) == 0)
+                // Show an estimated remaining time, when n/over of final generations has been hit
+                if (IsGenerationFraction(ref hit, n:1, over: 100, eval.Generation, maxGenerations))
                 {
-                    hit = true;
                     Console.WriteLine($"Current generation: { eval.Generation }");
                     Console.WriteLine($"Estimated completion time in: { total.ElapsedMilliseconds / 10 } s");
                 }
@@ -75,6 +74,27 @@ namespace CI
 
             Console.WriteLine();
             Console.WriteLine($"Total time:         { total.ElapsedMilliseconds / 1000 } s");
+        }
+
+        private static bool IsGenerationFraction(ref bool hit, int n, int over, int current, int max)
+        {
+            // Check for hit
+            if (hit)
+                return false;
+
+            // Calculate target generation
+            int targetGeneration = max / (over / n);
+
+            // Check if target generation is reached
+            if(targetGeneration < 3)
+                hit = true;
+            else if (current % targetGeneration == 0)
+            {
+                hit = true;
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
