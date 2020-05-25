@@ -36,7 +36,7 @@ namespace CI.Builders
 
             // Range check
             if (left > right)
-                throw new ArgumentOutOfRangeException("Left value must be lower or equal to the right value");
+                throw new ArgumentOutOfRangeException("ArrowValue", "Left value must be lower or equal to the right value");
 
             return new ArrowValueNode(left, right);
         }
@@ -44,15 +44,14 @@ namespace CI.Builders
         public override ValueNode VisitGridPoint(CoronaParser.GridPointContext context)
         {
             BuildExpressionAst exprVisitor = new BuildExpressionAst();
+
+            // Extract the two expressions
             CoronaParser.ExprContext[] exprs = context.expr();
-
-            if (exprs.Length != 2)
-                throw new ArgumentOutOfRangeException("There must be 2 and only 2 expressions in gridPoint");
-
             ExpressionNode first = exprVisitor.Visit(exprs[0]);
             ExpressionNode second = exprVisitor.Visit(exprs[1]);
-            IdentifierValueNode member = null;
 
+            // Extract member if present
+            IdentifierValueNode member = null;
             if (context.member() != null)
                 member = new IdentifierValueNode(context.member().GetText());
 
