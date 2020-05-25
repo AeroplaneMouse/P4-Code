@@ -1,10 +1,10 @@
 using System;
 using CI.Models;
-using System.Collections.Generic;
 using CI.Nodes.Math;
 using CI.Nodes.Values;
 using CI.Nodes.Members;
 using CI.Nodes.Statement;
+using System.Collections.Generic;
 
 namespace CI.Evaluators
 {
@@ -259,6 +259,10 @@ namespace CI.Evaluators
 
         private bool IsCaseMatching(CaseStatementNode c, List<ValueNode> elementValues)
         {
+            // Check if the number of case values is valid
+            if (c.Values.Count > elementValues.Count)
+                throw new Exception($"Case statement contains more values than its parrent match statement");
+
             // Match each value in case
             int i = 0;
             foreach (ValueNode value in c.Values)
