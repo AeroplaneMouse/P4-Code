@@ -107,7 +107,7 @@ member
 	;
 
 gridPoint
-	: 'grid[' expr(',' expr)* ']' member?
+	: 'grid[' expr ',' expr ']' member?
 	;
 
 arrowValue
