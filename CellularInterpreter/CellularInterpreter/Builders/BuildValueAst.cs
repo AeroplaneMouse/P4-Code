@@ -23,6 +23,11 @@ namespace CI.Builders
             return new IdentifierValueNode(context.ID().GetText());
         }
 
+        public override ValueNode VisitMember(CoronaParser.MemberContext context)
+        {
+            return new IdentifierValueNode(context.GetText());
+        }
+
         public override ValueNode VisitDefaultCaseValue(CoronaParser.DefaultCaseValueContext context)
         {
             return new DefaultValueNode();
@@ -53,7 +58,7 @@ namespace CI.Builders
             // Extract member if present
             IdentifierValueNode member = null;
             if (context.member() != null)
-                member = new IdentifierValueNode(context.member().GetText());
+                member = (IdentifierValueNode)Visit(context.member());
 
             return new GridValueNode(first, second, member);
         }

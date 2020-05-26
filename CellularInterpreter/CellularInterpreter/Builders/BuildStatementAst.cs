@@ -98,7 +98,7 @@ namespace CI.Builders
             foreach (var e in context.matchElement())
             {
                 if (e.member() != null)
-                    elements.Add(new IdentifierValueNode(e.member().GetText()));
+                    elements.Add(valueVisitor.Visit(e.member()));
 
                 else if (e.gridPoint() != null)
                     elements.Add(valueVisitor.Visit(e.gridPoint()));
