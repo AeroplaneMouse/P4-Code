@@ -1,16 +1,9 @@
-using System;
-using System.Linq;
 using Antlr4.Runtime.Misc;
-using Antlr4.Runtime.Tree;
-using CI.Nodes;
 using System.Collections.Generic;
-using CI.Exceptions;
-using CI.Nodes.Math;
 using CI.Nodes.Statement;
 using CI.Nodes.Values;
-using CI.Evaluators;
-using System.Linq.Expressions;
 using CI.Nodes.Members;
+using CellularInterpreter.Exceptions;
 
 namespace CI.Builders
 {
@@ -21,11 +14,15 @@ namespace CI.Builders
             BuildExpressionAst exprVisitor = new BuildExpressionAst();
             IterationStatementNode node = new IterationStatementNode();
 
-            // Visit expressions
-            node.Conditioner = exprVisitor.Visit(context.conditioner);
+            try
+            {
+                // Visit expressions
+                node.Conditioner = exprVisitor.Visit(context.conditioner);
 
-            // Visit statement
-            node.Statement = Visit(context.statement());
+                // Visit statement
+                node.Statement = Visit(context.statement());
+            }
+            catch(CoronaLanguageException e) { throw new CoronaLanguageException("Iteration statement", e); }
 
             return node;
         }
@@ -43,7 +40,12 @@ namespace CI.Builders
 
         public override StatementNode VisitSimpleReturn([NotNull] CoronaParser.SimpleReturnContext context)
         {
-            IdentifierValueNode id = (IdentifierValueNode)new BuildValueAst().Visit(context.identifierValue());
+            IdentifierValueNode id;
+            try
+            {
+                id = (IdentifierValueNode)new BuildValueAst().Visit(context.identifierValue());
+            }
+            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Return statement", e); }
 
             return new ReturnStatementNode(id);
         }
@@ -52,27 +54,31 @@ namespace CI.Builders
         {
             BuildValueAst valueVisitor = new BuildValueAst();
 
-            IdentifierValueNode id = (IdentifierValueNode)valueVisitor.Visit(context.identifierValue());
-
-            // Get returnMembers
-            List<ReturnMemberNode> returnMembers = new List<ReturnMemberNode>();
-            foreach(var rMember in context.returnMember())
+            try
             {
-                // Get ReturnMember value
-                ValueNode value;
-                if (rMember.expr() != null)
-                    value = new BuildExpressionAst().Visit(rMember.expr());
-                else
-                    value = new StringValueNode(rMember.STRING().GetText());
+                IdentifierValueNode id = (IdentifierValueNode)valueVisitor.Visit(context.identifierValue());
 
-                // Add new ReturnMember to list
-                returnMembers.Add(new ReturnMemberNode(
-                    (IdentifierValueNode)valueVisitor.Visit(rMember.identifierValue()),
-                    value)
-                );
+                // Get returnMembers
+                List<ReturnMemberNode> returnMembers = new List<ReturnMemberNode>();
+                foreach(var rMember in context.returnMember())
+                {
+                    // Get ReturnMember value
+                    ValueNode value;
+                    if (rMember.expr() != null)
+                        value = new BuildExpressionAst().Visit(rMember.expr());
+                    else
+                        value = new StringValueNode(rMember.STRING().GetText());
+
+                    // Add new ReturnMember to list
+                    returnMembers.Add(new ReturnMemberNode(
+                        (IdentifierValueNode)valueVisitor.Visit(rMember.identifierValue()),
+                        value)
+                    );
+                }
+
+                return new AdvancedReturnStatementNode(id, returnMembers);
             }
-
-            return new AdvancedReturnStatementNode(id, returnMembers);
+            catch(CoronaLanguageException e) { throw new CoronaLanguageException("Return statement", e); }
         }
 
         public override StatementNode VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context)
@@ -82,8 +88,12 @@ namespace CI.Builders
 
             // Extract all caseValues
             List<ValueNode> values = new List<ValueNode>();
-            foreach (var value in caseValues)
-                values.Add(valueVisitor.Visit(value));
+            try
+            {
+                foreach (var value in caseValues)
+                    values.Add(valueVisitor.Visit(value));
+            }
+            catch(CoronaLanguageException e) { throw new CoronaLanguageException("Case statement value", e); }
 
             return new CaseStatementNode(values, Visit(context.statement()));
         }
@@ -97,20 +107,28 @@ namespace CI.Builders
             List<ValueNode> elements = new List<ValueNode>();
             foreach (var e in context.matchElement())
             {
-                if (e.member() != null)
-                    elements.Add(valueVisitor.Visit(e.member()));
+                try
+                {
+                    if (e.member() != null)
+                        elements.Add(valueVisitor.Visit(e.member()));
 
-                else if (e.gridPoint() != null)
-                    elements.Add(valueVisitor.Visit(e.gridPoint()));
-                
-                else if (e.expr() != null)
-                    elements.Add(exprVisitor.Visit(e.expr()));
+                    else if (e.gridPoint() != null)
+                        elements.Add(valueVisitor.Visit(e.gridPoint()));
+
+                    else if (e.expr() != null)
+                        elements.Add(exprVisitor.Visit(e.expr()));
+                }
+                catch (CoronaLanguageException excep) { throw new CoronaLanguageException("Match statement value", excep); }
             }
 
             // Visit each CaseStatement
             List<CaseStatementNode> caseStatements = new List<CaseStatementNode>();
-            foreach (CoronaParser.CaseStatementContext c in context.caseStatement())
-                caseStatements.Add((CaseStatementNode)Visit(c));
+            try
+            {
+                foreach (CoronaParser.CaseStatementContext c in context.caseStatement())
+                    caseStatements.Add((CaseStatementNode)Visit(c));
+            }
+            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Match statement", e); }
 
             return new MatchStatementNode(elements, caseStatements);
         }
@@ -119,50 +137,62 @@ namespace CI.Builders
         {
             BuildValueAst valueVisitor= new BuildValueAst();
 
-            IdentifierValueNode id = new IdentifierValueNode(context.ID().GetText());
-            GridValueNode gridpoint = (GridValueNode) valueVisitor.Visit(context.gridPoint());
+            try
+            {
+                IdentifierValueNode id = new IdentifierValueNode(context.ID().GetText());
+                GridValueNode gridpoint = (GridValueNode) valueVisitor.Visit(context.gridPoint());
 
-            return new GridAssignmentStatementNode(gridpoint, id);
+                return new GridAssignmentStatementNode(gridpoint, id);
+            }
+            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Grid assignment statement", e); }
         }
 
         public override StatementNode VisitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context)
         {
             BuildValueAst valueVisitor = new BuildValueAst();
             BuildExpressionAst exprVisitor = new BuildExpressionAst();
+            
+            try
+            {
+                IdentifierValueNode id = valueVisitor.Visit(context.identifierValue()) as IdentifierValueNode;
 
-            IdentifierValueNode id = valueVisitor.Visit(context.identifierValue()) as IdentifierValueNode;
+                // Get value
+                ValueNode value;
+                if (context.expr() != null)
+                    value = exprVisitor.Visit(context.expr());
+                else
+                    value = new StringValueNode(context.STRING().GetText());
 
-            // Get value
-            ValueNode value;
-            if (context.expr() != null)
-                value = exprVisitor.Visit(context.expr());
-            else
-                value = new StringValueNode(context.STRING().GetText());
-
-            return new IdentifierAssignmentStatementNode(id, value);
+                return new IdentifierAssignmentStatementNode(id, value);
+            }
+            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Identifier assignment statement", e); }
         }
 
         public override StatementNode VisitMemberAssignStatement([NotNull] CoronaParser.MemberAssignStatementContext context)
         {
             BuildValueAst valueVisitor = new BuildValueAst();
             BuildExpressionAst exprVisitor = new BuildExpressionAst();
+            try
+            {
+                // Get GridPoint
+                GridValueNode gridPoint = null;
+                if (context.gridPoint() != null)
+                    gridPoint = (GridValueNode)valueVisitor.Visit(context.gridPoint());
 
-            // Get GridPoint
-            GridValueNode gridPoint = null;
-            if (context.gridPoint() != null)
-                gridPoint = (GridValueNode)valueVisitor.Visit(context.gridPoint());
+                // Get Member 
+                IdentifierValueNode memberID = new IdentifierValueNode(context.identifierValue().GetText());
 
-            // Get Member 
-            IdentifierValueNode memberID = new IdentifierValueNode(context.identifierValue().GetText());
+                // Get value
+                ValueNode value;
+                if (context.expr() != null)
+                    value = exprVisitor.Visit(context.expr());
+                else
+                    value = new StringValueNode(context.STRING().GetText());
 
-            // Get value
-            ValueNode value;
-            if (context.expr() != null)
-                value = exprVisitor.Visit(context.expr());
-            else
-                value = new StringValueNode(context.STRING().GetText());
+                return new MemberAssignmentStatementNode(gridPoint, memberID, value);
+            }
+            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Member assignment statement", e); }
 
-            return new MemberAssignmentStatementNode(gridPoint, memberID, value);
         }
     }
 }

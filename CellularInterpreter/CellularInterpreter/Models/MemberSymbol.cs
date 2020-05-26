@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Text;
-using System.Windows.Markup;
-using System.Collections.Generic;
 using CI.Nodes.Values;
 using CI.Nodes.Members;
-using System.Linq.Expressions;
+using System.Collections.Generic;
+using CellularInterpreter.Exceptions;
 
 namespace CI.Models
 {
@@ -29,7 +27,7 @@ namespace CI.Models
                     IntValueNode t => t.Value,
                     ArrowValueNode t => t.LeftValue,
                     StringValueNode t => t.Value,
-                    _ => throw new ArgumentOutOfRangeException("Unknown value type")
+                    _ => throw new Exception($"Unknown value type \'{ acceptedValues[0].GetType().Name }\' in member .{ Label }")
                 };
             }
         }
@@ -51,7 +49,7 @@ namespace CI.Models
             if (IsAccepted(value))
                 this.value = value;
             else
-                throw new Exception($"Invalid value assigned to {Label}");
+                throw new CoronaLanguageException($"Attempt to assign unaccepted value \'{ value }\'");
         }
 
         public void SetValue(int value)
@@ -59,7 +57,7 @@ namespace CI.Models
             if (IsAccepted(value))
                 this.value = value;
             else
-                throw new Exception($"Invalid value assigned to {Label}");
+                throw new CoronaLanguageException($"Attempt to assign unaccepted value \'{ value }\'");
         }
 
         private bool IsAccepted(int value)

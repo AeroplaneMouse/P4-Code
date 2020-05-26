@@ -24,28 +24,21 @@ RULES
    match(.state, .Direction)
    {
       # There is no match for NOT "null". Therefore this #
-      [_, "null"]
-      {}
-      [black, _]
-      {
+      [_, "null"] {}
+      [black, _]{
          match(.Direction){
             ["n"]
                grid[.x-1, .y].Direction = "w";
             ["s"]
                grid[.x+1, .y].Direction = "e";
             ["e"]
-            {
                grid[.x, .y+1].Direction = "n";
-            }
             ["w"]
-            {
                grid[.x, .y-1].Direction = "s";
-            }
          }
          return white;
       }
-      [white, _]
-      {
+      [white, _]{
          match(.Direction){
             ["n"]
                grid[.x+1, .y].Direction = "e";

@@ -3,6 +3,7 @@ using CI.Models;
 using System.Collections.Generic;
 using CI.Nodes.Values;
 using CI.Nodes.Members;
+using CellularInterpreter.Exceptions;
 
 namespace CI.Builders
 {
@@ -14,13 +15,16 @@ namespace CI.Builders
 
             // Extract label
             string label = context.ID().GetText();
-
-            // Extract and call visit on all memberValues
-            List<ValueNode> valueNodes = new List<ValueNode>();
-            foreach(CoronaParser.MemberValueContext member in context.memberValue())
-                valueNodes.Add(memberValueVisitor.Visit(member));
-
-            return new MemberNode(label, valueNodes);
+            try
+            {
+                // Extract and call visit on all memberValues
+                List<ValueNode> valueNodes = new List<ValueNode>();
+                foreach(CoronaParser.MemberValueContext member in context.memberValue())
+                    valueNodes.Add(memberValueVisitor.Visit(member));
+                
+                return new MemberNode(label, valueNodes);
+            }
+            catch (CoronaLanguageException e) { throw new CoronaLanguageException($"Member \'{ label }\'", e); }
         }
 
         public override MemberNode VisitGridDeclaration(CoronaParser.GridDeclarationContext context)

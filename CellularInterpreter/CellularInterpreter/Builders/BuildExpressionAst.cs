@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using CI.Nodes.Math;
-using CI.Nodes.Values;
 
 namespace CI.Builders
 {
@@ -51,10 +49,6 @@ namespace CI.Builders
             return new NumberNode(
                 Int32.Parse(context.intValue().GetText())
             );
-
-            //BuildValueAst valueVisitor = new BuildValueAst();
-            //return valueVisitor.Visit(context);
-            throw new NotImplementedException();
         }
 
         public override ExpressionNode VisitIdentifierExpr(CoronaParser.IdentifierExprContext context)

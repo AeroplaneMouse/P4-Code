@@ -7,6 +7,9 @@ using CI.Nodes.Base;
 using Antlr4.Runtime;
 using CI.ImageGeneration;
 using System.Diagnostics;
+using System.Reflection;
+using System.ComponentModel;
+using CellularInterpreter.Exceptions;
 
 namespace CI
 {
@@ -20,9 +23,11 @@ namespace CI
             {
                 eval = interpreter.InterpretCorona();
             }
-            catch(Exception e)
+            catch(CoronaLanguageException e)
             {
-                Console.WriteLine($"You made a misstake! { e.Message } ");
+                string messageTree = GetExceptionMessageTree(e);
+                Console.WriteLine($"You made a misstake:");
+                Console.WriteLine(messageTree);
                 return;
             }
 
@@ -51,9 +56,11 @@ namespace CI
                 {
                     eval.GenerateNextGeneration();
                 }
-                catch (Exception e)
+                catch (CoronaLanguageException e)
                 {
-                    Console.WriteLine($"You made a misstake! { e.Message } ");
+                    string messageTree = GetExceptionMessageTree(e);
+                    Console.WriteLine($"You made a misstake");
+                    Console.WriteLine(messageTree);
                     return;
                 }
 
@@ -73,7 +80,19 @@ namespace CI
             total.Stop();
 
             Console.WriteLine();
-            Console.WriteLine($"Total time:         { total.ElapsedMilliseconds / 1000 } s");
+            Console.WriteLine($"Total time: { total.ElapsedMilliseconds / 1000 } s");
+        }
+
+        private static string GetExceptionMessageTree(Exception e, string padding = "")
+        {
+            string message = e.Message;
+            
+            // Add innerException
+            padding += "--";
+            if (e.InnerException != null)
+                message+= Environment.NewLine + padding + GetExceptionMessageTree(e.InnerException, padding);
+
+            return message;
         }
 
         private static bool IsGenerationFraction(ref bool hit, int n, int over, int current, int max)
@@ -119,9 +138,17 @@ namespace CI
             // Run parser to convert token stream to CST
             var parser = new CoronaParser(tokenStream);
             var cst = parser.main();
-                
+
             // Build AST from CST
-            MainNode ast = new BuildMainAst().VisitMain(cst);
+            MainNode ast;
+            try
+            {
+                ast = new BuildMainAst().VisitMain(cst);
+            }
+            catch(CoronaLanguageException e)
+            {
+                throw new CoronaLanguageException("Semantic error", e);
+            }
 
             // Evaluate
             ICoronaEvaluator evaluator = new Evaluator(ast);

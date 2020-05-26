@@ -1,7 +1,6 @@
 ﻿using CI.Models;
 using CI.Nodes.Math;
-using CI.Visitor.Math;
-using System;
+using CellularInterpreter.Exceptions;
 
 namespace CI.Evaluators
 {
@@ -142,10 +141,10 @@ namespace CI.Evaluators
                 if (sym is VariableSymbol<int> intVar)
                     return intVar.Value;
                 else
-                    throw new Exception($"Unexpected type in comparison expression. Expected Int got { sym.ToString() }");
+                    throw new CoronaLanguageException($"Unexpected type in comparison expression. Expected Int got { sym.ToString() }");
             }
             else
-                throw new Exception($"Undeclared variable { node.Label }");
+                throw new CoronaLanguageException($"Undeclared variable { node.Label }");
         }
 
         public override int Visit(InfixExpressionNode node)
@@ -155,7 +154,7 @@ namespace CI.Evaluators
         }
 
         public override int Visit(NumberNode node)
-            => (int)node.Value;
+            => node.Value;
 
     }
 }

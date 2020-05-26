@@ -1,8 +1,6 @@
 ﻿using CI.Models;
 using CI.Nodes.Values;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CI.Evaluators
 {
@@ -50,10 +48,6 @@ namespace CI.Evaluators
 
         public List<int> Visit(ArrowValueNode node)
         {
-            // Range check
-            if (node.LeftValue > node.RightValue)
-                throw new ArgumentOutOfRangeException("Left value must be lower or equal the right value");
-
             // Create list of values
             List<int> values = new List<int>();
             for (int i = node.LeftValue; i <= node.RightValue; i++)
@@ -61,7 +55,5 @@ namespace CI.Evaluators
 
             return values;
         }
-
-
     }
 }

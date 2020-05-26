@@ -8,6 +8,7 @@ using CI.Nodes.Values;
 using CI.Nodes.Statement;
 using System.Runtime.ExceptionServices;
 using CI.Nodes.Members;
+using CellularInterpreter.Exceptions;
 
 namespace CI.Evaluators
 {
@@ -46,7 +47,14 @@ namespace CI.Evaluators
             grid = VisitGrid(node.GridNode, firstState);
 
             // Evaluate each statement in the initialNode, on the grid
-            VisitInitial(node.InitialNode);
+            try
+            {
+                VisitInitial(node.InitialNode);
+            }
+            catch(CoronaLanguageException e)
+            {
+                throw new CoronaLanguageException($"INITIAL", e);
+            }
             PushNextGeneration();
 
             // Extract all rules
@@ -138,23 +146,26 @@ namespace CI.Evaluators
             Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.X, "." + grid.AxisLabels[0]));
             Stbl.st.Insert(new VariableSymbol<int>(cell.Pos.Y, "." + grid.AxisLabels[1]));
 
-            StatementAstEvaluator statementVisitor = new StatementAstEvaluator(this);
-            foreach (StatementNode r in rules)
+            try
             {
-                if (!ReturnStatementHasBeenHit)
-                    statementVisitor.Visit(r);
-                else
-                    break;
+                StatementAstEvaluator statementVisitor = new StatementAstEvaluator(this);
+                foreach (StatementNode r in rules)
+                {
+                    if (!ReturnStatementHasBeenHit)
+                        statementVisitor.Visit(r);
+                    else
+                        break;
+                }
+            }
+            catch(CoronaLanguageException e)
+            {
+                throw new CoronaLanguageException($"RULES", e);
             }
             Stbl.st.CloseScope();
         }
 
         private Grid VisitGrid(GridNode node, StateSymbol firstState)
         {
-            // Just a check
-            if (node.Members.Count != 2)
-                throw new Exception("There must be exactly 2 axis in the grid. Otherwise, how whould it be 2D?");
-
             // Extract axis limits
             int x = (node.Members[0].Values[0] as IntValueNode).Value;
             int y = (node.Members[1].Values[0] as IntValueNode).Value;

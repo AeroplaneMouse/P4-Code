@@ -16,7 +16,7 @@ namespace CI.Models
 
         public override string ToString()
         {
-            return Value.GetType().ToString();
+            return Value.GetType().Name;
         }
     }
 }

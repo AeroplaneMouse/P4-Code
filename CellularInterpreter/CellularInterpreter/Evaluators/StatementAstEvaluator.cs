@@ -5,6 +5,7 @@ using CI.Nodes.Values;
 using CI.Nodes.Members;
 using CI.Nodes.Statement;
 using System.Collections.Generic;
+using CellularInterpreter.Exceptions;
 
 namespace CI.Evaluators
 {
@@ -26,18 +27,26 @@ namespace CI.Evaluators
         {
             ComparisonExpressionAstEvaluator compEvaluator = new ComparisonExpressionAstEvaluator();
 
-            while (compEvaluator.Visit(node.Conditioner))
-                Visit(node.Statement);
+            try
+            {
+                while (compEvaluator.Visit(node.Conditioner))
+                    Visit(node.Statement);
+            }
+            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Iteration statement", e); }
         }
 
         public void Visit(MatchStatementNode node)
         {
-            // Find the first caseStatement 
-            CaseStatementNode caseNode = GetFirstMatchingCase(node);
+            try
+            {
+                // Find the first caseStatement 
+                CaseStatementNode caseNode = GetFirstMatchingCase(node);
 
-            // Visit the statement inside the matching caseStatement
-            if (caseNode != null)
-                Visit(caseNode.Statement);
+                // Visit the statement inside the matching caseStatement
+                if (caseNode != null)
+                    Visit(caseNode.Statement);
+            }
+            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Match statement", e); }
         }
 
         public void Visit(CompoundStatementNode node)
@@ -60,7 +69,7 @@ namespace CI.Evaluators
             if (state is StateSymbol s)
                 sender.SetCell(cell, s.Copy());
             else
-                throw new Exception("Unexpected type in return statement. Must be of type STATE");
+                throw new CoronaLanguageException($"Return statement. Unexpected type { state } expected State");
 
             sender.ReturnStatementHasBeenHit = true;
         }
@@ -74,23 +83,27 @@ namespace CI.Evaluators
 
             if (sym is StateSymbol s)
             {
-                // Set state members
-                StateSymbol state = s.Copy();
-                foreach(ReturnMemberNode rNode in node.ReturnMembers)
+                try
                 {
-                    MemberSymbol member = state.RetrieveMember(rNode.ID.Label);
-                    switch(rNode.Value)
+                    // Set state members
+                    StateSymbol state = s.Copy();
+                    foreach(ReturnMemberNode rNode in node.ReturnMembers)
                     {
-                        case ExpressionNode valueNode: member.SetValue(exprEvaluator.Visit(valueNode)); break;
-                        case StringValueNode valueNode: member.SetValue(valueNode.Value); break;
-                        default: throw new Exception($"ReturnMember value cannot be of type \'{ rNode.Value.GetType() }\'");
+                        MemberSymbol member = state.RetrieveMember(rNode.ID.Label);
+                        switch(rNode.Value)
+                        {
+                            case ExpressionNode valueNode: member.SetValue(exprEvaluator.Visit(valueNode)); break;
+                            case StringValueNode valueNode: member.SetValue(valueNode.Value); break;
+                            default: throw new CoronaLanguageException($"ReturnMember value cannot be of type \'{ rNode.Value.GetType().Name }\'");
+                        }
                     }
+                    sender.SetCell(cell, state);
                 }
-                sender.SetCell(cell, state);
+                catch(CoronaLanguageException e) { throw new CoronaLanguageException($"Return statement \'{ node.Identifier.Label }\'", e); }
             }
             else
-                throw new Exception("Unexpected type in return statement. Must be of type STATE");
-            
+                throw new CoronaLanguageException($"Return statement. Unexpected type { sym } expected State");
+
             sender.ReturnStatementHasBeenHit = true;
         }
 
@@ -106,33 +119,39 @@ namespace CI.Evaluators
             if (state is StateSymbol s)
                 sender.SetCell(c, s);
             else
-                throw new Exception("Type mismatch");
+                throw new CoronaLanguageException($"Grid assignment statement. Unexpected type for \'{ node.Identifier.Label }\' got { state } expected State");
         }
 
         public void Visit(IdentifierAssignmentStatementNode node)
         {
             // Evaluate expression or string
             object result;
-            if (node.Value is ExpressionNode exprNode)
+            result = node.Value switch
             {
-                if (node.Value is ComparisonNode)
-                    result = new ComparisonExpressionAstEvaluator().Visit(exprNode);
-                else
-                    result = new MathExpressionAstEvaluator().Visit(exprNode);
-            }
-            else
-                result = ((StringValueNode)node.Value).Value;
+                ComparisonNode t => new ComparisonExpressionAstEvaluator().Visit(t),
+                ExpressionNode t => new MathExpressionAstEvaluator().Visit(t),
+                StringValueNode t => t.Value,
+                //StateValueNode t => t.State,
+                _ => throw new CoronaLanguageException($"Assignment statement. Unexpected value type of { node.Value }")
+            };
 
             // Insert into symbol table
             Symbol sym = Stbl.st.Retrieve(node.Identifier.Label);
             if (sym != null)
             {
-                if (sym is VariableSymbol<int> intVar)
-                    intVar.Value = (int)result;
-                else if (sym is VariableSymbol<bool> boolVar)
-                    boolVar.Value = (bool)result;
-                else if (sym is VariableSymbol<string> stringVar)
-                    stringVar.Value = (string)result;
+                try
+                {
+                    if (sym is VariableSymbol<int> intVar)
+                        intVar.Value = (int)result;
+                    else if (sym is VariableSymbol<bool> boolVar)
+                        boolVar.Value = (bool)result;
+                    else if (sym is VariableSymbol<string> stringVar)
+                        stringVar.Value = (string)result;
+                    else
+                        throw new NotImplementedException($"Variable assignment for type \'{ sym }\' not implemented");
+                }
+                catch(InvalidCastException) { 
+                    throw new CoronaLanguageException($"Assignment statement. Unable to assign value of type { node.Value.GetType().Name } to declared variable of type { sym }"); }
             }
             else
             {
@@ -175,21 +194,27 @@ namespace CI.Evaluators
                 result = ((StringValueNode)node.Value).Value;
 
             // Retrieve state member for the next cell
-            // TODO: Check if retrieve member throw exception on not found.
             MemberSymbol member = cell.Next.State.RetrieveMember(node.MemberID.Label);
 
             if (member != null)
             {
-                // Set new value
-                switch (result)
+                try
                 {
-                    case int i: member.SetValue(i); break;
-                    case string s: member.SetValue(s); break;
-                    default: throw new Exception($"State member \'{ member.Label }\' cannot be assign value of type \'{ result.GetType() }\'");
+                    // Set new value
+                    switch (result)
+                    {
+                        case int i: member.SetValue(i); break;
+                        case string s: member.SetValue(s); break;
+                        default: throw new CoronaLanguageException($"Cannot assign value of type \'{ result.GetType() }\' to a member");
+                    }
+                }
+                catch(CoronaLanguageException e)
+                {
+                    throw new CoronaLanguageException($"Member .{ member.Label }", e);
                 }
             }
             else
-                throw new Exception($"Unknown state member \'{ node.MemberID.Label }\'");
+                throw new CoronaLanguageException($"Unknown member \'{ node.MemberID.Label }\'");
         }
 
 
@@ -230,10 +255,22 @@ namespace CI.Evaluators
                 i++;
             }
 
-            // Find first matching case
-            foreach (CaseStatementNode c in node.CaseStatementNodes)
-                if (IsCaseMatching(c, values))
-                    return c;
+            // Error handling from case matching
+            i = 1;
+            try
+            {
+                // Find first matching case
+                foreach (CaseStatementNode c in node.CaseStatementNodes)
+                {
+                    if (IsCaseMatching(c, values))
+                        return c;
+                    i++;
+                }
+            }
+            catch(CoronaLanguageException e)
+            {
+                throw new CoronaLanguageException($"Case statement { i }", e);
+            }
 
             return null;
         }
@@ -250,18 +287,18 @@ namespace CI.Evaluators
                     VariableSymbol<string> v => new StringValueNode(v.Value),
                     VariableSymbol<StateSymbol> v => new StateValueNode(v.Value),
                     StateSymbol s => new StateValueNode(s),
-                    _ => throw new ArgumentOutOfRangeException($"Unknown symbol type \"{ sym.GetType() }\""),
+                    _ => throw new CoronaLanguageException($"Unexpected variable type \"{ sym.GetType().Name }\""),
                 });
             }
             else
-                throw new Exception($"Undeclared variable { node.Label }");
+                throw new CoronaLanguageException($"Undeclared variable { node.Label }");
         }
 
         private bool IsCaseMatching(CaseStatementNode c, List<ValueNode> elementValues)
         {
             // Check if the number of case values is valid
-            if (c.Values.Count > elementValues.Count)
-                throw new Exception($"Case statement contains more values than its parrent match statement");
+            if (c.Values.Count != elementValues.Count)
+                throw new CoronaLanguageException($"Case statement contains more or less values than its parent match statement");
 
             // Match each value in case
             int i = 0;
@@ -278,7 +315,7 @@ namespace CI.Evaluators
                                 return false;
                         }
                         else
-                            throw new Exception($"Undeclared variable { t.Label }");
+                            throw new CoronaLanguageException($"Undeclared variable { t.Label }");
                         break;
 
                     case IntValueNode t:
@@ -299,13 +336,13 @@ namespace CI.Evaluators
                                 return false;
                         }
                         else
-                            throw new Exception($"Cannot match arrowValue in caseStatement with element of type \'{ elementValues[i].GetType() }");
+                            throw new CoronaLanguageException($"ArrowValue in case statement cannot be match with element of type \'{ elementValues[i].GetType().Name }");
                         break;
 
                     case DefaultValueNode t:
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException($"Case matching has yet to be implemented for CaseValue: [{ i }] { value.GetType() }");
+                        throw new Exception($"Case matching has yet to be implemented for CaseValue: [{ i }] { value.GetType().Name }");
                 }
 
                 i++;
