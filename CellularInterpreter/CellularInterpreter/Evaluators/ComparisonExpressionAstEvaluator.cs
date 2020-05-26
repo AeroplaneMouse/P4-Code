@@ -142,7 +142,7 @@ namespace CI.Evaluators
                 if (sym is VariableSymbol<int> intVar)
                     return intVar.Value;
                 else
-                    throw new Exception("Wrong type!");
+                    throw new Exception($"Unexpected type in comparison expression. Expected Int got { sym.ToString() }");
             }
             else
                 throw new Exception($"Undeclared variable { node.Label }");

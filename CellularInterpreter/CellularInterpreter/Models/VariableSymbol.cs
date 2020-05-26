@@ -13,5 +13,10 @@ namespace CI.Models
         {
             Value = value;
         }
+
+        public override string ToString()
+        {
+            return Value.GetType().ToString();
+        }
     }
 }
