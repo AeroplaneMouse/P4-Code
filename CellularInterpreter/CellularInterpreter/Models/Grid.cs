@@ -30,7 +30,7 @@ namespace CI.Models
             // Initialize next
             for (int r = 0; r < XSize; r++)
                 for (int c = 0; c < YSize; c++)
-                    CellsNext[r, c] = new Cell(firstState.Copy(), null, new Pos(r, c));
+                    CellsNext[r, c] = new Cell(firstState.Copy(), new Pos(r, c));
 
             // Push the initialized cells
             Push();
@@ -71,6 +71,11 @@ namespace CI.Models
         public Cell GetCell(Pos pos)
         {
             return Cells[pos.X, pos.Y];
+        }
+
+        public Cell GetNextCell(Pos pos)
+        {
+            return CellsNext[pos.X, pos.Y];
         }
 
         public override string ToString()

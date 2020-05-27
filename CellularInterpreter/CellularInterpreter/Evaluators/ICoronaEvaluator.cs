@@ -20,7 +20,8 @@ namespace CI.Evaluators
         List<StateSymbol> GetStates();
 
         void SetCell(Cell cell, StateSymbol state);
-        Cell GetCell(int x, int y);
+        Cell GetCell(Pos pos);
+        Cell GetNextCell(Pos pos);
         Grid GetGrid();
         Cell GetCurrentCell();
     }

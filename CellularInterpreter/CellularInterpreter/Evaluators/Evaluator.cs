@@ -113,12 +113,18 @@ namespace CI.Evaluators
 
         public void SetCell(Cell cell, StateSymbol state)
         {
-            grid.SetCell(cell.Next, state);
+            Cell nextCell = grid.GetNextCell(cell.Pos);
+            grid.SetCell(nextCell, state);
         }
 
-        public Cell GetCell(int x, int y)
+        public Cell GetCell(Pos pos)
         {
-            return grid.GetCell(x, y);
+            return grid.GetCell(pos);
+        }
+
+        public Cell GetNextCell(Pos pos)
+        {
+            return grid.GetNextCell(pos);
         }
 
         public Cell GetCurrentCell()

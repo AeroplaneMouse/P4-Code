@@ -33,7 +33,7 @@ namespace CI.Evaluators
             while (y < 0)
                 y += sender.Y_Max;
 
-            return sender.GetCell(x, y);
+            return sender.GetCell(new Pos(x,y));
         }
 
         public int Visit(IntValueNode node)

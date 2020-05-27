@@ -194,7 +194,8 @@ namespace CI.Evaluators
                 result = ((StringValueNode)node.Value).Value;
 
             // Retrieve state member for the next cell
-            MemberSymbol member = cell.Next.State.RetrieveMember(node.MemberID.Label);
+            Cell nextCell = sender.GetNextCell(cell.Pos);
+            MemberSymbol member = nextCell.State.RetrieveMember(node.MemberID.Label);
 
             if (member != null)
             {

@@ -5,13 +5,11 @@ namespace CI.Models
     public class Cell
     {
         public StateSymbol State { get; set; }
-        public Cell Next { get; private set; } = null;
         public Pos Pos { get; }
 
-        public Cell(StateSymbol state, Cell next, Pos pos)
+        public Cell(StateSymbol state, Pos pos)
         {
             State = state;
-            Next = next;
             Pos = pos;
         }
 
@@ -21,8 +19,7 @@ namespace CI.Models
         /// <returns>A copy of the current cell, with a reference to the old</returns>
         public Cell Copy()
         {
-            Cell cell = new Cell(State.Copy(), this, Pos.Copy());
-            return cell;
+            return new Cell(State.Copy(), Pos.Copy()); ;
         }
 
         public override string ToString()
