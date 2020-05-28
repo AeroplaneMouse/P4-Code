@@ -5,7 +5,7 @@ using CI.Nodes.Values;
 using CI.Nodes.Members;
 using CI.Nodes.Statement;
 using System.Collections.Generic;
-using CellularInterpreter.Exceptions;
+using CI.Exceptions;
 
 namespace CI.Evaluators
 {
@@ -32,7 +32,7 @@ namespace CI.Evaluators
                 while (compEvaluator.Visit(node.Conditioner))
                     Visit(node.Statement);
             }
-            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Iteration statement", e); }
+            catch (TheLanguageErrorException e) { throw new TheLanguageErrorException("Iteration statement", e); }
         }
 
         public void Visit(MatchStatementNode node)
@@ -46,7 +46,7 @@ namespace CI.Evaluators
                 if (caseNode != null)
                     Visit(caseNode.Statement);
             }
-            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Match statement", e); }
+            catch (TheLanguageErrorException e) { throw new TheLanguageErrorException("Match statement", e); }
         }
 
         public void Visit(CompoundStatementNode node)
@@ -69,7 +69,7 @@ namespace CI.Evaluators
             if (state is StateSymbol s)
                 sender.SetCell(cell, s.Copy());
             else
-                throw new CoronaLanguageException($"Return statement. Unexpected type { state } expected State");
+                throw new TheLanguageErrorException($"Return statement. Unexpected type { state } expected State");
 
             sender.ReturnStatementHasBeenHit = true;
         }
@@ -94,15 +94,15 @@ namespace CI.Evaluators
                         {
                             case ExpressionNode valueNode: member.SetValue(exprEvaluator.Visit(valueNode)); break;
                             case StringValueNode valueNode: member.SetValue(valueNode.Value); break;
-                            default: throw new CoronaLanguageException($"ReturnMember value cannot be of type \'{ rNode.Value.GetType().Name }\'");
+                            default: throw new TheLanguageErrorException($"ReturnMember value cannot be of type \'{ rNode.Value.GetType().Name }\'");
                         }
                     }
                     sender.SetCell(cell, state);
                 }
-                catch(CoronaLanguageException e) { throw new CoronaLanguageException($"Return statement \'{ node.Identifier.Label }\'", e); }
+                catch(TheLanguageErrorException e) { throw new TheLanguageErrorException($"Return statement \'{ node.Identifier.Label }\'", e); }
             }
             else
-                throw new CoronaLanguageException($"Return statement. Unexpected type { sym } expected State");
+                throw new TheLanguageErrorException($"Return statement. Unexpected type { sym } expected State");
 
             sender.ReturnStatementHasBeenHit = true;
         }
@@ -119,7 +119,7 @@ namespace CI.Evaluators
             if (state is StateSymbol s)
                 sender.SetCell(c, s);
             else
-                throw new CoronaLanguageException($"Grid assignment statement. Unexpected type for \'{ node.Identifier.Label }\' got { state } expected State");
+                throw new TheLanguageErrorException($"Grid assignment statement. Unexpected type for \'{ node.Identifier.Label }\' got { state } expected State");
         }
 
         public void Visit(IdentifierAssignmentStatementNode node)
@@ -132,7 +132,7 @@ namespace CI.Evaluators
                 ExpressionNode t => new MathExpressionAstEvaluator().Visit(t),
                 StringValueNode t => t.Value,
                 //StateValueNode t => t.State,
-                _ => throw new CoronaLanguageException($"Assignment statement. Unexpected value type of { node.Value }")
+                _ => throw new TheLanguageErrorException($"Assignment statement. Unexpected value type of { node.Value }")
             };
 
             // Insert into symbol table
@@ -151,7 +151,7 @@ namespace CI.Evaluators
                         throw new NotImplementedException($"Variable assignment for type \'{ sym }\' not implemented");
                 }
                 catch(InvalidCastException) { 
-                    throw new CoronaLanguageException($"Assignment statement. Unable to assign value of type { node.Value.GetType().Name } to declared variable of type { sym }"); }
+                    throw new TheLanguageErrorException($"Assignment statement. Unable to assign value of type { node.Value.GetType().Name } to declared variable of type { sym }"); }
             }
             else
             {
@@ -206,16 +206,16 @@ namespace CI.Evaluators
                     {
                         case int i: member.SetValue(i); break;
                         case string s: member.SetValue(s); break;
-                        default: throw new CoronaLanguageException($"Cannot assign value of type \'{ result.GetType() }\' to a member");
+                        default: throw new TheLanguageErrorException($"Cannot assign value of type \'{ result.GetType() }\' to a member");
                     }
                 }
-                catch(CoronaLanguageException e)
+                catch(TheLanguageErrorException e)
                 {
-                    throw new CoronaLanguageException($"Member .{ member.Label }", e);
+                    throw new TheLanguageErrorException($"Member .{ member.Label }", e);
                 }
             }
             else
-                throw new CoronaLanguageException($"Unknown member \'{ node.MemberID.Label }\'");
+                throw new TheLanguageErrorException($"Unknown member \'{ node.MemberID.Label }\'");
         }
 
 
@@ -268,9 +268,9 @@ namespace CI.Evaluators
                     i++;
                 }
             }
-            catch(CoronaLanguageException e)
+            catch(TheLanguageErrorException e)
             {
-                throw new CoronaLanguageException($"Case statement { i }", e);
+                throw new TheLanguageErrorException($"Case statement { i }", e);
             }
 
             return null;
@@ -288,18 +288,18 @@ namespace CI.Evaluators
                     VariableSymbol<string> v => new StringValueNode(v.Value),
                     VariableSymbol<StateSymbol> v => new StateValueNode(v.Value),
                     StateSymbol s => new StateValueNode(s),
-                    _ => throw new CoronaLanguageException($"Unexpected variable type \"{ sym.GetType().Name }\""),
+                    _ => throw new TheLanguageErrorException($"Unexpected variable type \"{ sym.GetType().Name }\""),
                 });
             }
             else
-                throw new CoronaLanguageException($"Undeclared variable { node.Label }");
+                throw new TheLanguageErrorException($"Undeclared variable { node.Label }");
         }
 
         private bool IsCaseMatching(CaseStatementNode c, List<ValueNode> elementValues)
         {
             // Check if the number of case values is valid
             if (c.Values.Count != elementValues.Count)
-                throw new CoronaLanguageException($"Case statement contains more or less values than its parent match statement");
+                throw new TheLanguageErrorException($"Case statement contains more or less values than its parent match statement");
 
             // Match each value in case
             int i = 0;
@@ -316,7 +316,7 @@ namespace CI.Evaluators
                                 return false;
                         }
                         else
-                            throw new CoronaLanguageException($"Undeclared variable { t.Label }");
+                            throw new TheLanguageErrorException($"Undeclared variable { t.Label }");
                         break;
 
                     case IntValueNode t:
@@ -337,7 +337,7 @@ namespace CI.Evaluators
                                 return false;
                         }
                         else
-                            throw new CoronaLanguageException($"ArrowValue in case statement cannot be match with element of type \'{ elementValues[i].GetType().Name }");
+                            throw new TheLanguageErrorException($"ArrowValue in case statement cannot be match with element of type \'{ elementValues[i].GetType().Name }");
                         break;
 
                     case DefaultValueNode t:

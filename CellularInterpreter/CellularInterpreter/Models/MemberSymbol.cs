@@ -2,7 +2,7 @@
 using CI.Nodes.Values;
 using CI.Nodes.Members;
 using System.Collections.Generic;
-using CellularInterpreter.Exceptions;
+using CI.Exceptions;
 
 namespace CI.Models
 {
@@ -49,7 +49,7 @@ namespace CI.Models
             if (IsAccepted(value))
                 this.value = value;
             else
-                throw new CoronaLanguageException($"Attempt to assign unaccepted value \'{ value }\'");
+                throw new TheLanguageErrorException($"Attempt to assign unaccepted value \'{ value }\'");
         }
 
         public void SetValue(int value)
@@ -57,7 +57,7 @@ namespace CI.Models
             if (IsAccepted(value))
                 this.value = value;
             else
-                throw new CoronaLanguageException($"Attempt to assign unaccepted value \'{ value }\'");
+                throw new TheLanguageErrorException($"Attempt to assign unaccepted value \'{ value }\'");
         }
 
         private bool IsAccepted(int value)

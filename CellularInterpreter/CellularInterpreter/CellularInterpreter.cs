@@ -3,13 +3,11 @@ using System.IO;
 using System.Linq;
 using CI.Builders;
 using CI.Evaluators;
+using CI.Exceptions;
 using CI.Nodes.Base;
 using Antlr4.Runtime;
 using CI.ImageGeneration;
 using System.Diagnostics;
-using System.Reflection;
-using System.ComponentModel;
-using CellularInterpreter.Exceptions;
 
 namespace CI
 {
@@ -18,21 +16,10 @@ namespace CI
         private static void Main()
         {
             CellularInterpreter interpreter = new CellularInterpreter();
-            string times = "";
-            for (int i = 0; i < 25; i++)
-            {
-                Console.WriteLine("Run: " + (i + 1).ToString());
-                long time = interpreter.EvaluateCorona(1000);
-                if (time == -1)
-                    break;
-                else
-                    times += $"{time/1000}, ";
-            }
-
-            Console.WriteLine($"Times: {times}");
+            interpreter.EvaluateTheLanguage(1000);
         }
 
-        private long EvaluateCorona(int generations = 0)
+        private long EvaluateTheLanguage(int generations = 0)
         {
             Stopwatch total = new Stopwatch();
             total.Start();
@@ -41,9 +28,9 @@ namespace CI
             ICoronaEvaluator eval;
             try
             {
-                eval = interpreter.InterpretCorona();
+                eval = interpreter.InterpretTheLanguage();
             }
-            catch (CoronaLanguageException e)
+            catch (TheLanguageErrorException e)
             {
                 string messageTree = GetExceptionMessageTree(e);
                 Console.WriteLine($"You made a misstake:");
@@ -52,8 +39,6 @@ namespace CI
             }
 
             ImageGenerator ig = new ImageGenerator(eval.GetGrid().XSize, eval.GetGrid().YSize);
-            //eval.Print();
-
             ig.GenerateFrame(eval.GetGrid());
 
             // Get number of total generations
@@ -77,7 +62,7 @@ namespace CI
                 {
                     eval.GenerateNextGeneration();
                 }
-                catch (CoronaLanguageException e)
+                catch (TheLanguageErrorException e)
                 {
                     string messageTree = GetExceptionMessageTree(e);
                     Console.WriteLine($"You made a misstake");
@@ -89,7 +74,7 @@ namespace CI
                 eval.PushNextGeneration();
 
                 // Generate image representation of the new cell states
-                //ig.GenerateFrame(eval.GetGrid());
+                ig.GenerateFrame(eval.GetGrid());
 
                 // Show an estimated remaining time, when n/over of final generations has been hit
                 if (IsGenerationFraction(ref hit, n: 1, over: 100, eval.Generation, generations))
@@ -109,11 +94,11 @@ namespace CI
         /// Compiles corona
         /// </summary>
         /// <returns>A grid object</returns>
-        public ICoronaEvaluator InterpretCorona()
+        public ICoronaEvaluator InterpretTheLanguage()
         {
             // Load code example
             string input = String.Empty;
-            File.ReadAllLines("../../../../CellularInterpreter/CodeExamples/CoronaTest.ca").ToList<string>().ForEach(s => input += s);
+            File.ReadAllLines("../../../../CellularInterpreter/CodeExamples/the_language.ca").ToList<string>().ForEach(s => input += s);
 
             if (string.IsNullOrWhiteSpace(input))
                 throw new ArgumentNullException("input", "Argument was null or whitespace!");
@@ -133,9 +118,9 @@ namespace CI
             {
                 ast = new BuildMainAst().VisitMain(cst);
             }
-            catch(CoronaLanguageException e)
+            catch(TheLanguageErrorException e)
             {
-                throw new CoronaLanguageException("Semantic error", e);
+                throw new TheLanguageErrorException("Semantic error", e);
             }
 
             // Evaluate
@@ -145,7 +130,7 @@ namespace CI
             return evaluator;
         }
 
-        private static string GetExceptionMessageTree(Exception e, string padding = "")
+        private string GetExceptionMessageTree(Exception e, string padding = "")
         {
             string message = e.Message;
 
@@ -157,7 +142,7 @@ namespace CI
             return message;
         }
 
-        private static bool IsGenerationFraction(ref bool hit, int n, int over, int current, int max)
+        private bool IsGenerationFraction(ref bool hit, int n, int over, int current, int max)
         {
             // Check for hit
             if (hit)

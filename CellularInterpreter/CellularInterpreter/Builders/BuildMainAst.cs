@@ -1,6 +1,6 @@
 ﻿using CI.Nodes.Base;
 using System.Collections.Generic;
-using CellularInterpreter.Exceptions;
+using CI.Exceptions;
 
 namespace CI.Builders
 {
@@ -16,7 +16,7 @@ namespace CI.Builders
             {
                 grid = (GridNode)baseVisitor.Visit(context.grid());
             }
-            catch (CoronaLanguageException e) { throw new CoronaLanguageException("GRID", e); }
+            catch (TheLanguageErrorException e) { throw new TheLanguageErrorException("GRID", e); }
 
             // Visit all states
             List<StatesNode> states = new List<StatesNode>();
@@ -25,7 +25,7 @@ namespace CI.Builders
                 foreach(CoronaParser.StatesContext s in context.states())
                     states.Add((StatesNode)baseVisitor.Visit(s));
             }
-            catch (CoronaLanguageException e) { throw new CoronaLanguageException("STATES", e); }
+            catch (TheLanguageErrorException e) { throw new TheLanguageErrorException("STATES", e); }
 
             // Visit initial
             InitialNode initial;
@@ -33,7 +33,7 @@ namespace CI.Builders
             {
                 initial = (InitialNode)baseVisitor.Visit(context.initial());
             }
-            catch (CoronaLanguageException e) { throw new CoronaLanguageException("INITIAL", e); }
+            catch (TheLanguageErrorException e) { throw new TheLanguageErrorException("INITIAL", e); }
 
             // Visit rules
             RulesNode rules;
@@ -41,7 +41,7 @@ namespace CI.Builders
             {
                 rules = (RulesNode)baseVisitor.Visit(context.rules());
             }
-            catch (CoronaLanguageException e) { throw new CoronaLanguageException("RULES", e); }
+            catch (TheLanguageErrorException e) { throw new TheLanguageErrorException("RULES", e); }
 
             return new MainNode(grid, states, initial, rules);
         }

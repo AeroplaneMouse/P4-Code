@@ -1,10 +1,10 @@
 ﻿using CI.Models;
 using CI.Nodes.Math;
-using CellularInterpreter.Exceptions;
+using CI.Exceptions;
 
 namespace CI.Evaluators
 {
-    internal class ComparisonExpressionAstEvaluator : ComparisonExpressionAstVisitor<int, bool>
+    class ComparisonExpressionAstEvaluator : ComparisonExpressionAstVisitor<int, bool>
     {
         public override bool Visit(EqualityNode node)
         {
@@ -141,10 +141,10 @@ namespace CI.Evaluators
                 if (sym is VariableSymbol<int> intVar)
                     return intVar.Value;
                 else
-                    throw new CoronaLanguageException($"Unexpected type in comparison expression. Expected Int got { sym.ToString() }");
+                    throw new TheLanguageErrorException($"Unexpected type in comparison expression. Expected Int got { sym.ToString() }");
             }
             else
-                throw new CoronaLanguageException($"Undeclared variable { node.Label }");
+                throw new TheLanguageErrorException($"Undeclared variable { node.Label }");
         }
 
         public override int Visit(InfixExpressionNode node)

@@ -1,5 +1,5 @@
 ﻿using System;
-using CellularInterpreter.Exceptions;
+using CI.Exceptions;
 using CI.Nodes.Math;
 using CI.Nodes.Values;
 
@@ -42,7 +42,7 @@ namespace CI.Builders
 
             // Range check
             if (left > right)
-                throw new CoronaLanguageException($"ArrowValue { left } -> { right }: left > right");
+                throw new TheLanguageErrorException($"ArrowValue { left } -> { right }: left > right");
 
             return new ArrowValueNode(left, right);
         }

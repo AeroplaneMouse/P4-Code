@@ -3,7 +3,7 @@ using CI.Models;
 using System.Collections.Generic;
 using CI.Nodes.Values;
 using CI.Nodes.Members;
-using CellularInterpreter.Exceptions;
+using CI.Exceptions;
 
 namespace CI.Builders
 {
@@ -24,7 +24,7 @@ namespace CI.Builders
                 
                 return new MemberNode(label, valueNodes);
             }
-            catch (CoronaLanguageException e) { throw new CoronaLanguageException($"Member \'{ label }\'", e); }
+            catch (TheLanguageErrorException e) { throw new TheLanguageErrorException($"Member \'{ label }\'", e); }
         }
 
         public override MemberNode VisitGridDeclaration(CoronaParser.GridDeclarationContext context)

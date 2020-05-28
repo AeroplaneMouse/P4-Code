@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CI.Nodes.Statement;
 using CI.Nodes.Values;
 using CI.Nodes.Members;
-using CellularInterpreter.Exceptions;
+using CI.Exceptions;
 
 namespace CI.Builders
 {
@@ -22,7 +22,7 @@ namespace CI.Builders
                 // Visit statement
                 node.Statement = Visit(context.statement());
             }
-            catch(CoronaLanguageException e) { throw new CoronaLanguageException("Iteration statement", e); }
+            catch(TheLanguageErrorException e) { throw new TheLanguageErrorException("Iteration statement", e); }
 
             return node;
         }
@@ -45,7 +45,7 @@ namespace CI.Builders
             {
                 id = (IdentifierValueNode)new BuildValueAst().Visit(context.identifierValue());
             }
-            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Return statement", e); }
+            catch (TheLanguageErrorException e) { throw new TheLanguageErrorException("Return statement", e); }
 
             return new ReturnStatementNode(id);
         }
@@ -78,7 +78,7 @@ namespace CI.Builders
 
                 return new AdvancedReturnStatementNode(id, returnMembers);
             }
-            catch(CoronaLanguageException e) { throw new CoronaLanguageException("Return statement", e); }
+            catch(TheLanguageErrorException e) { throw new TheLanguageErrorException("Return statement", e); }
         }
 
         public override StatementNode VisitCaseStatement([NotNull] CoronaParser.CaseStatementContext context)
@@ -93,7 +93,7 @@ namespace CI.Builders
                 foreach (var value in caseValues)
                     values.Add(valueVisitor.Visit(value));
             }
-            catch(CoronaLanguageException e) { throw new CoronaLanguageException("Case statement value", e); }
+            catch(TheLanguageErrorException e) { throw new TheLanguageErrorException("Case statement value", e); }
 
             return new CaseStatementNode(values, Visit(context.statement()));
         }
@@ -118,7 +118,7 @@ namespace CI.Builders
                     else if (e.expr() != null)
                         elements.Add(exprVisitor.Visit(e.expr()));
                 }
-                catch (CoronaLanguageException excep) { throw new CoronaLanguageException("Match statement value", excep); }
+                catch (TheLanguageErrorException excep) { throw new TheLanguageErrorException("Match statement value", excep); }
             }
 
             // Visit each CaseStatement
@@ -128,7 +128,7 @@ namespace CI.Builders
                 foreach (CoronaParser.CaseStatementContext c in context.caseStatement())
                     caseStatements.Add((CaseStatementNode)Visit(c));
             }
-            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Match statement", e); }
+            catch (TheLanguageErrorException e) { throw new TheLanguageErrorException("Match statement", e); }
 
             return new MatchStatementNode(elements, caseStatements);
         }
@@ -144,7 +144,7 @@ namespace CI.Builders
 
                 return new GridAssignmentStatementNode(gridpoint, id);
             }
-            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Grid assignment statement", e); }
+            catch (TheLanguageErrorException e) { throw new TheLanguageErrorException("Grid assignment statement", e); }
         }
 
         public override StatementNode VisitIdentifierAssignStatement([NotNull] CoronaParser.IdentifierAssignStatementContext context)
@@ -165,7 +165,7 @@ namespace CI.Builders
 
                 return new IdentifierAssignmentStatementNode(id, value);
             }
-            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Identifier assignment statement", e); }
+            catch (TheLanguageErrorException e) { throw new TheLanguageErrorException("Identifier assignment statement", e); }
         }
 
         public override StatementNode VisitMemberAssignStatement([NotNull] CoronaParser.MemberAssignStatementContext context)
@@ -191,7 +191,7 @@ namespace CI.Builders
 
                 return new MemberAssignmentStatementNode(gridPoint, memberID, value);
             }
-            catch (CoronaLanguageException e) { throw new CoronaLanguageException("Member assignment statement", e); }
+            catch (TheLanguageErrorException e) { throw new TheLanguageErrorException("Member assignment statement", e); }
 
         }
     }

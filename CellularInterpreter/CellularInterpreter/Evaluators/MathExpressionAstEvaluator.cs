@@ -1,7 +1,6 @@
-﻿using CellularInterpreter.Exceptions;
+﻿using CI.Exceptions;
 using CI.Models;
 using CI.Nodes.Math;
-using System;
 
 namespace CI.Evaluators
 {
@@ -31,10 +30,10 @@ namespace CI.Evaluators
                 if (sym is VariableSymbol<int> intVar)
                     return intVar.Value;
                 else
-                    throw new CoronaLanguageException($"Unexpected type in arithmetic expression. Expected Int got { sym.ToString() }");
+                    throw new TheLanguageErrorException($"Unexpected type in arithmetic expression. Expected Int got { sym.ToString() }");
             }
             else
-                throw new CoronaLanguageException($"Undeclared variable { node.Label }");
+                throw new TheLanguageErrorException($"Undeclared variable { node.Label }");
         }
     }
 }

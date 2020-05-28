@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Linq;
 using CI.Models;
-using System.Collections.Generic;
 using CI.Exceptions;
 using CI.Nodes.Base;
 using CI.Nodes.Values;
-using CI.Nodes.Statement;
-using System.Runtime.ExceptionServices;
 using CI.Nodes.Members;
-using CellularInterpreter.Exceptions;
+using CI.Nodes.Statement;
+using System.Collections.Generic;
 
 namespace CI.Evaluators
 {
@@ -51,9 +48,9 @@ namespace CI.Evaluators
             {
                 VisitInitial(node.InitialNode);
             }
-            catch(CoronaLanguageException e)
+            catch(TheLanguageErrorException e)
             {
-                throw new CoronaLanguageException($"INITIAL", e);
+                throw new TheLanguageErrorException($"INITIAL", e);
             }
             PushNextGeneration();
 
@@ -163,9 +160,9 @@ namespace CI.Evaluators
                         break;
                 }
             }
-            catch(CoronaLanguageException e)
+            catch(TheLanguageErrorException e)
             {
-                throw new CoronaLanguageException($"RULES", e);
+                throw new TheLanguageErrorException($"RULES", e);
             }
             Stbl.st.CloseScope();
         }
