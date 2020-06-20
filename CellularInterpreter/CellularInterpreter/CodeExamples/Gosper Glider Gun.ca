@@ -12,61 +12,61 @@ STATES dead, alive
 INITIAL
 {
   grid[1,5] = alive;
-    grid[2,5] = alive;
+  grid[2,5] = alive;
 
-    grid[1,6] = alive;
-    grid[2,6] = alive;
+  grid[1,6] = alive;
+  grid[2,6] = alive;
 
-    grid[11,5] = alive;
-    grid[11,6] = alive;
-    grid[11,7] = alive;
+  grid[11,5] = alive;
+  grid[11,6] = alive;
+  grid[11,7] = alive;
 
-    grid[12,4] = alive;
-    grid[12,8] = alive;
+  grid[12,4] = alive;
+  grid[12,8] = alive;
 
-    grid[13,3] = alive;
-    grid[13,9] = alive;
+  grid[13,3] = alive;
+  grid[13,9] = alive;
 
-    grid[14,3] = alive;
-    grid[14,9] = alive;
+  grid[14,3] = alive;
+  grid[14,9] = alive;
 
-    grid[15,6] = alive;
+  grid[15,6] = alive;
 
-    grid[16,4] = alive;
-    grid[16,8] = alive;
+  grid[16,4] = alive;
+  grid[16,8] = alive;
 
-    grid[17,5] = alive;
-    grid[17,6] = alive;
-    grid[17,7] = alive;
+  grid[17,5] = alive;
+  grid[17,6] = alive;
+  grid[17,7] = alive;
 
-    grid[18,6] = alive;
+  grid[18,6] = alive;
 
-    i = 3;
-    while(i < 6)
-    {
-        grid[21,i] = alive;
-        i = i + 1;
-    }
+  i = 3;
+  while(i < 6)
+  {
+      grid[21,i] = alive;
+      i = i + 1;
+  }
 
-    i = 3;
-    while(i < 6)
-    {
-        grid[22,i] = alive;
-        i = i + 1;
-    }
+  i = 3;
+  while(i < 6)
+  {
+      grid[22,i] = alive;
+      i = i + 1;
+  }
 
-    grid[23,2] = alive;
-    grid[23,6] = alive;
+  grid[23,2] = alive;
+  grid[23,6] = alive;
 
-    grid[25,1] = alive;
-    grid[25,2] = alive;
-    grid[25,6] = alive;
-    grid[25,7] = alive;
+  grid[25,1] = alive;
+  grid[25,2] = alive;
+  grid[25,6] = alive;
+  grid[25,7] = alive;
 
-    grid[35,3] = alive;
-    grid[35,4] = alive;
-    grid[36,3] = alive;
-    grid[36,4] = alive;
+  grid[35,3] = alive;
+  grid[35,4] = alive;
+  grid[36,3] = alive;
+  grid[36,4] = alive;
 }
 
 RULES

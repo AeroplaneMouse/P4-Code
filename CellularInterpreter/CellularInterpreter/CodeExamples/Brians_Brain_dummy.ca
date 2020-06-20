@@ -19,16 +19,16 @@ RULES
 		[on]
 			return dying;
 		[dying]
-			off;
+			return off;
 		[off]
 		{
 			# Count neighbors #
 			count = 0;
 			r = -1;
-			while (r < 1)
+			while (r <= 1)
 			{
 				c = -1;
-				while(c < 1)
+				while(c <= 1)
 				{
 					match(grid[r,c], r, c){
 						[_, 0, 0] {} # Ignore self #
