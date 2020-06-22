@@ -24,11 +24,10 @@ namespace CI
             Stopwatch total = new Stopwatch();
             total.Start();
 
-            CellularInterpreter interpreter = new CellularInterpreter();
             ICoronaEvaluator eval;
             try
             {
-                eval = InterpretTheLanguage();
+                eval = InterpretTheLanguage("../../../../CellularInterpreter/CodeExamples/the_language.ca");
             }
             catch (TheLanguageErrorException e)
             {
@@ -94,11 +93,11 @@ namespace CI
         /// Compiles corona
         /// </summary>
         /// <returns>A grid object</returns>
-        public ICoronaEvaluator InterpretTheLanguage()
+        public ICoronaEvaluator InterpretTheLanguage(string path)
         {
             // Load code example
             string input = String.Empty;
-            File.ReadAllLines("../../../../CellularInterpreter/CodeExamples/the_language.ca").ToList<string>().ForEach(s => input += (Environment.NewLine + s));
+            File.ReadAllLines(path).ToList<string>().ForEach(s => input += (Environment.NewLine + s));
 
             if (string.IsNullOrWhiteSpace(input))
                 throw new ArgumentNullException("input", "Argument was null or whitespace!");
