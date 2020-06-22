@@ -28,7 +28,7 @@ namespace CI
             ICoronaEvaluator eval;
             try
             {
-                eval = interpreter.InterpretTheLanguage();
+                eval = InterpretTheLanguage();
             }
             catch (TheLanguageErrorException e)
             {
@@ -98,7 +98,7 @@ namespace CI
         {
             // Load code example
             string input = String.Empty;
-            File.ReadAllLines("../../../../CellularInterpreter/CodeExamples/the_language.ca").ToList<string>().ForEach(s => input += s);
+            File.ReadAllLines("../../../../CellularInterpreter/CodeExamples/the_language.ca").ToList<string>().ForEach(s => input += (Environment.NewLine + s));
 
             if (string.IsNullOrWhiteSpace(input))
                 throw new ArgumentNullException("input", "Argument was null or whitespace!");
