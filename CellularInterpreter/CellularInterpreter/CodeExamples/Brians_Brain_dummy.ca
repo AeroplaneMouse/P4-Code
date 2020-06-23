@@ -10,7 +10,8 @@ STATES off, dying, on
 
 INITIAL
 {
-	
+	grid[5,5] = on;
+	grid[5,6] = on;
 }
 
 RULES
@@ -30,7 +31,7 @@ RULES
 				c = -1;
 				while(c <= 1)
 				{
-					match(grid[r,c], r, c){
+					match(grid[.x+r, .y+c], r, c){
 						[_, 0, 0] {} # Ignore self #
 						[on, _, _]
 							count = count + 1;
