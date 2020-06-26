@@ -57,6 +57,7 @@ namespace CI.Evaluators
             foreach (StatementNode sNode in node.Statements)
                 if (!sender.ReturnStatementHasBeenHit)
                     Visit(sNode);
+                else break;
 
             Stbl.st.CloseScope();
         }
